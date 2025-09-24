@@ -1,337 +1,354 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Harsh Edits - Pro Editing Resources</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-<style>
-body {
-font-family: 'Inter', sans-serif;
-background-color: #111827; /* Dark blue-gray */
-color: #e5e7eb;
-background-image:
-radial-gradient(at 20% 20%, hsla(217, 75%, 35%, 0.3) 0px, transparent 50%),
-radial-gradient(at 80% 20%, hsla(287, 65%, 45%, 0.25) 0px, transparent 50%),
-radial-gradient(at 20% 80%, hsla(180, 70%, 40%, 0.2) 0px, transparent 50%),
-radial-gradient(at 80% 80%, hsla(340, 75%, 45%, 0.25) 0px, transparent 50%);
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harsh Edits - Pro Editing Resources</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glow-color-1: hsl(217, 100%, 50%);
+            --glow-color-2: hsl(287, 100%, 50%);
+            --glow-color-3: hsl(180, 100%, 50%);
+            --glow-color-4: hsl(340, 100%, 50%);
+        }
 
-/* Glassmorphism Card Style */
-.glass-card {
-background: rgba(23, 31, 46, 0.6);
-backdrop-filter: blur(12px);
--webkit-backdrop-filter: blur(12px);
-border: 1px solid rgba(255, 255, 255, 0.1);
-transition: all 0.3s ease;
-}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            color: #e5e7eb;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-.glass-card:hover {
-transform: translateY(-6px) scale(1.02);
-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(79, 70, 229, 0.2);
-border-color: rgba(255, 255, 255, 0.2);
-}
+        /* --- Animated Aurora Background --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 15% 25%, rgba(66, 153, 225, 0.2), transparent 40%),
+                        radial-gradient(circle at 85% 75%, rgba(159, 122, 234, 0.2), transparent 40%),
+                        radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.15), transparent 40%);
+            animation: move-aurora 20s infinite alternate ease-in-out;
+        }
+        
+        .aurora-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -2;
+        }
 
-.clickable-card:hover {
-border-color: rgba(79, 70, 229, 0.6);
-cursor: pointer;
-}
+        .aurora-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.5;
+        }
 
-/* Gradient Text */
-.gradient-text {
-background-image: linear-gradient(to right, #818cf8, #d8b4fe);
--webkit-background-clip: text;
-background-clip: text;
-color: transparent;
-}
+        .shape1 { width: 400px; height: 400px; background-color: var(--glow-color-1); top: 10%; left: 10%; animation: float 15s infinite ease-in-out alternate; }
+        .shape2 { width: 300px; height: 300px; background-color: var(--glow-color-2); top: 60%; left: 80%; animation: float 18s infinite ease-in-out alternate-reverse; }
+        .shape3 { width: 500px; height: 500px; background-color: var(--glow-color-3); top: 50%; left: 30%; animation: float 20s infinite ease-in-out alternate; }
+        .shape4 { width: 350px; height: 350px; background-color: var(--glow-color-4); top: 20%; left: 70%; animation: float 22s infinite ease-in-out alternate-reverse; }
 
-/* Gradient Button */
-.gradient-btn {
-background-image: linear-gradient(to right, #4f46e5, #7c3aed, #a855f7);
-background-size: 200% auto;
-transition: all 0.4s ease-in-out;
-}
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            100% { transform: translate(50px, 80px) rotate(30deg) scale(1.1); }
+        }
 
-.gradient-btn:hover {
-background-position: right center;
-transform: scale(1.05);
-}
+        /* --- Liquid Glass Card Style --- */
+        .glass-card {
+            background: rgba(10, 10, 15, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem; /* 16px */
+        }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #111827; }
-::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(400px circle at var(--x) var(--y), rgba(124, 58, 237, 0.3), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
 
-/* Page transition styles */
-.page-view { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
-.page-view.hidden { opacity: 0; transform: scale(0.98); pointer-events: none; position: absolute; top:0; left:0; width:100%; }
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .glass-card:hover::before {
+            opacity: 1;
+        }
 
-.animate-on-scroll {
-opacity: 0;
-transform: translateY(20px);
-transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-transition-delay: 0.1s;
-}
-.animate-on-scroll.is-visible {
-opacity: 1;
-transform: translateY(0);
-}
-#back-to-top {
-    transition: opacity 0.3s, transform 0.3s;
-}
-</style>
+        /* --- Gradient Text --- */
+        .gradient-text {
+            background-image: linear-gradient(90deg, #a78bfa, #f472b6, #818cf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: gradient-flow 5s linear infinite;
+        }
+
+        @keyframes gradient-flow {
+            to { background-position: 200% center; }
+        }
+
+        /* --- Gradient Button --- */
+        .gradient-btn {
+            background-image: linear-gradient(to right, #6d28d9, #9333ea, #be185d);
+            background-size: 200% auto;
+            transition: all 0.4s ease-in-out;
+            box-shadow: 0 4px 15px 0 rgba(196, 125, 243, 0.4);
+        }
+
+        .gradient-btn:hover {
+            background-position: right center;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px 0 rgba(196, 125, 243, 0.6);
+        }
+        
+        /* --- General Styles & Transitions --- */
+        .page-view { transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; }
+        .page-view.hidden { opacity: 0; transform: scale(0.97); pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px) scale(0.98);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition-delay: 0.1s;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        #back-to-top {
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #6d28d9, #be185d); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(to bottom, #8b5cf6, #db2777); }
+    </style>
 </head>
 <body class="antialiased">
 
+<!-- Animated Background Shapes -->
+<div class="aurora-container">
+    <div class="aurora-shape shape1"></div>
+    <div class="aurora-shape shape2"></div>
+    <div class="aurora-shape shape3"></div>
+    <div class="aurora-shape shape4"></div>
+</div>
+
 <!-- Header -->
-<header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-card border-t-0 border-l-0 border-r-0">
-<div class="container mx-auto px-6 py-4 flex justify-between items-center gap-4">
-<h1 class="text-2xl font-bold tracking-tighter text-white">Harsh<span class="gradient-text">Edits</span></h1>
-<div class="relative flex-1 max-w-md hidden md:block">
-<input type="text" id="search-input" placeholder="Search for plugins, software..." class="w-full bg-gray-900/50 border border-gray-700 rounded-lg py-2 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
-<svg class="w-5 h-5 text-gray-500 absolute top-1/2 right-3 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-</div>
-<nav class="hidden lg:flex space-x-6 text-gray-300">
-<a href="#software" class="hover:text-white transition-colors">Software</a>
-<a href="#plugins" class="hover:text-white transition-colors">Plugins</a>
-<a href="#scripts" class="hover:text-white transition-colors">Scripts</a>
-<a href="#assets" class="hover:text-white transition-colors">Assets</a>
-<a href="#request-resource" class="hover:text-white transition-colors">Request</a>
-</nav>
-<a href="https://discord.gg/y3qnSA4ZbE" class="gradient-btn text-white font-semibold py-2 px-5 rounded-lg shadow-lg flex-shrink-0">
-Join Discord
-</a>
-</div>
+<header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="container mx-auto px-6 py-4">
+        <div class="glass-card !rounded-full px-4 sm:px-6 py-2 flex justify-between items-center gap-4">
+             <h1 class="text-2xl font-bold tracking-tighter text-white">Harsh<span class="gradient-text">Edits</span></h1>
+            <div class="relative flex-1 max-w-md hidden md:block">
+                <input type="text" id="search-input" placeholder="Search resources..." class="w-full bg-gray-900/50 border border-gray-700 rounded-full py-2 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+                <svg class="w-5 h-5 text-gray-500 absolute top-1/2 right-4 -translate-y-1/2" xmlns="http://www.w.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            </div>
+            <nav class="hidden lg:flex space-x-6 text-gray-300">
+                <a href="#software" class="hover:text-white transition-colors">Software</a>
+                <a href="#plugins" class="hover:text-white transition-colors">Plugins</a>
+                <a href="#scripts" class="hover:text-white transition-colors">Scripts</a>
+                <a href="#assets" class="hover:text-white transition-colors">Assets</a>
+                <a href="#request-resource" class="hover:text-white transition-colors">Request</a>
+            </nav>
+            <a href="https://discord.gg/y3qnSA4ZbE" class="gradient-btn text-white font-semibold py-2 px-5 rounded-full shadow-lg flex-shrink-0">
+                Join Discord
+            </a>
+        </div>
+    </div>
 </header>
 
 <div id="main-view" class="page-view">
-<main class="container mx-auto px-6 pt-24 pb-12">
-<!-- Hero Section -->
-<section class="text-center py-20 animate-on-scroll">
-<h2 class="text-5xl md:text-7xl font-black mb-4 tracking-tighter text-white">
-The Ultimate<br><span class="gradient-text">Editing Resource Hub</span>
-</h2>
-<p class="text-lg text-gray-400 max-w-2xl mx-auto mb-8">
-Exclusive access to all the software, plugins, scripts, and assets you need. Curated for the Harsh Edits community.
-</p>
-</section>
+    <main class="container mx-auto px-6 pt-32 pb-12">
+        <!-- Hero Section -->
+        <section class="text-center py-20 animate-on-scroll">
+            <h2 class="text-5xl md:text-7xl font-black mb-4 tracking-tighter text-white">
+                The Ultimate<br><span class="gradient-text">Editing Resource Hub</span>
+            </h2>
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-8">
+                Exclusive access to all the software, plugins, scripts, and assets you need. Curated for the Harsh Edits community.
+            </p>
+        </section>
 
-<!-- Easy Workflow Showcase Section -->
-<section id="easy-workflow-showcase" class="mb-20 animate-on-scroll">
-    <div class="glass-card rounded-2xl p-8 md:p-12" style="background: rgba(17, 24, 39, 0.7); box-shadow: 0 0 40px rgba(79, 70, 229, 0.2);">
-        <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div class="text-center">
-                <img src="https://cdn.discordapp.com/attachments/1408339130668290078/1408441493252866128/HARSH_BHAI.png?ex=68d3f0db&is=68d29f5b&hm=c417ea1281b7dc5dfb187f27429482379296d33f22ef0e72edf2ebd6b493b9f7" alt="Easy Workflow Script UI" class="rounded-xl shadow-2xl w-full h-auto object-cover border-4 border-white/10">
+        <!-- Easy Workflow Showcase Section -->
+        <section id="easy-workflow-showcase" class="mb-20 animate-on-scroll">
+            <div class="glass-card p-8 md:p-12" style="background: rgba(10, 5, 20, 0.7);">
+                <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div class="text-center">
+                        <img src="https://cdn.discordapp.com/attachments/1408339130668290078/1408441493252866128/HARSH_BHAI.png?ex=68d3f0db&is=68d29f5b&hm=c417ea1281b7dc5dfb187f27429482379296d33f22ef0e72edf2ebd6b493b9f7" alt="Easy Workflow Script UI" class="rounded-xl shadow-2xl w-full h-auto object-cover border-4 border-white/10">
+                    </div>
+                    <div class="text-center md:text-left">
+                        <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white mb-2">Easy Workflow</h2>
+                        <p class="text-lg font-semibold gradient-text mb-4">A Script by Harsh Edits</p>
+                        <p class="text-gray-300 mb-6">
+                            Boost your productivity with Easy Workflow, the ultimate script designed to automate repetitive tasks and simplify your editing process in After Effects.
+                        </p>
+                        <button onclick="showEasyWorkflowView()" class="w-full sm:w-auto gradient-btn text-white font-bold py-3 px-8 rounded-full text-center flex items-center justify-center gap-2">
+                            View Details
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="text-center md:text-left">
-                <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white mb-2">Easy Workflow</h2>
-                <p class="text-lg font-semibold gradient-text mb-4">A Script by Harsh Edits</p>
-                <p class="text-gray-300 mb-6">
-                    Boost your productivity with Easy Workflow, the ultimate script designed to automate repetitive tasks and simplify your editing process in After Effects.
-                </p>
-                <button onclick="showEasyWorkflowView()" class="w-full sm:w-auto gradient-btn text-white font-bold py-3 px-8 rounded-lg text-center flex items-center justify-center gap-2">
-                    View Details
-                </button>
+        </section>
+
+        <!-- Software Section -->
+        <section id="software" class="mb-20 animate-on-scroll">
+            <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-indigo-500 pl-4">Adobe Software</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('after-effects')"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">After Effects</h4><p class="text-gray-400">Motion graphics and visual effects</p></div></div>
+                <div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('premiere-pro')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" alt="Premiere Pro Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Premiere Pro</h4><p class="text-gray-400">Professional video editing</p></div></div>
+                <div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('photoshop')"><img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Photoshop Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Photoshop</h4><p class="text-gray-400">Image editing and graphic design</p></div></div>
+                <div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('illustrator')"><img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" alt="Illustrator Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Illustrator</h4><p class="text-gray-400">Vector graphics and illustration</p></div></div>
+                <div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('media-encoder')"><img src="https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg" alt="Media Encoder Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Media Encoder</h4><p class="text-gray-400">Rendering and transcoding</p></div></div>
             </div>
+        </section>
+
+        <!-- Plugins Section -->
+        <section id="plugins" class="mb-20 animate-on-scroll">
+            <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-purple-500 pl-4">Plugins</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'sapphire')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308525255165345883/1308525255341379654/Boris-FX-Sapphire-Plug-ins-2022.02-for-Adobe-OFX-WIN.jpg?ex=68d3a7dc&is=68d2565c&hm=9dad33b9dc621d35fcc7dc51933d413f8c09b1bd61e669d3185a231b09065a81" alt="Sapphire" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Sapphire Suite</h5><p class="text-sm text-gray-400">Industry-standard VFX plugins.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'bcc')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308526021779132467/1308526022026723348/New_Project_4.jpg?ex=68d3a892&is=68d25712&hm=79126c67d1704c9df090be4c2f94fd9a9afa39c967645a4cfaef03e805068cee" alt="BCC" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">BCC Suite</h5><p class="text-sm text-gray-400">Comprehensive visual effects.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'magic-bullet')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308526657270976585/1308526658222948392/7cef9d9c2a0326a227a3760c14133da6.jpg?ex=68d3a92a&is=68d257aa&hm=696ceb5a840ea767333fea7d70e123c5fd2e82cf923c6de9fc3e0082b75806db" alt="Magic Bullet" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Magic Bullet Suite</h5><p class="text-sm text-gray-400">Professional color correction tools.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'shooter-suite')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308526809536659466/1308526809683591288/red-giant-shooter-suite-box-100654557-large.jpg?ex=68d3a94e&is=68d257ce&hm=7128a6d44ccd12d81b17514e9a395600cf37405e25b027eee591e81355f0c523" alt="Shooter Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shooter Suite</h5><p class="text-sm text-gray-400">Footage prep and delivery tools.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'vfx-suite')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308662805754413107/1308662805896892426/OIP_3.jpeg?ex=68d37f36&is=68d22db6&hm=11eed9b58ba8a079fb9d561dcc947c852783d991a2c63a7b0b1f027ef9c423bb" alt="VFX Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">VFX Suite</h5><p class="text-sm text-gray-400">Keying, tracking, and cleanup.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'element-3d')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308663743147937822/1308663743290540122/element-3D.jpg?ex=68d38016&is=68d22e96&hm=15f59178a29371d5dc5d3da7fbf7f268da224adfc6b86dd236a62a709b24ef52" alt="Element 3D" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Element 3D</h5><p class="text-sm text-gray-400">Advanced 3D render engine.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'saber')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308664937177940071/1308664937471672360/maxresdefault.jpg?ex=68d38132&is=68d22fb2&hm=402722eea5cee212cc05a41a561f5df497aff6d071e69c707cb5849cc6e60565" alt="Saber" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Saber</h5><p class="text-sm text-gray-400">High-energy beams and effects.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'rsmb')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308664785893724160/1308664786103304202/Untitled-1.png?ex=68d3810e&is=68d22f8e&hm=7c8d5814257c76db8f4000da88e56f60cb377a7087a70a17561d83aee576adaf" alt="RSMB" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">RSMB</h5><p class="text-sm text-gray-400">ReelSmart Motion Blur.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'fx-console')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308663934894477366/1308663935217700934/R.jpeg?ex=68d38043&is=68d22ec3&hm=4c8f62efe12494ebd3e31453696b6938be7f31d19c6f194cfe4ef3c37e98848c" alt="FX Console" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">FX Console</h5><p class="text-sm text-gray-400">Workflow utility for effects.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'trapcode-suite')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308660709952979025/1308660710091264020/OIP_2.jpeg?ex=68d37d43&is=68d22bc3&hm=450f7233c0d01ba0e3931a0306a8efedf9cef8225f54e3b9a62ebf5db1978a9f" alt="Trapcode Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Trapcode Suite</h5><p class="text-sm text-gray-400">3D motion graphics and VFX.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'optical-flares')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1328092182967619624/1328092183097638983/images_6.png?ex=68d3a5fb&is=68d2547b&hm=d5d4fab45be16aa13e5f04caacdc969067d6f192f62f3e3efb5b54f90f5d9aa0" alt="Optical Flares" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Optical Flares</h5><p class="text-sm text-gray-400">Realistic lens flare generator.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'twixtor-pro')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1328091782600196147/1328091782709383320/image.png?ex=68d3a59b&is=68d2541b&hm=f5f30c3037183399171ae29b5117f9886c396995ba1c7bb165425b4246402094" alt="Twixtor" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Twixtor Pro</h5><p class="text-sm text-gray-400">Intelligent slow-motion.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'red-giant-universe')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1350925159426560020/1350925159569297500/maxresdefault_3.jpg?ex=68d3a859&is=68d256d9&hm=8280871e5bf73a5a3c573534f438bbbe90c25ced407a9d91fa3c1b4057884d00" alt="Red Giant Universe" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Red Giant Universe</h5><p class="text-sm text-gray-400">Effects and transitions library.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'shadow-studio-3')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1380810456893100083/1380810457740476426/image.png?ex=68d39d73&is=68d24bf3&hm=0485e5bdb56163930979544a02ac7f2c3342b6acbdd9f85b0e4135c853a20ab6" alt="Shadow Studio 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shadow Studio 3</h5><p class="text-sm text-gray-400">Realistic shadow generator.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'text-explorer')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1388234540924932256/1388234541935890513/image.png?ex=68d398ea&is=68d2476a&hm=fff583a5cd6342e3a66723339303ba901ac1a9e26f125fd41c3683e6c7e79591" alt="Text Explorer" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Text Explorer</h5><p class="text-sm text-gray-400">Advanced text animation tool.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'deep-glow')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308510968065687564/1308510968392974397/00000.jpg?ex=68d39a8d&is=68d2490d&hm=5303a22bd8897b979fd4707b3f914db9eb3d593a64dbfb27f07151d54809be3e" alt="Deep Glow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Deep Glow</h5><p class="text-sm text-gray-400">Physically accurate glows.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'liquid-glass')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1415275124005015582/1415275124294418514/Screenshot_2025-09-10_151428.png?ex=68d3c0ac&is=68d26f2c&hm=4266d1e7fd47df9754d96a9be622c97a897282d4a7bf791311ebb3f5356f39ec" alt="Liquid Glass" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Liquid Glass</h5><p class="text-sm text-gray-400">Liquid and glass simulation.</p></div></div></div>
+            </div>
+        </section>
+
+        <!-- Scripts & Extensions Section -->
+        <section id="scripts" class="mb-20 animate-on-scroll">
+            <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-teal-500 pl-4">Scripts & Extensions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'motion-bro')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308703953961091153/1308703954263085066/image.png?ex=68d3a589&is=68d25409&hm=c15e8e927a88d9b90901373e52a1c449832600ae9137fd1a4e1de5250f097596" alt="Motion Bro" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Motion Bro</h5><p class="text-sm text-gray-400">The most popular extension for presets.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'flow')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308702534050910239/1308702534780583986/image.png?ex=68d3a436&is=68d252b6&hm=44119d608d83bda8cbbe518027a8299c3713974578c1108f36c5ff4cfea16284" alt="Flow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Flow</h5><p class="text-sm text-gray-400">Easy animation curve control.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'geolayers')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308704311458529320/1308704311747940352/image.png?ex=68d3a5de&is=68d2545e&hm=79bb0970efb74e9e0ee225551846db4f8ff1114dbe6d15915952d492b4d96072" alt="GEOlayers 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">GEOlayers 3</h5><p class="text-sm text-gray-400">Map animation and data visualization.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'JerryFlow V2')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308707033498779690/1308707033733922826/image.png?ex=68d3a867&is=68d256e7&hm=77d1b205cc5a0be728df1318056a2ec50577063ca2e573d3e76c0abe9e181199" alt="JerryFlow V2" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">JerryFlow V2</h5><p class="text-sm text-gray-400">The ultimate extension for After Effects</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'atomx')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1362715080235552929/1362715080394801192/AtomX-Extension-for-After-Effects-Premiere-Pro-1.jpg?ex=68d45c91&is=68d30b11&hm=6aaf0956a6f13aebc3205975e1cab6d4dfd54217c27850127352dae571546546&" alt="AtomX" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">AtomX</h5><p class="text-sm text-gray-400">Extension for motion graphics packages.</p></div></div></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'keystone')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308705938076733500/1308705938294833252/image.png?ex=68d3a762&is=68d255e2&hm=f9c66fac569012d8644c033478d90d3f5229ff241e978b7aa12520b0f81d1659" alt="Keystone" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Keystone</h5><p class="text-sm text-gray-400">Easy layer alignment & distribution.</p></div></div></div>
+            </div>
+        </section>
+
+        <!-- Assets Section -->
+        <section id="assets" class="mb-20 animate-on-scroll">
+            <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-rose-500 pl-4">Assets</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Malice Ultimate Pack</h5><p class="text-sm text-gray-400 mb-4">Light leaks, dust, and film grain.</p><a href="https://drive.google.com/drive/folders/1vZ0D6keKnKOEr8vPcPXoZt9KsuVEKqmR" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
+                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Sound FX Library</h5><p class="text-sm text-gray-400 mb-4">Whooshes, impacts, and risers.</p><a href="https://drive.google.com/drive/folders/1q6BzFxLDKY8tt48SqLng0-lPFODNZKpA" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
+                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">LUTs Collection</h5><p class="text-sm text-gray-400 mb-4">Cinematic color grading presets.</p><a href="#" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
+                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Editing Assets</h5><p class="text-sm text-gray-400 mb-4">Bundle of digital resources.</p><a href="https://drive.google.com/drive/folders/1jl0iH8E5w9d-jXYTw3uKhiAkVYdWZ2ia" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
+            </div>
+        </section>
+
+        <!-- Utilities Section -->
+        <section id="utilities" class="mb-20 animate-on-scroll">
+            <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-yellow-500 pl-4">Utilities & Other Software</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'topaz-ai')"><h5 class="text-lg font-bold text-white mb-1">Topaz AI Suite</h5><p class="text-sm text-gray-400">AI-powered image & video enhancement.</p></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'Filmora 14')"><h5 class="text-lg font-bold text-white mb-1">Filmora 14</h5><p class="text-sm text-gray-400">AI-powered efficiency and simplicity.</p></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'idm')"><h5 class="text-lg font-bold text-white mb-1">IDM (Cracked)</h5><p class="text-sm text-gray-400">Internet Download Manager.</p></div>
+                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'pure-ref')"><h5 class="text-lg font-bold text-white mb-1">Pure Ref</h5><p class="text-sm text-gray-400">Simple reference image viewer.</p></div>
+            </div>
+        </section>
+        
+        <!-- Other Plugins Section -->
+        <section id="other-plugins" class="mb-20 animate-on-scroll">
+            <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-cyan-500 pl-4">Others</h3>
+            <div class="glass-card rounded-xl p-6 md:p-8 flex flex-col gap-6">
+                <div class="flex flex-col items-center text-center">
+                    <h5 class="text-2xl font-bold text-white mb-4">100+ Plugins Pack</h5>
+                    <p class="text-gray-400 mb-6 max-w-lg">
+                        Is pack mein After Effects, Premiere Pro, Photoshop, aur Illustrator ke liye 100 se bhi zyada plugins shamil hain.
+                        Aap is button par click karke unki poori list dekh sakte hain.
+                    </p>
+                    <a href="#" onclick="showPluginsList(); return false;" class="block gradient-btn text-white font-semibold py-3 px-8 rounded-full text-lg text-center">Plugins List</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Request a Resource Section -->
+        <section id="request-resource" class="mb-20 animate-on-scroll">
+            <div class="glass-card p-8 text-center">
+                <h3 class="text-3xl font-bold text-white tracking-tight mb-4">Missing a Resource?</h3>
+                <p class="text-gray-400 max-w-2xl mx-auto mb-6">Can't find the plugin, script, or software you're looking for? Join our Discord server and let us know in the dedicated requests channel. We'll do our best to add it to the hub!</p>
+                <a href="https://discord.com/channels/1083014788885524622/1420095536677257357" class="inline-block gradient-btn text-white font-semibold py-3 px-8 rounded-full shadow-lg text-lg">Request on Discord</a>
+            </div>
+        </section>
+        
+        <!-- Search Results Message -->
+        <div id="no-results-message" class="text-center py-12 hidden animate-on-scroll">
+            <h3 class="text-2xl font-bold text-white">No Results Found</h3>
+            <p class="text-gray-400 mt-2">Try a different search term.</p>
         </div>
-    </div>
-</section>
+    </main>
 
-
-<!-- Software Section -->
-<section id="software" class="mb-20 animate-on-scroll">
-<h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-indigo-500 pl-4">Adobe Software</h3>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-<div class="glass-card rounded-xl p-6 flex items-center space-x-6 clickable-card" onclick="showDetailView('after-effects')"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">After Effects</h4><p class="text-gray-400">Motion graphics and visual effects</p></div></div>
-<div class="glass-card rounded-xl p-6 flex items-center space-x-6 clickable-card" onclick="showDetailView('premiere-pro')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" alt="Premiere Pro Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Premiere Pro</h4><p class="text-gray-400">Professional video editing</p></div></div>
-<div class="glass-card rounded-xl p-6 flex items-center space-x-6 clickable-card" onclick="showDetailView('photoshop')"><img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Photoshop Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Photoshop</h4><p class="text-gray-400">Image editing and graphic design</p></div></div>
-<div class="glass-card rounded-xl p-6 flex items-center space-x-6 clickable-card" onclick="showDetailView('illustrator')"><img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" alt="Illustrator Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Illustrator</h4><p class="text-gray-400">Vector graphics and illustration</p></div></div>
-<div class="glass-card rounded-xl p-6 flex items-center space-x-6 clickable-card" onclick="showDetailView('media-encoder')"><img src="https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg" alt="Media Encoder Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Media Encoder</h4><p class="text-gray-400">Rendering and transcoding</p></div></div>
-</div>
-</section>
-
-<!-- Plugins Section -->
-<section id="plugins" class="mb-20 animate-on-scroll">
-<h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-purple-500 pl-4">Plugins</h3>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'sapphire')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308525255165345883/1308525255341379654/Boris-FX-Sapphire-Plug-ins-2022.02-for-Adobe-OFX-WIN.jpg?ex=68d3a7dc&is=68d2565c&hm=9dad33b9dc621d35fcc7dc51933d413f8c09b1bd61e669d3185a231b09065a81" alt="Sapphire" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Sapphire Suite</h5><p class="text-sm text-gray-400">Industry-standard VFX plugins.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'bcc')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308526021779132467/1308526022026723348/New_Project_4.jpg?ex=68d3a892&is=68d25712&hm=79126c67d1704c9df090be4c2f94fd9a9afa39c967645a4cfaef03e805068cee" alt="BCC" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">BCC Suite</h5><p class="text-sm text-gray-400">Comprehensive visual effects.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'magic-bullet')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308526657270976585/1308526658222948392/7cef9d9c2a0326a227a3760c14133da6.jpg?ex=68d3a92a&is=68d257aa&hm=696ceb5a840ea767333fea7d70e123c5fd2e82cf923c6de9fc3e0082b75806db" alt="Magic Bullet" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Magic Bullet Suite</h5><p class="text-sm text-gray-400">Professional color correction tools.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'shooter-suite')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308526809536659466/1308526809683591288/red-giant-shooter-suite-box-100654557-large.jpg?ex=68d3a94e&is=68d257ce&hm=7128a6d44ccd12d81b17514e9a395600cf37405e25b027eee591e81355f0c523" alt="Shooter Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shooter Suite</h5><p class="text-sm text-gray-400">Footage prep and delivery tools.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'vfx-suite')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308662805754413107/1308662805896892426/OIP_3.jpeg?ex=68d37f36&is=68d22db6&hm=11eed9b58ba8a079fb9d561dcc947c852783d991a2c63a7b0b1f027ef9c423bb" alt="VFX Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">VFX Suite</h5><p class="text-sm text-gray-400">Keying, tracking, and cleanup.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'element-3d')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308663743147937822/1308663743290540122/element-3D.jpg?ex=68d38016&is=68d22e96&hm=15f59178a29371d5dc5d3da7fbf7f268da224adfc6b86dd236a62a709b24ef52" alt="Element 3D" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Element 3D</h5><p class="text-sm text-gray-400">Advanced 3D render engine.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'saber')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308664937177940071/1308664937471672360/maxresdefault.jpg?ex=68d38132&is=68d22fb2&hm=402722eea5cee212cc05a41a561f5df497aff6d071e69c707cb5849cc6e60565" alt="Saber" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Saber</h5><p class="text-sm text-gray-400">High-energy beams and effects.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'rsmb')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308664785893724160/1308664786103304202/Untitled-1.png?ex=68d3810e&is=68d22f8e&hm=7c8d5814257c76db8f4000da88e56f60cb377a7087a70a17561d83aee576adaf" alt="RSMB" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">RSMB</h5><p class="text-sm text-gray-400">ReelSmart Motion Blur.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'fx-console')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308663934894477366/1308663935217700934/R.jpeg?ex=68d38043&is=68d22ec3&hm=4c8f62efe12494ebd3e31453696b6938be7f31d19c6f194cfe4ef3c37e98848c" alt="FX Console" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">FX Console</h5><p class="text-sm text-gray-400">Workflow utility for effects.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'trapcode-suite')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308660709952979025/1308660710091264020/OIP_2.jpeg?ex=68d37d43&is=68d22bc3&hm=450f7233c0d01ba0e3931a0306a8efedf9cef8225f54e3b9a62ebf5db1978a9f" alt="Trapcode Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Trapcode Suite</h5><p class="text-sm text-gray-400">3D motion graphics and VFX.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'optical-flares')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1328092182967619624/1328092183097638983/images_6.png?ex=68d3a5fb&is=68d2547b&hm=d5d4fab45be16aa13e5f04caacdc969067d6f192f62f3e3efb5b54f90f5d9aa0" alt="Optical Flares" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Optical Flares</h5><p class="text-sm text-gray-400">Realistic lens flare generator.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'twixtor-pro')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1328091782600196147/1328091782709383320/image.png?ex=68d3a59b&is=68d2541b&hm=f5f30c3037183399171ae29b5117f9886c396995ba1c7bb165425b4246402094" alt="Twixtor" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Twixtor Pro</h5><p class="text-sm text-gray-400">Intelligent slow-motion.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'red-giant-universe')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1350925159426560020/1350925159569297500/maxresdefault_3.jpg?ex=68d3a859&is=68d256d9&hm=8280871e5bf73a5a3c573534f438bbbe90c25ced407a9d91fa3c1b4057884d00" alt="Red Giant Universe" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Red Giant Universe</h5><p class="text-sm text-gray-400">Effects and transitions library.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'shadow-studio-3')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1380810456893100083/1380810457740476426/image.png?ex=68d39d73&is=68d24bf3&hm=0485e5bdb56163930979544a02ac7f2c3342b6acbdd9f85b0e4135c853a20ab6" alt="Shadow Studio 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shadow Studio 3</h5><p class="text-sm text-gray-400">Realistic shadow generator.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'text-explorer')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1388234540924932256/1388234541935890513/image.png?ex=68d398ea&is=68d2476a&hm=fff583a5cd6342e3a66723339303ba901ac1a9e26f125fd41c3683e6c7e79591" alt="Text Explorer" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Text Explorer</h5><p class="text-sm text-gray-400">Advanced text animation tool.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'deep-glow')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308510968065687564/1308510968392974397/00000.jpg?ex=68d39a8d&is=68d2490d&hm=5303a22bd8897b979fd4707b3f914db9eb3d593a64dbfb27f07151d54809be3e" alt="Deep Glow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Deep Glow</h5><p class="text-sm text-gray-400">Physically accurate glows.</p></div></div></div>
-    <div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('plugins', 'liquid-glass')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1415275124005015582/1415275124294418514/Screenshot_2025-09-10_151428.png?ex=68d3c0ac&is=68d26f2c&hm=4266d1e7fd47df9754d96a9be622c97a897282d4a7bf791311ebb3f5356f39ec" alt="Liquid Glass" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Liquid Glass</h5><p class="text-sm text-gray-400">Liquid and glass simulation.</p></div></div></div>
-</div>
-</section>
-
-<!-- Scripts & Extensions Section -->
-<section id="scripts" class="mb-20 animate-on-scroll">
-<h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-teal-500 pl-4">Scripts & Extensions</h3>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-<div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('scripts', 'motion-bro')">
-<div class="flex items-start space-x-4">
-<img src="https://cdn.discordapp.com/attachments/1308703953961091153/1308703954263085066/image.png?ex=68d3a589&is=68d25409&hm=c15e8e927a88d9b90901373e52a1c449832600ae9137fd1a4e1de5250f097596" alt="Motion Bro" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1">
-<div class="flex-1">
-<h5 class="text-lg font-bold text-white mb-1">Motion Bro</h5>
-<p class="text-sm text-gray-400 mb-4">The most popular extension for presets.</p>
-</div>
-</div>
-</div>
-<div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('scripts', 'flow')">
-<div class="flex items-start space-x-4">
-<img src="https://cdn.discordapp.com/attachments/1308702534050910239/1308702534780583986/image.png?ex=68d3a436&is=68d252b6&hm=44119d608d83bda8cbbe518027a8299c3713974578c1108f36c5ff4cfea16284" alt="Flow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1">
-<div class="flex-1">
-<h5 class="text-lg font-bold text-white mb-1">Flow</h5>
-<p class="text-sm text-gray-400 mb-4">Easy animation curve control.</p>
-</div>
-</div>
-</div>
-<div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('scripts', 'geolayers')">
-<div class="flex items-start space-x-4">
-<img src="https://cdn.discordapp.com/attachments/1308704311458529320/1308704311747940352/image.png?ex=68d3a5de&is=68d2545e&hm=79bb0970efb74e9e0ee225551846db4f8ff1114dbe6d15915952d492b4d96072" alt="GEOlayers 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1">
-<div class="flex-1">
-<h5 class="text-lg font-bold text-white mb-1">GEOlayers 3</h5>
-<p class="text-sm text-gray-400 mb-4">Map animation and data visualization.</p>
-</div>
-</div>
-</div>
-<div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('scripts', 'JerryFlow V2')">
-<div class="flex items-start space-x-4">
-<img src="https://cdn.discordapp.com/attachments/1308707033498779690/1308707033733922826/image.png?ex=68d3a867&is=68d256e7&hm=77d1b205cc5a0be728df1318056a2ec50577063ca2e573d3e76c0abe9e181199" alt="JerryFlow V2" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1">
-<div class="flex-1">
-<h5 class="text-lg font-bold text-white mb-1">JerryFlow V2</h5>
-<p class="text-sm text-gray-400 mb-4">JerryFlow V2 is the ultimate extension for Adobe After Effects</p>
-</div>
-</div>
-</div>
-<div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('scripts', 'atomx')">
-<div class="flex items-start space-x-4">
-<img src="data:image/jpeg;base64,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" alt="AtomX" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1">
-<div class="flex-1">
-<h5 class="text-lg font-bold text-white mb-1">AtomX</h5>
-<p class="text-sm text-gray-400 mb-4">Extension for motion graphics packages.</p>
-</div>
-</div>
-</div>
-<div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('scripts', 'keystone')">
-<div class="flex items-start space-x-4">
-<img src="https://cdn.discordapp.com/attachments/1308705938076733500/1308705938294833252/image.png?ex=68d3a762&is=68d255e2&hm=f9c66fac569012d8644c033478d90d3f5229ff241e978b7aa12520b0f81d1659" alt="Keystone" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1">
-<div class="flex-1">
-<h5 class="text-lg font-bold text-white mb-1">Keystone</h5>
-<p class="text-sm text-gray-400 mb-4">Easy layer alignment & distribution.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Assets Section -->
-<section id="assets" class="mb-20 animate-on-scroll">
-<h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-rose-500 pl-4">Assets</h3>
-<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-<div class="glass-card rounded-xl p-5"><h5 class="text-lg font-bold text-white mb-1">Malice Ultimate Pack</h5><p class="text-sm text-gray-400 mb-4">Light leaks, dust, and film grain.</p><a href="https://drive.google.com/drive/folders/1vZ0D6keKnKOEr8vPcPXoZt9KsuVEKqmR" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-lg text-sm text-center">Download</a></div>
-<div class="glass-card rounded-xl p-5"><h5 class="text-lg font-bold text-white mb-1">Sound FX Library</h5><p class="text-sm text-gray-400 mb-4">Whooshes, impacts, and risers.</p><a href="https://drive.google.com/drive/folders/1q6BzFxLDKY8tt48SqLng0-lPFODNZKpA" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-lg text-sm text-center">Download</a></div>
-<div class="glass-card rounded-xl p-5"><h5 class="text-lg font-bold text-white mb-1">LUTs Collection</h5><p class="text-sm text-gray-400 mb-4">Cinematic color grading presets.</p><a href="#" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-lg text-sm text-center">Download</a></div>
-<div class="glass-card rounded-xl p-5"><h5 class="text-lg font-bold text-white mb-1">Editing Assets</h5><p class="text-sm text-gray-400 mb-4">Bundle of digital resources for video editors.</p><a href="https://drive.google.com/drive/folders/1jl0iH8E5w9d-jXYTw3uKhiAkVYdWZ2ia" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-lg text-sm text-center">Download</a></div>
-</div>
-</section>
-
-<!-- Utilities Section -->
-<section id="utilities" class="mb-20 animate-on-scroll">
-<h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-yellow-500 pl-4">Utilities & Other Software</h3>
-<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-<div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('utilities', 'topaz-ai')">
-<h5 class="text-lg font-bold text-white mb-1">Topaz AI Suite</h5>
-<p class="text-sm text-gray-400 mb-4">AI-powered image & video enhancement.</p>
-</div>
-<div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('utilities', 'Filmora 14')">
-<h5 class="text-lg font-bold text-white mb-1">Filmora 14</h5>
-<p class="text-sm text-gray-400 mb-4">Bring AI-powered efficiency and simplicity to your everyday editing.</p>
-</div>
-<div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('utilities', 'idm')">
-<h5 class="text-lg font-bold text-white mb-1">IDM (Cracked)</h5>
-<p class="text-sm text-gray-400 mb-4">Internet Download Manager.</p>
-</div>
-<div class="glass-card rounded-xl p-5 clickable-card" onclick="showItemDetail('utilities', 'pure-ref')">
-<h5 class="text-lg font-bold text-white mb-1">Pure Ref</h5>
-<p class="text-sm text-gray-400 mb-4">Simple reference image viewer.</p>
-</div>
-</div>
-</section>
-
-<!-- Other Plugins Section -->
-<section id="other-plugins" class="mb-20 animate-on-scroll">
-<h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-cyan-500 pl-4">Others</h3>
-<div class="glass-card rounded-xl p-6 md:p-8 flex flex-col gap-6">
-<div class="flex flex-col items-center text-center">
-<h5 class="text-2xl font-bold text-white mb-4">100+ Plugins Pack</h5>
-<p class="text-gray-400 mb-6 max-w-lg">
-Is pack mein After Effects, Premiere Pro, Photoshop, aur Illustrator ke liye 100 se bhi zyada plugins shamil hain.
-Aap is button par click karke unki poori list dekh sakte hain.
-</p>
-<a href="#" onclick="showPluginsList(); return false;" class="block gradient-btn text-white font-semibold py-3 px-8 rounded-lg text-lg text-center">Plugins List</a>
-</div>
-</div>
-</section>
-
-<!-- Request a Resource Section -->
-<section id="request-resource" class="mb-20 animate-on-scroll">
-    <div class="glass-card rounded-xl p-8 text-center">
-        <h3 class="text-3xl font-bold text-white tracking-tight mb-4">Missing a Resource?</h3>
-        <p class="text-gray-400 max-w-2xl mx-auto mb-6">Can't find the plugin, script, or software you're looking for? Join our Discord server and let us know in the dedicated requests channel. We'll do our best to add it to the hub!</p>
-        <a href="https://discord.com/channels/1083014788885524622/1420095536677257357" class="inline-block gradient-btn text-white font-semibold py-3 px-8 rounded-lg shadow-lg text-lg">Request on Discord</a>
-    </div>
-</section>
-
-<!-- Search Results Message -->
-<div id="no-results-message" class="text-center py-12 hidden animate-on-scroll">
-<h3 class="text-2xl font-bold text-white">No Results Found</h3>
-<p class="text-gray-400 mt-2">Try a different search term.</p>
-</div>
-</main>
-
-<footer class="border-t border-gray-800 animate-on-scroll">
-<div class="container mx-auto px-6 py-6 text-center text-gray-500">
-<p>&copy; <span id="current-year"></span> Harsh Edits. All rights reserved. A resource hub for the community.</p>
-</div>
-</footer>
+    <footer class="border-t border-gray-800/50 animate-on-scroll">
+        <div class="container mx-auto px-6 py-6 text-center text-gray-500">
+            <p>&copy; <span id="current-year"></span> Harsh Edits. All rights reserved. A resource hub for the community.</p>
+        </div>
+    </footer>
 </div>
 
-<!-- Easy Workflow Detail View (Initially Hidden) -->
+<!-- Easy Workflow Detail View -->
 <div id="easy-workflow-view" class="page-view hidden fixed inset-0 z-[100]">
     <div class="absolute inset-0 bg-black/70 backdrop-blur-md"></div>
-    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-30">
+    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-20">
         <source src="https://assets.mixkit.co/videos/preview/mixkit-futuristic-plexus-network-animation-24018-large.mp4" type="video/mp4">
-        Your browser does not support the video tag.
     </video>
-    <button id="workflow-back-button" class="absolute top-6 right-6 gradient-btn text-white font-semibold py-2 px-5 rounded-lg shadow-lg inline-flex items-center space-x-2 z-20">
+    <button id="workflow-back-button" class="absolute top-6 right-6 gradient-btn text-white font-semibold py-2 px-5 rounded-full shadow-lg inline-flex items-center space-x-2 z-20">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
         <span>Close</span>
     </button>
     <div class="relative z-10 container mx-auto px-6 h-full flex flex-col justify-center items-center text-center overflow-y-auto py-12">
         <div class="w-full max-w-4xl">
-            <h2 class="text-6xl md:text-8xl font-black tracking-tighter text-white mb-2 animate-on-scroll">Easy Workflow</h2>
-            <p class="text-2xl font-semibold gradient-text mb-8 animate-on-scroll" style="animation-delay: 0.2s;">A Script by Harsh Edits</p>
-            <p class="text-gray-300 text-lg max-w-2xl mx-auto mb-12 animate-on-scroll" style="animation-delay: 0.4s;">
-                Boost your productivity with Easy Workflow, the ultimate script designed to automate repetitive tasks and simplify your editing process in After Effects. Save time and focus on what truly matters: your creativity.
+            <h2 class="text-6xl md:text-8xl font-black tracking-tighter text-white mb-2">Easy Workflow</h2>
+            <p class="text-2xl font-semibold gradient-text mb-8">A Script by Harsh Edits</p>
+            <p class="text-gray-300 text-lg max-w-2xl mx-auto mb-12">
+                Boost your productivity with Easy Workflow, the ultimate script designed to automate repetitive tasks and simplify your editing process in After Effects.
             </p>
-            <div class="bg-gray-900/50 rounded-lg p-6 flex flex-col sm:flex-row justify-between items-center gap-4 animate-on-scroll" style="animation-delay: 0.6s;">
+            <div class="glass-card p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <span class="font-semibold text-white text-xl">Easy Workflow v2.3.0</span>
-                <a href="https://drive.google.com/drive/folders/14y-Mw9ukShB9wn9XIVjfmyLcA2vrowm-?usp=sharing" class="w-full sm:w-auto gradient-btn text-white font-bold py-3 px-8 rounded-lg text-center flex items-center justify-center gap-2">
+                <a href="https://drive.google.com/drive/folders/14y-Mw9ukShB9wn9XIVjfmyLcA2vrowm-?usp=sharing" class="w-full sm:w-auto gradient-btn text-white font-bold py-3 px-8 rounded-full text-center flex items-center justify-center gap-2">
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     Download Now
                 </a>
@@ -340,120 +357,119 @@ Aap is button par click karke unki poori list dekh sakte hain.
     </div>
 </div>
 
-<!-- Item Detail View (Used for plugins, scripts, and utilities) -->
+<!-- Item Detail View (Plugins, Scripts, Utilities) -->
 <div id="item-detail-view" class="page-view hidden">
-<div class="container mx-auto px-6 pt-24 pb-12">
-<button id="item-back-button" class="gradient-btn text-white font-semibold py-2 px-5 rounded-lg shadow-lg mb-8 inline-flex items-center space-x-2">
-<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-<span>Go Back</span>
-</button>
-<div class="glass-card rounded-xl p-8">
-    <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
-        <img id="item-detail-image" src="" alt="Item Image" class="w-48 h-48 md:w-64 md:h-64 rounded-xl object-cover flex-shrink-0 border-4 border-white/10">
-        <div class="flex-1 text-center md:text-left">
-            <h3 id="item-detail-title" class="text-4xl font-bold text-white tracking-tight mb-4"></h3>
-            <p id="item-detail-description" class="text-gray-300 text-lg mb-6"></p>
+    <div class="container mx-auto px-6 pt-32 pb-12">
+        <button id="item-back-button" class="gradient-btn text-white font-semibold py-2 px-5 rounded-full shadow-lg mb-8 inline-flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            <span>Go Back</span>
+        </button>
+        <div class="glass-card p-8">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+                <img id="item-detail-image" src="" alt="Item Image" class="w-48 h-48 md:w-64 md:h-64 rounded-xl object-cover flex-shrink-0 border-4 border-white/10">
+                <div class="flex-1 text-center md:text-left">
+                    <h3 id="item-detail-title" class="text-4xl font-bold text-white tracking-tight mb-4"></h3>
+                    <p id="item-detail-description" class="text-gray-300 text-lg mb-6"></p>
+                </div>
+            </div>
+            <div id="item-versions-container" class="mt-8 pt-8 border-t border-white/10">
+                <h4 class="text-2xl font-bold text-white tracking-tight mb-4 text-center md:text-left">Available Versions</h4>
+                <div id="item-versions-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Version cards injected here -->
+                </div>
+            </div>
         </div>
     </div>
-    <div id="item-versions-container" class="mt-8 pt-8 border-t border-white/10">
-        <h4 class="text-2xl font-bold text-white tracking-tight mb-4 text-center md:text-left">Available Versions</h4>
-        <div id="item-versions-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <!-- Version cards will be injected here -->
-        </div>
-    </div>
-</div>
-</div>
 </div>
 
-
-<!-- Software Detail View (Initially Hidden) -->
+<!-- Software Detail View -->
 <div id="software-detail-view" class="page-view hidden">
-<div class="container mx-auto px-6 pt-24 pb-12">
-<button id="software-back-button" class="gradient-btn text-white font-semibold py-2 px-5 rounded-lg shadow-lg mb-8 inline-flex items-center space-x-2">
-<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-<span>Go Back</span>
-</button>
-<div class="flex items-center space-x-6 mb-8">
-<img id="software-detail-logo" src="" alt="Software Logo" class="w-20 h-20">
-<h3 id="software-detail-title" class="text-4xl font-bold text-white tracking-tight"></h3>
-</div>
-<div id="software-detail-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-<!-- Version cards will be injected here by JavaScript -->
-</div>
-</div>
+    <div class="container mx-auto px-6 pt-32 pb-12">
+        <button id="software-back-button" class="gradient-btn text-white font-semibold py-2 px-5 rounded-full shadow-lg mb-8 inline-flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            <span>Go Back</span>
+        </button>
+        <div class="flex items-center space-x-6 mb-8">
+            <img id="software-detail-logo" src="" alt="Software Logo" class="w-20 h-20">
+            <h3 id="software-detail-title" class="text-4xl font-bold text-white tracking-tight"></h3>
+        </div>
+        <div id="software-detail-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <!-- Version cards injected here -->
+        </div>
+    </div>
 </div>
 
-<!-- Plugins List View (Initially Hidden) -->
+<!-- Plugins List View -->
 <div id="plugins-list-view" class="page-view hidden">
-<main class="container mx-auto max-w-5xl px-6 pt-24 pb-12">
-<button id="list-back-button" class="gradient-btn text-white font-semibold py-2 px-5 rounded-lg shadow-lg mb-8 inline-flex items-center space-x-2">
-<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-<span>Go Back</span>
-</button>
-<div class="text-center mb-12">
-<h1 class="text-4xl md:text-5xl font-bold tracking-tighter text-white">100+ Plugins <span class="gradient-text">List</span></h1>
-<p class="text-gray-400 mt-2">Yahaan saare plugins ki poori list hai, unhe download karne ke liye un par click karein.</p>
-</div>
-<div class="glass-card rounded-xl p-6 md:p-8">
-<div class="columns-2 md:columns-3 lg:columns-4 gap-6">
-<ul class="space-y-3 text-sm">
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Aescripts Character Builder v1.2.5</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Aescripts Bend and Weld v2.0.1</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Aescripts Mask Pathfinder v2.2.0</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Auto Lip-Sync v1.11.000</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">AutoSway v1.6 Win</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Blooming Flowers</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Crate's Camera Script</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">CircusFX v1.90</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Crate's Glow D-leaker v1.3.2</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">ContrastUp v2.3</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Datamosh v2.0.2</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Discotext v1.2.6</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Dope v2.5.3</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Easily 2 Dro v2.7.2</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Effects matte v1.3.6</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Face 3D v1.0.3</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">FoxFX Kit</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Flex v1.1.3</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Gaussian Splattering v1.5.2</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Gestic v2.0.20</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Glitchyff 100 VFX MED</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Google Earth Studio Toolkit v2.31</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">HandyCam v1.2.3</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Just camera Shake v1.2.10</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Lazy v2.0.8</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Let's go v1.5</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Lockdown 2.3.1</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Long v1.3</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Matte Tool v2.1</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Mo viewer v1.1 Fix</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Motion Path Pro v1.3</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Mr.Horse Preset 4.1.2 Fix</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Mt.mographion2</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Newton 3 v3.4 Win</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">OCAT V0.5.4</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Overlord v1.22</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Pastiche 2 v2.1.2c Win</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">PixelSorter v3.1.0</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">PLEXUS 3 + OBJ Toolkit v2.2.002</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">PrayMotive v1.1.2</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">PT Multiplane v2.2.04</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Projection 3D v4.02</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Ray Dynamic Color 2</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Retrack 2.1.3</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">RubberHose 2 v2.1.11</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Sky Box 1.0</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Slice it Up v1.2</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Squash & Stretch Pro 1.2.004</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Styler v1.0.3-2</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Text Chain 1.2.0</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Videohive Photographic Brain Scan</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Video Presets Pack Overlays</a></li>
-<li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Wave Wrap</a></li>
-</ul>
-</div>
-</div>
-</main>
+    <main class="container mx-auto max-w-5xl px-6 pt-32 pb-12">
+        <button id="list-back-button" class="gradient-btn text-white font-semibold py-2 px-5 rounded-full shadow-lg mb-8 inline-flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            <span>Go Back</span>
+        </button>
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tighter text-white">100+ Plugins <span class="gradient-text">List</span></h1>
+            <p class="text-gray-400 mt-2">Yahaan saare plugins ki poori list hai, unhe download karne ke liye un par click karein.</p>
+        </div>
+        <div class="glass-card p-6 md:p-8">
+            <div class="columns-2 md:columns-3 lg:columns-4 gap-6">
+                <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Aescripts Character Builder v1.2.5</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Aescripts Bend and Weld v2.0.1</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Aescripts Mask Pathfinder v2.2.0</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Auto Lip-Sync v1.11.000</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">AutoSway v1.6 Win</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Blooming Flowers</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Crate's Camera Script</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">CircusFX v1.90</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Crate's Glow D-leaker v1.3.2</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">ContrastUp v2.3</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Datamosh v2.0.2</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Discotext v1.2.6</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Dope v2.5.3</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Easily 2 Dro v2.7.2</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Effects matte v1.3.6</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Face 3D v1.0.3</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">FoxFX Kit</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Flex v1.1.3</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Gaussian Splattering v1.5.2</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Gestic v2.0.20</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Glitchyff 100 VFX MED</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Google Earth Studio Toolkit v2.31</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">HandyCam v1.2.3</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Just camera Shake v1.2.10</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Lazy v2.0.8</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Let's go v1.5</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Lockdown 2.3.1</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Long v1.3</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Matte Tool v2.1</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Mo viewer v1.1 Fix</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Motion Path Pro v1.3</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Mr.Horse Preset 4.1.2 Fix</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Mt.mographion2</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Newton 3 v3.4 Win</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">OCAT V0.5.4</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Overlord v1.22</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Pastiche 2 v2.1.2c Win</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">PixelSorter v3.1.0</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">PLEXUS 3 + OBJ Toolkit v2.2.002</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">PrayMotive v1.1.2</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">PT Multiplane v2.2.04</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Projection 3D v4.02</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Ray Dynamic Color 2</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Retrack 2.1.3</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">RubberHose 2 v2.1.11</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Sky Box 1.0</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Slice it Up v1.2</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Squash & Stretch Pro 1.2.004</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Styler v1.0.3-2</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Text Chain 1.2.0</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Videohive Photographic Brain Scan</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Video Presets Pack Overlays</a></li>
+                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Wave Wrap</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
 </div>
 
 <!-- Back to Top Button -->
@@ -466,6 +482,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set current year in footer
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
+    // Mouse move effect for glass cards
+    document.querySelectorAll('.glass-card').forEach(card => {
+        card.onmousemove = (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--x', `${x}px`);
+            card.style.setProperty('--y', `${y}px`);
+        };
+    });
+
+    // Intersection Observer for scroll animations
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -475,18 +503,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }, {
         threshold: 0.1
     });
-
     document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
-
-
+    
+    // --- SEARCH FUNCTIONALITY ---
     const searchInput = document.getElementById('search-input');
     const noResultsMessage = document.getElementById('no-results-message');
-
     document.querySelectorAll('#main-view section').forEach(section => {
         const title = section.querySelector('h3');
         section.setAttribute('data-searchable-section', title ? title.innerText.toLowerCase() : '');
-
-        const cards = section.querySelectorAll('.glass-card, .clickable-card, li');
+        const cards = section.querySelectorAll('.glass-card, li');
         cards.forEach(card => {
             card.setAttribute('data-searchable-item', card.innerText.toLowerCase());
         });
@@ -495,415 +520,95 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
         let resultsFound = false;
-
         document.querySelectorAll('#main-view section').forEach(section => {
             let sectionHasVisibleItems = false;
             const items = section.querySelectorAll('[data-searchable-item]');
-
             items.forEach(item => {
                 const itemText = item.getAttribute('data-searchable-item');
                 if (itemText.includes(searchTerm)) {
-                    item.style.display = '';
+                    item.style.display = ''; // Adjust display as needed
                     sectionHasVisibleItems = true;
                     resultsFound = true;
                 } else {
                     item.style.display = 'none';
                 }
             });
-
-            if (section.id === 'welcome' && searchTerm.length > 0) {
-                section.style.display = 'none';
-            } else if (section.id === 'welcome' && searchTerm.length === 0) {
-                section.style.display = 'block';
+            // Handle section visibility based on whether it has visible items
+            if (section.id.includes('showcase') || section.querySelector('h2')) { // Keep hero/showcase visible
+                 section.style.display = 'block';
             } else if (sectionHasVisibleItems) {
                 section.style.display = 'block';
             } else {
-                if (section.querySelector('h2.text-5xl')) {
-                    section.style.display = 'block';
-                } else {
-                    section.style.display = 'none';
-                }
+                section.style.display = 'none';
             }
         });
-
-        noResultsMessage.style.display = resultsFound ? 'none' : 'block';
+        noResultsMessage.style.display = resultsFound || searchTerm.length === 0 ? 'none' : 'block';
+        if (searchTerm.length === 0) {
+            document.querySelectorAll('#main-view section').forEach(s => s.style.display = 'block');
+            document.querySelectorAll('[data-searchable-item]').forEach(i => i.style.display = '');
+        }
     });
 
-    // --- DATA STORE ---
-
+    // --- DATA STORE (PRESERVED FROM ORIGINAL FILE) ---
     const itemData = {
         plugins: {
-            'sapphire': {
-                title: 'Sapphire Suite',
-                description: 'Sapphire Suite by Boris FX is an essential collection of powerful plugins for editors, artists, and animators. It offers a wide range of high-quality effects, including glows, glints, lens flares, and transitions, known for their stunning image quality and intuitive controls.',
-                image: 'https://cdn.discordapp.com/attachments/1308525255165345883/1308525255341379654/Boris-FX-Sapphire-Plug-ins-2022.02-for-Adobe-OFX-WIN.jpg?ex=68d3a7dc&is=68d2565c&hm=9dad33b9dc621d35fcc7dc51933d413f8c09b1bd61e669d3185a231b09065a81',
-                versions: [{
-                    name: 'Sapphire 2024.5',
-                    url: '#'
-                }, {
-                    name: 'Sapphire 2023.1',
-                    url: '#'
-                }, {
-                    name: 'Sapphire 2022.5',
-                    url: '#'
-                }]
-            },
-            'bcc': {
-                title: 'BCC Suite',
-                description: 'Boris FX Continuum (BCC) is a comprehensive visual effects and motion graphics package. It includes tools for particles, image restoration, 3D titling, keying, and compositing, making it a go-to tool for post-production professionals.',
-                image: 'https://cdn.discordapp.com/attachments/1308526021779132467/1308526022026723348/New_Project_4.jpg?ex=68d3a892&is=68d25712&hm=79126c67d1704c9df090be4c2f94fd9a9afa39c967645a4cfaef03e805068cee',
-                versions: [{
-                    name: 'Continuum 2024.5',
-                    url: '#'
-                }]
-            },
-            'magic-bullet': {
-                title: 'Magic Bullet Suite',
-                description: 'From Maxon, Magic Bullet is a set of plugins for color correction, finishing, and film looks. It gives you everything you need to make your footage look great, right on your editing timeline.',
-                image: 'https://cdn.discordapp.com/attachments/1308526657270976585/1308526658222948392/7cef9d9c2a0326a227a3760c14133da6.jpg?ex=68d3a92a&is=68d257aa&hm=696ceb5a840ea767333fea7d70e123c5fd2e82cf923c6de9fc3e0082b75806db',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
-            'shooter-suite': {
-                title: 'Shooter Suite',
-                description: 'Red Giant Shooter Suite is a set of tools that gives you the freedom to shoot the way you want, with the confidence that your footage will make it from your camera to your editing timeline safe, sound, and in sync.',
-                image: 'https://cdn.discordapp.com/attachments/1308526809536659466/1308526809683591288/red-giant-shooter-suite-box-100654557-large.jpg?ex=68d3a94e&is=68d257ce&hm=7128a6d44ccd12d81b17514e9a395600cf37405e25b027eee591e81355f0c523',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
-            'vfx-suite': {
-                title: 'VFX Suite',
-                description: 'Red Giant VFX Suite is a set of tools for keying, tracking, cleanup, and visual effects compositing, right inside of After Effects. VFX Suite makes it easy to create seamless composites.',
-                image: 'https://cdn.discordapp.com/attachments/1308662805754413107/1308662805896892426/OIP_3.jpeg?ex=68d37f36&is=68d22db6&hm=11eed9b58ba8a079fb9d561dcc947c852783d991a2c63a7b0b1f027ef9c423bb',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
-            'element-3d': {
-                title: 'Element 3D',
-                description: 'Video Copilot\'s Element 3D is a fast, powerful 3D render engine for After Effects. It allows for the creation, import, and animation of 3D models, particles, and text directly within After Effects.',
-                image: 'https://cdn.discordapp.com/attachments/1308663743147937822/1308663743290540122/element-3D.jpg?ex=68d38016&is=68d22e96&hm=15f59178a29371d5dc5d3da7fbf7f268da224adfc6b86dd236a62a709b24ef52',
-                versions: [{
-                    name: 'Element 3D v2.2.3',
-                    url: '#'
-                }]
-            },
-            'saber': {
-                title: 'Saber',
-                description: 'A free, powerful energy beam and lightsaber creation tool from Video Copilot. Saber features realistic glow falloff, advanced core settings, and a variety of presets to create dynamic effects.',
-                image: 'https://cdn.discordapp.com/attachments/1308664937177940071/1308664937471672360/maxresdefault.jpg?ex=68d38132&is=68d22fb2&hm=402722eea5cee212cc05a41a561f5df497aff6d071e69c707cb5849cc6e60565',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
-            'rsmb': {
-                title: 'RSMB',
-                description: 'ReelSmart Motion Blur (RSMB) automatically adds more natural-looking motion blur to a sequence. Its tracking technology is at the heart of the product, so there is no handwork involved.',
-                image: 'https://cdn.discordapp.com/attachments/1308664785893724160/1308664786103304202/Untitled-1.png?ex=68d3810e&is=68d22f8e&hm=7c8d5814257c76db8f4000da88e56f60cb377a7087a70a17561d83aee576adaf',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
-            'fx-console': {
-                title: 'FX Console',
-                description: 'A free utility plugin from Video Copilot that greatly enhances the effects workflow in After Effects. Access and apply effects instantly with a customizable shortcut and powerful search features.',
-                image: 'https://cdn.discordapp.com/attachments/1308663934894477366/1308663935217700934/R.jpeg?ex=68d38043&is=68d22ec3&hm=4c8f62efe12494ebd3e31453696b6938be7f31d19c6f194cfe4ef3c37e98848c',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
-            'trapcode-suite': {
-                title: 'Trapcode Suite',
-                description: 'From Maxon, Trapcode Suite brings the power of 3D particle systems right into After Effects. Create fire, water, smoke, snow and other organic visual effects with an array of particle-based tools.',
-                image: 'https://cdn.discordapp.com/attachments/1308660709952979025/1308660710091264020/OIP_2.jpeg?ex=68d37d43&is=68d22bc3&hm=450f7233c0d01ba0e3931a0306a8efedf9cef8225f54e3b9a62ebf5db1978a9f',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
-            'optical-flares': {
-                title: 'Optical Flares',
-                description: 'A plugin from Video Copilot for designing and animating realistic lens flares in After Effects. It features an intuitive interface, live visual presets, and powerful customization options.',
-                image: 'https://cdn.discordapp.com/attachments/1328092182967619624/1328092183097638983/images_6.png?ex=68d3a5fb&is=68d2547b&hm=d5d4fab45be16aa13e5f04caacdc969067d6f192f62f3e3efb5b54f90f5d9aa0',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
-            'twixtor-pro': {
-                title: 'Twixtor Pro',
-                description: 'Twixtor enables you to speed up, slow down or frame-rate convert your image sequences with visually stunning results. It intelligently calculates motion to create smooth, high-quality output.',
-                image: 'https://cdn.discordapp.com/attachments/1328091782600196147/1328091782709383320/image.png?ex=68d3a59b&is=68d2541b&hm=f5f30c3037183399171ae29b5117f9886c396995ba1c7bb165425b4246402094',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
-            'red-giant-universe': {
-                title: 'Red Giant Universe',
-                description: 'Universe is a collection of GPU-accelerated effects and transitions for editors and motion graphics artists. Stylize your footage with authentic retro and modern looks, and generate beautiful looping backgrounds.',
-                image: 'https://cdn.discordapp.com/attachments/1350925159426560020/1350925159569297500/maxresdefault_3.jpg?ex=68d3a859&is=68d256d9&hm=8280871e5bf73a5a3c573534f438bbbe90c25ced407a9d91fa3c1b4057884d00',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
-            'shadow-studio-3': {
-                title: 'Shadow Studio 3',
-                description: 'A plugin for After Effects that lets you create realistic, animatable shadows with ease. It goes beyond the standard drop shadow with features like soft shadows, radial shadows, and inner shadows.',
-                image: 'https://cdn.discordapp.com/attachments/1380810456893100083/1380810457740476426/image.png?ex=68d39d73&is=68d24bf3&hm=0485e5bdb56163930979544a02ac7f2c3342b6acbdd9f85b0e4135c853a20ab6',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
-            'text-explorer': {
-                title: 'Text Explorer',
-                description: 'A powerful tool for After Effects that simplifies working with text animators. Easily create, customize, and save complex text animations and presets.',
-                image: 'https://cdn.discordapp.com/attachments/1388234540924932256/1388234541935890513/image.png?ex=68d398ea&is=68d2476a&hm=fff583a5cd6342e3a66723339303ba901ac1a9e26f125fd41c3683e6c7e79591',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
-            'deep-glow': {
-                title: 'Deep Glow',
-                description: 'A plugin that generates beautiful, physically accurate glows. It features intuitive compositing controls to refine your glow results, with GPU acceleration for speed.',
-                image: 'https://cdn.discordapp.com/attachments/1308510968065687564/1308510968392974397/00000.jpg?ex=68d39a8d&is=68d2490d&hm=5303a22bd8897b979fd4707b3f914db9eb3d593a64dbfb27f07151d54809be3e',
-                versions: [{ name: 'DeepGlow 1.2', url: '(https://drive.google.com/drive/folders/1RuryQ6dG6b-M2C6hwlwkTEoEKXxcLsOd?usp=sharing)' },
-                    { name: 'DeepGlow 2', url: '#' }
-                ]
-            },
-            'liquid-glass': {
-                title: 'Liquid Glass',
-                description: 'A plugin for creating stunning liquid and glass effects on any layer. Perfect for creating drips, blobs, and other fluid simulations with a unique, stylized look.',
-                image: 'https://placehold.co/400x400/9333ea/f3e8ff?text=LG',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
+            'sapphire': { title: 'Sapphire Suite', description: 'Sapphire Suite by Boris FX is an essential collection of powerful plugins for editors, artists, and animators. It offers a wide range of high-quality effects, including glows, glints, lens flares, and transitions, known for their stunning image quality and intuitive controls.', image: 'https://cdn.discordapp.com/attachments/1308525255165345883/1308525255341379654/Boris-FX-Sapphire-Plug-ins-2022.02-for-Adobe-OFX-WIN.jpg?ex=68d3a7dc&is=68d2565c&hm=9dad33b9dc621d35fcc7dc51933d413f8c09b1bd61e669d3185a231b09065a81', versions: [{ name: 'Sapphire 2024.5', url: '#' }, { name: 'Sapphire 2023.1', url: '#' }, { name: 'Sapphire 2022.5', url: '#' }] },
+            'bcc': { title: 'BCC Suite', description: 'Boris FX Continuum (BCC) is a comprehensive visual effects and motion graphics package. It includes tools for particles, image restoration, 3D titling, keying, and compositing, making it a go-to tool for post-production professionals.', image: 'https://cdn.discordapp.com/attachments/1308526021779132467/1308526022026723348/New_Project_4.jpg?ex=68d3a892&is=68d25712&hm=79126c67d1704c9df090be4c2f94fd9a9afa39c967645a4cfaef03e805068cee', versions: [{ name: 'Continuum 2024.5', url: '#' }] },
+            'magic-bullet': { title: 'Magic Bullet Suite', description: 'From Maxon, Magic Bullet is a set of plugins for color correction, finishing, and film looks. It gives you everything you need to make your footage look great, right on your editing timeline.', image: 'https://cdn.discordapp.com/attachments/1308526657270976585/1308526658222948392/7cef9d9c2a0326a227a3760c14133da6.jpg?ex=68d3a92a&is=68d257aa&hm=696ceb5a840ea767333fea7d70e123c5fd2e82cf923c6de9fc3e0082b75806db', versions: [{ name: 'Enter Version Name', url: '#' }] },
+            'shooter-suite': { title: 'Shooter Suite', description: 'Red Giant Shooter Suite is a set of tools that gives you the freedom to shoot the way you want, with the confidence that your footage will make it from your camera to your editing timeline safe, sound, and in sync.', image: 'https://cdn.discordapp.com/attachments/1308526809536659466/1308526809683591288/red-giant-shooter-suite-box-100654557-large.jpg?ex=68d3a94e&is=68d257ce&hm=7128a6d44ccd12d81b17514e9a395600cf37405e25b027eee591e81355f0c523', versions: [{ name: 'Enter Version Name', url: '#' }] },
+            'vfx-suite': { title: 'VFX Suite', description: 'Red Giant VFX Suite is a set of tools for keying, tracking, cleanup, and visual effects compositing, right inside of After Effects. VFX Suite makes it easy to create seamless composites.', image: 'https://cdn.discordapp.com/attachments/1308662805754413107/1308662805896892426/OIP_3.jpeg?ex=68d37f36&is=68d22db6&hm=11eed9b58ba8a079fb9d561dcc947c852783d991a2c63a7b0b1f027ef9c423bb', versions: [{ name: 'Enter Version Name', url: '#' }] },
+            'element-3d': { title: 'Element 3D', description: 'Video Copilot\'s Element 3D is a fast, powerful 3D render engine for After Effects. It allows for the creation, import, and animation of 3D models, particles, and text directly within After Effects.', image: 'https://cdn.discordapp.com/attachments/1308663743147937822/1308663743290540122/element-3D.jpg?ex=68d38016&is=68d22e96&hm=15f59178a29371d5dc5d3da7fbf7f268da224adfc6b86dd236a62a709b24ef52', versions: [{ name: 'Element 3D v2.2.3', url: '#' }] },
+            'saber': { title: 'Saber', description: 'A free, powerful energy beam and lightsaber creation tool from Video Copilot. Saber features realistic glow falloff, advanced core settings, and a variety of presets to create dynamic effects.', image: 'https://cdn.discordapp.com/attachments/1308664937177940071/1308664937471672360/maxresdefault.jpg?ex=68d38132&is=68d22fb2&hm=402722eea5cee212cc05a41a561f5df497aff6d071e69c707cb5849cc6e60565', versions: [{ name: 'Enter Version Name', url: '#' }] },
+            'rsmb': { title: 'RSMB', description: 'ReelSmart Motion Blur (RSMB) automatically adds more natural-looking motion blur to a sequence. Its tracking technology is at the heart of the product, so there is no handwork involved.', image: 'https://cdn.discordapp.com/attachments/1308664785893724160/1308664786103304202/Untitled-1.png?ex=68d3810e&is=68d22f8e&hm=7c8d5814257c76db8f4000da88e56f60cb377a7087a70a17561d83aee576adaf', versions: [{ name: 'Enter Version Name', url: '#' }] },
+            'fx-console': { title: 'FX Console', description: 'A free utility plugin from Video Copilot that greatly enhances the effects workflow in After Effects. Access and apply effects instantly with a customizable shortcut and powerful search features.', image: 'https://cdn.discordapp.com/attachments/1308663934894477366/1308663935217700934/R.jpeg?ex=68d38043&is=68d22ec3&hm=4c8f62efe12494ebd3e31453696b6938be7f31d19c6f194cfe4ef3c37e98848c', versions: [{ name: 'Enter Version Name', url: '#' }] },
+            'trapcode-suite': { title: 'Trapcode Suite', description: 'From Maxon, Trapcode Suite brings the power of 3D particle systems right into After Effects. Create fire, water, smoke, snow and other organic visual effects with an array of particle-based tools.', image: 'https://cdn.discordapp.com/attachments/1308660709952979025/1308660710091264020/OIP_2.jpeg?ex=68d37d43&is=68d22bc3&hm=450f7233c0d01ba0e3931a0306a8efedf9cef8225f54e3b9a62ebf5db1978a9f', versions: [{ name: 'Enter Version Name', url: '#' }] },
+            'optical-flares': { title: 'Optical Flares', description: 'A plugin from Video Copilot for designing and animating realistic lens flares in After Effects. It features an intuitive interface, live visual presets, and powerful customization options.', image: 'https://cdn.discordapp.com/attachments/1328092182967619624/1328092183097638983/images_6.png?ex=68d3a5fb&is=68d2547b&hm=d5d4fab45be16aa13e5f04caacdc969067d6f192f62f3e3efb5b54f90f5d9aa0', versions: [{ name: 'Enter Version Name', url: '#' }] },
+            'twixtor-pro': { title: 'Twixtor Pro', description: 'Twixtor enables you to speed up, slow down or frame-rate convert your image sequences with visually stunning results. It intelligently calculates motion to create smooth, high-quality output.', image: 'https://cdn.discordapp.com/attachments/1328091782600196147/1328091782709383320/image.png?ex=68d3a59b&is=68d2541b&hm=f5f30c3037183399171ae29b5117f9886c396995ba1c7bb165425b4246402094', versions: [{ name: 'Enter Version Name', url: '#' }] },
+            'red-giant-universe': { title: 'Red Giant Universe', description: 'Universe is a collection of GPU-accelerated effects and transitions for editors and motion graphics artists. Stylize your footage with authentic retro and modern looks, and generate beautiful looping backgrounds.', image: 'https://cdn.discordapp.com/attachments/1350925159426560020/1350925159569297500/maxresdefault_3.jpg?ex=68d3a859&is=68d256d9&hm=8280871e5bf73a5a3c573534f438bbbe90c25ced407a9d91fa3c1b4057884d00', versions: [{ name: 'Enter Version Name', url: '#' }] },
+            'shadow-studio-3': { title: 'Shadow Studio 3', description: 'A plugin for After Effects that lets you create realistic, animatable shadows with ease. It goes beyond the standard drop shadow with features like soft shadows, radial shadows, and inner shadows.', image: 'https://cdn.discordapp.com/attachments/1380810456893100083/1380810457740476426/image.png?ex=68d39d73&is=68d24bf3&hm=0485e5bdb56163930979544a02ac7f2c3342b6acbdd9f85b0e4135c853a20ab6', versions: [{ name: 'Enter Version Name', url: '#' }] },
+            'text-explorer': { title: 'Text Explorer', description: 'A powerful tool for After Effects that simplifies working with text animators. Easily create, customize, and save complex text animations and presets.', image: 'https://cdn.discordapp.com/attachments/1388234540924932256/1388234541935890513/image.png?ex=68d398ea&is=68d2476a&hm=fff583a5cd6342e3a66723339303ba901ac1a9e26f125fd41c3683e6c7e79591', versions: [{ name: 'Enter Version Name', url: '#' }] },
+            'deep-glow': { title: 'Deep Glow', description: 'A plugin that generates beautiful, physically accurate glows. It features intuitive compositing controls to refine your glow results, with GPU acceleration for speed.', image: 'https://cdn.discordapp.com/attachments/1308510968065687564/1308510968392974397/00000.jpg?ex=68d39a8d&is=68d2490d&hm=5303a22bd8897b979fd4707b3f914db9eb3d593a64dbfb27f07151d54809be3e', versions: [{ name: 'DeepGlow 1.2', url: '(https://drive.google.com/drive/folders/1RuryQ6dG6b-M2C6hwlwkTEoEKXxcLsOd?usp=sharing)' }, { name: 'DeepGlow 2', url: '#' }] },
+            'liquid-glass': { title: 'Liquid Glass', description: 'A plugin for creating stunning liquid and glass effects on any layer. Perfect for creating drips, blobs, and other fluid simulations with a unique, stylized look.', image: 'https://placehold.co/400x400/9333ea/f3e8ff?text=LG', versions: [{ name: 'Enter Version Name', url: '#' }] },
         },
         scripts: {
-            'motion-bro': {
-                title: 'Motion Bro',
-                description: 'Motion Bro After Effects ke liye ek popular extension hai jo animation presets, transitions aur sound effects ko drag and drop se apply karne deta hai. Isse aap professional animations aur motion graphics tezi se bana sakte hain.',
-                image: 'https://cdn.discordapp.com/attachments/1308703953961091153/1308703954263085066/image.png?ex=68d3a589&is=68d25409&hm=c15e8e927a88d9b90901373e52a1c449832600ae9137fd1a4e1de5250f097596',
-                versions: [{ name: 'For Ae 2020 Above', url: 'https://drive.google.com/file/d/1mZB3MrWiuGNeULbk2D0axaOUOj0R5N8v/view?usp=sharing' }, 
-                { name: 'For Ae 2021 Above', url: 'https://drive.google.com/file/d/1PI17qpqrlwJZrl8Jyj6R6Dl5MzG6_X9C/view?usp=sharing' }]
-            },
-            'flow': {
-                title: 'Flow',
-                description: 'Flow After Effects ke liye ek powerful tool hai jo animation curves ko control karne mein help karta hai. Isse aap animations ko smooth aur dynamic bana sakte hain. Iska user-friendly interface beginners aur professionals dono ke liye useful hai.',
-                image: 'https://cdn.discordapp.com/attachments/1308702534050910239/1308702534780583986/image.png?ex=68d3a436&is=68d252b6&hm=44119d608d83bda8cbbe518027a8299c3713974578c1108f36c5ff4cfea16284',
-                versions: [{ name: 'v1.5.2', url: 'https://drive.google.com/file/d/134dY8lo2HOJzCe_UJgh16IvDXzcPDih_/view?usp=drive_link' }]
-            },
-            'geolayers': {
-                title: 'GEOlayers 3',
-                description: 'GEOlayers 3 ek After Effects extension hai jo aapko dynamic maps, geographical data aur location-based animations banane deta hai. Yeh Google Maps, OpenStreetMap aur dusre sources se data import kar sakta hai, jisse aap interactive map animations create kar sakte hain.',
-                image: 'https://cdn.discordapp.com/attachments/1308704311458529320/1308704311747940352/image.png?ex=68d3a5de&is=68d2545e&hm=79bb0970efb74e9e0ee225551846db4f8ff1114dbe6d15915952d492b4d96072',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            },
-            'JerryFlow V2': {
-                title: 'JerryFlow V2',
-                description: 'JerryFlow V2 is the ultimate extension for Adobe After Effects, building upon the foundation of the original JerryFlow script. This version introduces a dynamic, fully customizable UI designed to streamline your workflow and enhance your creative possibilities.',
-                image: 'https://cdn.discordapp.com/attachments/1308707033498779690/1308707033733922826/image.png?ex=68d3a867&is=68d256e7&hm=77d1b205cc5a0be728df1318056a2ec50577063ca2e573d3e76c0abe9e181199',
-                versions: [{ name: 'JerryFlow V2.0.0', url: 'https://drive.google.com/file/d/1SawuVL0m85aSRbEAtuxiuzJw4MDewfpK/view?usp=sharing' }]
-            },
-            'atomx': {
-                title: 'AtomX',
-                description: 'AtomX After Effects aur Premiere Pro ke liye ek extensions manager hai. Yeh motion graphics templates, animation packs aur video assets ko asani se manage aur apply karne deta hai. Iska interface bahut clean aur user-friendly hai.',
-                image: 'data:image/jpeg;base64,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',
-                versions: [{ name: 'v3.9.0', url: 'https://drive.google.com/file/d/198oG7orNkjGYuB34uHWKEzFkhwhZTJQl/view?usp=sharing' }]
-            },
-            'keystone': {
-                title: 'Keystone',
-                description: 'Keystone After Effects ke liye ek lightweight script hai jo layers ko asani se align, distribute aur arrange karne mein help karta hai. Yeh aapke workflow ko simplify karta hai aur time bachata hai, especially jab aap complex compositions par kaam kar rahe hon.',
-                image: 'https://cdn.discordapp.com/attachments/1308705938076733500/1308705938294833252/image.png?ex=68d3a762&is=68d255e2&hm=f9c66fac569012d8644c033478d90d3f5229ff241e978b7aa12520b0f81d1659',
-                versions: [{ name: 'v1.1.6', url: 'https://drive.google.com/drive/folders/1Ykjk5fe8Nxi-xBqqFUeM3WvllgDru37A?usp=sharing' }]
-            }
+            'motion-bro': { title: 'Motion Bro', description: 'Motion Bro After Effects ke liye ek popular extension hai jo animation presets, transitions aur sound effects ko drag and drop se apply karne deta hai. Isse aap professional animations aur motion graphics tezi se bana sakte hain.', image: 'https://cdn.discordapp.com/attachments/1308703953961091153/1308703954263085066/image.png?ex=68d3a589&is=68d25409&hm=c15e8e927a88d9b90901373e52a1c449832600ae9137fd1a4e1de5250f097596', versions: [{ name: 'For Ae 2020 Above', url: 'https://drive.google.com/file/d/1mZB3MrWiuGNeULbk2D0axaOUOj0R5N8v/view?usp=sharing' }, { name: 'For Ae 2021 Above', url: 'https://drive.google.com/file/d/1PI17qpqrlwJZrl8Jyj6R6Dl5MzG6_X9C/view?usp=sharing' }] },
+            'flow': { title: 'Flow', description: 'Flow After Effects ke liye ek powerful tool hai jo animation curves ko control karne mein help karta hai. Isse aap animations ko smooth aur dynamic bana sakte hain. Iska user-friendly interface beginners aur professionals dono ke liye useful hai.', image: 'https://cdn.discordapp.com/attachments/1308702534050910239/1308702534780583986/image.png?ex=68d3a436&is=68d252b6&hm=44119d608d83bda8cbbe518027a8299c3713974578c1108f36c5ff4cfea16284', versions: [{ name: 'v1.5.2', url: 'https://drive.google.com/file/d/134dY8lo2HOJzCe_UJgh16IvDXzcPDih_/view?usp=drive_link' }] },
+            'geolayers': { title: 'GEOlayers 3', description: 'GEOlayers 3 ek After Effects extension hai jo aapko dynamic maps, geographical data aur location-based animations banane deta hai. Yeh Google Maps, OpenStreetMap aur dusre sources se data import kar sakta hai, jisse aap interactive map animations create kar sakte hain.', image: 'https://cdn.discordapp.com/attachments/1308704311458529320/1308704311747940352/image.png?ex=68d3a5de&is=68d2545e&hm=79bb0970efb74e9e0ee225551846db4f8ff1114dbe6d15915952d492b4d96072', versions: [{ name: 'Enter Version Name', url: '#' }] },
+            'JerryFlow V2': { title: 'JerryFlow V2', description: 'JerryFlow V2 is the ultimate extension for Adobe After Effects, building upon the foundation of the original JerryFlow script. This version introduces a dynamic, fully customizable UI designed to streamline your workflow and enhance your creative possibilities.', image: 'https://cdn.discordapp.com/attachments/1308707033498779690/1308707033733922826/image.png?ex=68d3a867&is=68d256e7&hm=77d1b205cc5a0be728df1318056a2ec50577063ca2e573d3e76c0abe9e181199', versions: [{ name: 'JerryFlow V2.0.0', url: 'https://drive.google.com/file/d/1SawuVL0m85aSRbEAtuxiuzJw4MDewfpK/view?usp=sharing' }] },
+            'atomx': { title: 'AtomX', description: 'AtomX After Effects aur Premiere Pro ke liye ek extensions manager hai. Yeh motion graphics templates, animation packs aur video assets ko asani se manage aur apply karne deta hai. Iska interface bahut clean aur user-friendly hai.', image: 'https://cdn.discordapp.com/attachments/1362715080235552929/1362715080394801192/AtomX-Extension-for-After-Effects-Premiere-Pro-1.jpg?ex=68d45c91&is=68d30b11&hm=6aaf0956a6f13aebc3205975e1cab6d4dfd54217c27850127352dae571546546&', versions: [{ name: 'v3.9.0', url: 'https://drive.google.com/file/d/198oG7orNkjGYuB34uHWKEzFkhwhZTJQl/view?usp=sharing' }] },
+            'keystone': { title: 'Keystone', description: 'Keystone After Effects ke liye ek lightweight script hai jo layers ko asani se align, distribute aur arrange karne mein help karta hai. Yeh aapke workflow ko simplify karta hai aur time bachata hai, especially jab aap complex compositions par kaam kar rahe hon.', image: 'https://cdn.discordapp.com/attachments/1308705938076733500/1308705938294833252/image.png?ex=68d3a762&is=68d255e2&hm=f9c66fac569012d8644c033478d90d3f5229ff241e978b7aa12520b0f81d1659', versions: [{ name: 'v1.1.6', url: 'https://drive.google.com/drive/folders/1Ykjk5fe8Nxi-xBqqFUeM3WvllgDru37A?usp=sharing' }] }
         },
         utilities: {
-            'topaz-ai': {
-                title: 'Topaz AI Suite',
-                description: 'Topaz AI Suite AI-powered image aur video enhancement tools ka ek collection hai. Ismein Gigapixel AI, Video Enhance AI, aur Sharpen AI jaise tools shamil hain, jo images aur videos ki quality ko improve karte hain, noise reduce karte hain aur clarity badhate hain.',
-                image: 'https://cdn.prod.website-files.com/6005fac27a49a9cd477afb63/634d1e4a5cb8ac88fd07a065_1024.svg',
-                versions: [{ name: 'Version 2.6.0', url: 'https://drive.google.com/file/d/1C-NrR-6ipfKIM06Moyy17EocvuJon6hQ/view?usp=sharing' }]
-            },
-            'Filmora 14': {
-                title: 'Filmora 14',
-                description: 'More AI, Videos in Less Clicks Bring AI-powered efficiency and simplicity to your everyday editing.',
-                image: 'https://neveragain.allstatics.com/2019/assets/icon/logo/filmora-square.svg',
-                versions: [{ name: 'v14.0.11.9772', url: 'https://drive.google.com/file/d/1--ITgkydgZQNKz0S0zoEJItEVxrIgsuv/view?usp=drivesdk' }]
-            },
-            'idm': {
-                title: 'IDM (Cracked)',
-                description: 'Internet Download Manager (IDM) ek download accelerator hai jo files ko tezi se download karta hai. Iska cracked version aapko bina kisi license ke premium features use karne deta hai, jisse aap bade files ko fast aur reliably download kar sakte hain.',
-                image: 'https://cdn6.aptoide.com/imgs/9/c/6/9c688656c4d6227589d5fe3b68e038d2_icon.png?w=128',
-                versions: [{ name: 'Version 20.4 ', url: '#' }]
-            },
-            'pure-ref': {
-                title: 'Pure Ref',
-                description: 'Pure Ref ek simple aur useful tool hai jo reference images ko manage karne ke liye design kiya gaya hai. Yeh aapko apni inspiration images ko ek hi jagah par arrange karne aur view karne deta hai, jisse aapka creative process smooth hota hai.',
-                image: 'https://placehold.co/400x400/eab308/fefce8?text=Ref',
-                versions: [{ name: 'Enter Version Name', url: '#' }]
-            }
+            'topaz-ai': { title: 'Topaz AI Suite', description: 'Topaz AI Suite AI-powered image aur video enhancement tools ka ek collection hai. Ismein Gigapixel AI, Video Enhance AI, aur Sharpen AI jaise tools shamil hain, jo images aur videos ki quality ko improve karte hain, noise reduce karte hain aur clarity badhate hain.', image: 'https://cdn.prod.website-files.com/6005fac27a49a9cd477afb63/634d1e4a5cb8ac88fd07a065_1024.svg', versions: [{ name: 'Version 2.6.0', url: 'https://drive.google.com/file/d/1C-NrR-6ipfKIM06Moyy17EocvuJon6hQ/view?usp=sharing' }] },
+            'Filmora 14': { title: 'Filmora 14', description: 'More AI, Videos in Less Clicks Bring AI-powered efficiency and simplicity to your everyday editing.', image: 'https://neveragain.allstatics.com/2019/assets/icon/logo/filmora-square.svg', versions: [{ name: 'v14.0.11.9772', url: 'https://drive.google.com/file/d/1--ITgkydgZQNKz0S0zoEJItEVxrIgsuv/view?usp=drivesdk' }] },
+            'idm': { title: 'IDM (Cracked)', description: 'Internet Download Manager (IDM) ek download accelerator hai jo files ko tezi se download karta hai. Iska cracked version aapko bina kisi license ke premium features use karne deta hai, jisse aap bade files ko fast aur reliably download kar sakte hain.', image: 'https://cdn6.aptoide.com/imgs/9/c/6/9c688656c4d6227589d5fe3b68e038d2_icon.png?w=128', versions: [{ name: 'Version 20.4 ', url: '#' }] },
+            'pure-ref': { title: 'Pure Ref', description: 'Pure Ref ek simple aur useful tool hai jo reference images ko manage karne ke liye design kiya gaya hai. Yeh aapko apni inspiration images ko ek hi jagah par arrange karne aur view karne deta hai, jisse aapka creative process smooth hota hai.', image: 'https://placehold.co/400x400/eab308/fefce8?text=Ref', versions: [{ name: 'Enter Version Name', url: '#' }] }
         }
     };
-
-
     const softwareData = {
-        'after-effects': {
-            title: 'After Effects',
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg',
-            versions: [{
-                year: '2020',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1bKed59m-y5ZZI6-4IlEgJBzdGN1C5Rxj/view?usp=sharing'
-            }, {
-                year: '2021',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1ZHq06y_CFQtLDTch9GpHt5IwEnWCtGDC/view?usp=sharing'
-            }, {
-                year: '2022',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1YRtN-isE8B2c-f2QAW3UniccgLNOSg0n/view?usp=sharing'
-            }, {
-                year: '2023',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1g_T3o5tcNprBua8jSWqcRe9egwlmCmFU/view?usp=sharing'
-            }, {
-                year: '2024',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/11hAL0WdA77ewKd4iJeGDi1AzViUTtlEM/view?usp=sharing'
-            }, {
-                year: '2025',
-                desc: 'Latest Version',
-                url: 'https://drive.google.com/file/d/1QF0AHW52ZDpfHqLLIZ4hUSqHHy0Q30ZQ/view?usp=sharing'
-            }, ]
-        },
-        'premiere-pro': {
-            title: 'Premiere Pro',
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg',
-            versions: [{
-                year: '2020',
-                desc: 'Stable Version',
-                url: 'https://drive.google.com/file/d/1xOUNF2XW4YvhmB6qUsW-Yt-_N_kESc5i/view?usp=sharing'
-            }, {
-                year: '2021',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1F_mHHuBdUMcHyWxB03hECKKhCG2sQYYL/view?usp=sharing'
-            }, {
-                year: '2022',
-                desc: 'Stable Version',
-                url: 'https://drive.google.com/file/d/1O3acpw62IVR5oFeMKezpMwjw7rhYv2i-/view?usp=sharing'
-            }, {
-                year: '2023',
-                desc: 'Stable Version',
-                url: 'https://drive.google.com/file/d/1slPjxo2WmqvJNWMiAi-s70sQABO3AHMN/view?usp=sharing'
-            }, {
-                year: '2024',
-                desc: 'Stable Version',
-                url: 'https://drive.google.com/file/d/1dYcPG8pQHgweVzqbsHWFUeDM51XOhoj-/view?usp=sharing'
-            }, {
-                year: '2025',
-                desc: 'Latest Version',
-                url: 'https://drive.google.com/file/d/1s2IqZevh2S6oJrVbG3IlZxdUSdfLqT5M/view?usp=sharing'
-            }, ]
-        },
-        'photoshop': {
-            title: 'Photoshop',
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg',
-            versions: [{
-                year: '2020',
-                desc: 'Stable Version',
-                url: 'https://drive.google.com/file/d/1kT8JgYqpvnj30snAiKGjIoXcFgh6nwva/view?usp=sharing'
-            }, {
-                year: '2021',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1kkMbEimMxdIEKVnSR3V_WQLUhyQLA066/view?usp=drive_link'
-            }, {
-                year: '2022',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1kprHBrLUpotVzn1G1spFc0hpoIxFVorM/view?usp=drive_link'
-            }, {
-                year: '2023',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1kuKfs6dEMMKbTDIq93kIZdYDkB1zFtlh/view?usp=drive_link'
-            }, {
-                year: '2024',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1SEoO-lnrGPP-K7goG75gsZlHiK1wBmf9/view?usp=sharing'
-            }, {
-                year: '2025',
-                desc: 'Latest Release',
-                url: 'https://drive.google.com/file/d/1klaoh8IR0YvGJlaxqsbattIaG85Ep0Pw/view?usp=drive_link'
-            }, ]
-        },
-        'illustrator': {
-            title: 'Illustrator',
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg',
-            versions: [{
-                year: '2020',
-                desc: 'Stable Version',
-                url: 'https://drive.google.com/file/d/1lBrgwAWTQaaCQodJR7rtCpbEumI0wwQb/view?usp=drive_link'
-            }, {
-                year: '2021',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1lAtoWxBQm7SdiZULyAD2YzeoAs00kY8-/view?usp=drive_link'
-            }, {
-                year: '2022',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1kx9dU7yV1IpdWlTypA2FZbPjNwKuP7Od/view?usp=drive_link'
-            }, {
-                year: '2023',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1l8qS2J0lGnZ0bd5HnW4n3iTrpHfuW3sk/view?usp=drive_link'
-            }, {
-                year: '2024',
-                desc: 'Stable Release',
-                url: '#'
-            }, {
-                year: '2025',
-                desc: 'Latest Release',
-                url: 'https://drive.google.com/file/d/1ZNajSGAaCaKtcQwESEEKcvA6xTjaXuWm/view?usp=drive_link'
-            }, ]
-        },
-        'media-encoder': {
-            title: 'Media Encoder',
-            logo: 'https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg',
-            versions: [{
-                year: '2020',
-                desc: 'Stable Version',
-                url: 'https://drive.google.com/file/d/1o53VIZQsswD0de3FusXHlVJ8qwPM7dVZ/view?usp=sharing'
-            }, {
-                year: '2021',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1Fv3-fK_3vJje6feWKq2dUjZbzE4ofxEV/view?usp=sharing'
-            }, {
-                year: '2022',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1rAbr8DRL5W3wFzyRnVohVwByOIw4agxm/view?usp=sharing'
-            }, {
-                year: '2023',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1Az9LBu1pBPaJ5xZoS39wsMfRaNnAz2pZ/view?usp=sharing'
-            }, {
-                year: '2024',
-                desc: 'Stable Release',
-                url: 'https://drive.google.com/file/d/1zHoJ6smv4H_OE2O2P39s1wj7LhIX3OTZ/view?usp=sharing'
-            }, {
-                year: '2025',
-                desc: 'Latest Release',
-                url: 'https://drive.google.com/file/d/1plG-0BWg4zZNYJkyDd2tHakYIXO1vzVx/view?usp=sharing'
-            }, ]
-        }
+        'after-effects': { title: 'After Effects', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg', versions: [{ year: '2020', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1bKed59m-y5ZZI6-4IlEgJBzdGN1C5Rxj/view?usp=sharing' }, { year: '2021', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1ZHq06y_CFQtLDTch9GpHt5IwEnWCtGDC/view?usp=sharing' }, { year: '2022', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1YRtN-isE8B2c-f2QAW3UniccgLNOSg0n/view?usp=sharing' }, { year: '2023', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1g_T3o5tcNprBua8jSWqcRe9egwlmCmFU/view?usp=sharing' }, { year: '2024', desc: 'Stable Release', url: 'https://drive.google.com/file/d/11hAL0WdA77ewKd4iJeGDi1AzViUTtlEM/view?usp=sharing' }, { year: '2025', desc: 'Latest Version', url: 'https://drive.google.com/file/d/1QF0AHW52ZDpfHqLLIZ4hUSqHHy0Q30ZQ/view?usp=sharing' }] },
+        'premiere-pro': { title: 'Premiere Pro', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg', versions: [{ year: '2020', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1xOUNF2XW4YvhmB6qUsW-Yt-_N_kESc5i/view?usp=sharing' }, { year: '2021', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1F_mHHuBdUMcHyWxB03hECKKhCG2sQYYL/view?usp=sharing' }, { year: '2022', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1O3acpw62IVR5oFeMKezpMwjw7rhYv2i-/view?usp=sharing' }, { year: '2023', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1slPjxo2WmqvJNWMiAi-s70sQABO3AHMN/view?usp=sharing' }, { year: '2024', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1dYcPG8pQHgweVzqbsHWFUeDM51XOhoj-/view?usp=sharing' }, { year: '2025', desc: 'Latest Version', url: 'https://drive.google.com/file/d/1s2IqZevh2S6oJrVbG3IlZxdUSdfLqT5M/view?usp=sharing' }] },
+        'photoshop': { title: 'Photoshop', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg', versions: [{ year: '2020', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1kT8JgYqpvnj30snAiKGjIoXcFgh6nwva/view?usp=sharing' }, { year: '2021', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1kkMbEimMxdIEKVnSR3V_WQLUhyQLA066/view?usp=drive_link' }, { year: '2022', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1kprHBrLUpotVzn1G1spFc0hpoIxFVorM/view?usp=drive_link' }, { year: '2023', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1kuKfs6dEMMKbTDIq93kIZdYDkB1zFtlh/view?usp=drive_link' }, { year: '2024', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1SEoO-lnrGPP-K7goG75gsZlHiK1wBmf9/view?usp=sharing' }, { year: '2025', desc: 'Latest Release', url: 'https://drive.google.com/file/d/1klaoh8IR0YvGJlaxqsbattIaG85Ep0Pw/view?usp=drive_link' }] },
+        'illustrator': { title: 'Illustrator', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg', versions: [{ year: '2020', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1lBrgwAWTQaaCQodJR7rtCpbEumI0wwQb/view?usp=drive_link' }, { year: '2021', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1lAtoWxBQm7SdiZULyAD2YzeoAs00kY8-/view?usp=drive_link' }, { year: '2022', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1kx9dU7yV1IpdWlTypA2FZbPjNwKuP7Od/view?usp=drive_link' }, { year: '2023', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1l8qS2J0lGnZ0bd5HnW4n3iTrpHfuW3sk/view?usp=drive_link' }, { year: '2024', desc: 'Stable Release', url: '#' }, { year: '2025', desc: 'Latest Release', url: 'https://drive.google.com/file/d/1ZNajSGAaCaKtcQwESEEKcvA6xTjaXuWm/view?usp=drive_link' }] },
+        'media-encoder': { title: 'Media Encoder', logo: 'https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg', versions: [{ year: '2020', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1o53VIZQsswD0de3FusXHlVJ8qwPM7dVZ/view?usp=sharing' }, { year: '2021', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1Fv3-fK_3vJje6feWKq2dUjZbzE4ofxEV/view?usp=sharing' }, { year: '2022', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1rAbr8DRL5W3wFzyRnVohVwByOIw4agxm/view?usp=sharing' }, { year: '2023', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1Az9LBu1pBPaJ5xZoS39wsMfRaNnAz2pZ/view?usp=sharing' }, { year: '2024', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1zHoJ6smv4H_OE2O2P39s1wj7LhIX3OTZ/view?usp=sharing' }, { year: '2025', desc: 'Latest Release', url: 'https://drive.google.com/file/d/1plG-0BWg4zZNYJkyDd2tHakYIXO1vzVx/view?usp=sharing' }] }
     };
 
-    // --- DOM ELEMENTS & VIEWS ---
+    // --- DOM ELEMENTS & VIEW MANAGEMENT ---
     const mainView = document.getElementById('main-view');
     const softwareDetailView = document.getElementById('software-detail-view');
     const itemDetailView = document.getElementById('item-detail-view');
     const pluginsListView = document.getElementById('plugins-list-view');
     const easyWorkflowView = document.getElementById('easy-workflow-view');
     const header = document.getElementById('header');
-
-    const softwareBackButton = document.getElementById('software-back-button');
-    const softwareDetailTitle = document.getElementById('software-detail-title');
-    const softwareDetailLogo = document.getElementById('software-detail-logo');
-    const softwareDetailGrid = document.getElementById('software-detail-grid');
-
-    const itemBackButton = document.getElementById('item-back-button');
-    const itemDetailImage = document.getElementById('item-detail-image');
-    const itemDetailTitle = document.getElementById('item-detail-title');
-    const itemDetailDescription = document.getElementById('item-detail-description');
-    const itemVersionsContainer = document.getElementById('item-versions-container');
-    const itemVersionsGrid = document.getElementById('item-versions-grid');
-
-    const pluginsListBackButton = document.getElementById('list-back-button');
-    const workflowBackButton = document.getElementById('workflow-back-button');
     const backToTopButton = document.getElementById('back-to-top');
-
-
     let lastViewedSectionId = 'plugins';
 
-    // --- FUNCTIONS ---
     function hideAllViews() {
         mainView.classList.add('hidden');
         softwareDetailView.classList.add('hidden');
         itemDetailView.classList.add('hidden');
         pluginsListView.classList.add('hidden');
         easyWorkflowView.classList.add('hidden');
-        header.classList.remove('hidden');
         window.scrollTo(0, 0);
     }
     
@@ -912,113 +617,74 @@ document.addEventListener('DOMContentLoaded', () => {
         easyWorkflowView.classList.remove('hidden');
     }
 
-    function showSoftwareDetailView(softwareKey) {
+    function populateAndShowView(viewElement, setupFunction) {
         hideAllViews();
-        const data = softwareData[softwareKey];
-        if (!data) return;
-        softwareDetailTitle.textContent = data.title;
-        softwareDetailLogo.src = data.logo;
-        softwareDetailGrid.innerHTML = '';
-        data.versions.forEach(version => {
-            const cardHtml = `<div class="glass-card rounded-xl p-5 text-center"><h5 class="text-lg font-bold text-white mb-1">${data.title} ${version.year}</h5><p class="text-sm text-gray-400 mb-4">${version.desc}</p><a href="${version.url}" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-lg text-sm">Download</a></div>`;
-            softwareDetailGrid.insertAdjacentHTML('beforeend', cardHtml);
-        });
-        softwareDetailView.classList.remove('hidden');
+        setupFunction();
+        viewElement.classList.remove('hidden');
     }
+
+    window.showDetailView = function(softwareKey) {
+        populateAndShowView(softwareDetailView, () => {
+            const data = softwareData[softwareKey];
+            if (!data) return;
+            document.getElementById('software-detail-title').textContent = data.title;
+            document.getElementById('software-detail-logo').src = data.logo;
+            const grid = document.getElementById('software-detail-grid');
+            grid.innerHTML = '';
+            data.versions.forEach(version => {
+                grid.insertAdjacentHTML('beforeend', `<div class="glass-card p-5 text-center flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">${data.title} ${version.year}</h5><p class="text-sm text-gray-400 mb-4">${version.desc}</p><a href="${version.url}" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div>`);
+            });
+        });
+    };
 
     window.showItemDetail = function(type, key) {
-        hideAllViews();
-        lastViewedSectionId = type;
-        const data = itemData[type][key];
-        if (!data) return;
-
-        itemDetailImage.src = data.image;
-        itemDetailImage.alt = data.title + " Image";
-        itemDetailTitle.textContent = data.title;
-        itemDetailDescription.textContent = data.description;
-
-        itemVersionsGrid.innerHTML = '';
-        if (data.versions && data.versions.length > 0) {
-            itemVersionsContainer.style.display = 'block';
-            data.versions.forEach(version => {
-                const versionHtml = `
-                <div class="bg-gray-900/50 rounded-lg p-4 flex justify-between items-center">
-                    <span class="font-semibold text-white">${version.name}</span>
-                    <a href="${version.url}" class="gradient-btn text-white font-semibold py-2 px-4 rounded-lg text-sm">Download</a>
-                </div>
-            `;
-                itemVersionsGrid.insertAdjacentHTML('beforeend', versionHtml);
-            });
-        } else {
-            itemVersionsContainer.style.display = 'none';
-        }
-
-        itemDetailView.classList.remove('hidden');
-    }
+        populateAndShowView(itemDetailView, () => {
+            lastViewedSectionId = type;
+            const data = itemData[type][key];
+            if (!data) return;
+            document.getElementById('item-detail-image').src = data.image;
+            document.getElementById('item-detail-title').textContent = data.title;
+            document.getElementById('item-detail-description').textContent = data.description;
+            const versionsContainer = document.getElementById('item-versions-container');
+            const versionsGrid = document.getElementById('item-versions-grid');
+            versionsGrid.innerHTML = '';
+            if (data.versions && data.versions.length > 0) {
+                versionsContainer.style.display = 'block';
+                data.versions.forEach(version => {
+                    versionsGrid.insertAdjacentHTML('beforeend', `<div class="bg-gray-900/50 rounded-lg p-4 flex justify-between items-center"><span class="font-semibold text-white">${version.name}</span><a href="${version.url}" class="gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div>`);
+                });
+            } else {
+                versionsContainer.style.display = 'none';
+            }
+        });
+    };
 
     window.showPluginsList = function() {
         hideAllViews();
         pluginsListView.classList.remove('hidden');
+    };
+
+    function goBackToMain(sectionId) {
+        hideAllViews();
+        mainView.classList.remove('hidden');
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Back buttons
-    softwareBackButton.addEventListener('click', () => {
-        hideAllViews();
-        mainView.classList.remove('hidden');
-        document.getElementById('software')?.scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
-    itemBackButton.addEventListener('click', () => {
-        hideAllViews();
-        mainView.classList.remove('hidden');
-        document.getElementById(lastViewedSectionId)?.scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
-    pluginsListBackButton.addEventListener('click', () => {
-        hideAllViews();
-        mainView.classList.remove('hidden');
-        document.getElementById('other-plugins')?.scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
-    workflowBackButton.addEventListener('click', () => {
-        hideAllViews();
-        mainView.classList.remove('hidden');
-        document.getElementById('easy-workflow-showcase')?.scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
+    document.getElementById('software-back-button').addEventListener('click', () => goBackToMain('software'));
+    document.getElementById('item-back-button').addEventListener('click', () => goBackToMain(lastViewedSectionId));
+    document.getElementById('list-back-button').addEventListener('click', () => goBackToMain('other-plugins'));
+    document.getElementById('workflow-back-button').addEventListener('click', () => goBackToMain('easy-workflow-showcase'));
+    backToTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    // Back to Top Button Logic
-    backToTopButton.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-
-    // Legacy function for old software section logic
-    window.showDetailView = function(softwareKey) {
-        showSoftwareDetailView(softwareKey);
-    }
-
-    // Scroll effect for header and back-to-top button
+    // Scroll effect for back-to-top button
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 10) {
-            header.style.setProperty('background', 'rgba(17, 24, 39, 0.8)');
-        } else {
-            header.style.setProperty('background', 'rgba(23, 31, 46, 0.6)');
-        }
-
         if (window.scrollY > 400) {
             backToTopButton.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
         } else {
             backToTopButton.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
         }
-    });
+    }, { passive: true });
 });
 </script>
 </body>
 </html>
-
-
