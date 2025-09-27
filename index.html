@@ -171,7 +171,7 @@
              <h1 class="text-2xl font-bold tracking-tighter text-white">Harsh<span class="gradient-text">Edits</span></h1>
             <div class="relative flex-1 max-w-md hidden md:block">
                 <input type="text" id="search-input" placeholder="Search resources..." class="w-full bg-gray-900/50 border border-gray-700 rounded-full py-2 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all">
-                <svg class="w-5 h-5 text-gray-500 absolute top-1/2 right-4 -translate-y-1/2" xmlns="http://www.w.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                <svg class="w-5 h-5 text-gray-500 absolute top-1/2 right-4 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             </div>
             <nav class="hidden lg:flex space-x-6 text-gray-300">
                 <a href="#software" class="hover:text-white transition-colors">Software</a>
@@ -180,7 +180,7 @@
                 <a href="#assets" class="hover:text-white transition-colors">Assets</a>
                 <a href="#request-resource" class="hover:text-white transition-colors">Request</a>
             </nav>
-            <a href="https://discord.gg/y3qnSA4ZbE" class="gradient-btn text-white font-semibold py-2 px-5 rounded-full shadow-lg flex-shrink-0">
+            <a href="https://discord.gg/y3qnSA4ZbE" target="_blank" class="gradient-btn text-white font-semibold py-2 px-5 rounded-full shadow-lg flex-shrink-0">
                 Join Discord
             </a>
         </div>
@@ -273,10 +273,11 @@
         <section id="assets" class="mb-20 animate-on-scroll">
             <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-rose-500 pl-4">Assets</h3>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Malice Ultimate Pack</h5><p class="text-sm text-gray-400 mb-4">Light leaks, dust, and film grain.</p><a href="https://drive.google.com/drive/folders/1vZ0D6keKnKOEr8vPcPXoZt9KsuVEKqmR" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
-                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Sound FX Library</h5><p class="text-sm text-gray-400 mb-4">Whooshes, impacts, and risers.</p><a href="https://drive.google.com/drive/folders/1q6BzFxLDKY8tt48SqLng0-lPFODNZKpA" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
-                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">LUTs Collection</h5><p class="text-sm text-gray-400 mb-4">Cinematic color grading presets.</p><a href="#" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
-                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Editing Assets</h5><p class="text-sm text-gray-400 mb-4">Bundle of digital resources.</p><a href="https://drive.google.com/drive/folders/1jl0iH8E5w9d-jXYTw3uKhiAkVYdWZ2ia" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
+                <!-- Added target="_blank" to all static download links in Assets section -->
+                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Malice Ultimate Pack</h5><p class="text-sm text-gray-400 mb-4">Light leaks, dust, and film grain.</p><a href="https://drive.google.com/drive/folders/1vZ0D6keKnKOEr8vPcPXoZt9KsuVEKqmR" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
+                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Sound FX Library</h5><p class="text-sm text-gray-400 mb-4">Whooshes, impacts, and risers.</p><a href="https://drive.google.com/drive/folders/1q6BzFxLDKY8tt48SqLng0-lPFODNZKpA" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
+                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">LUTs Collection</h5><p class="text-sm text-gray-400 mb-4">Cinematic color grading presets.</p><a href="#" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
+                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Editing Assets</h5><p class="text-sm text-gray-400 mb-4">Bundle of digital resources.</p><a href="https://drive.google.com/drive/folders/1jl0iH8E5w9d-jXYTw3uKhiAkVYdWZ2ia" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
             </div>
         </section>
 
@@ -311,7 +312,8 @@
             <div class="glass-card p-8 text-center">
                 <h3 class="text-3xl font-bold text-white tracking-tight mb-4">Missing a Resource?</h3>
                 <p class="text-gray-400 max-w-2xl mx-auto mb-6">Can't find the plugin, script, or software you're looking for? Join our Discord server and let us know in the dedicated requests channel. We'll do our best to add it to the hub!</p>
-                <a href="https://discord.com/channels/1083014788885524622/1420095536677257357" class="inline-block gradient-btn text-white font-semibold py-3 px-8 rounded-full shadow-lg text-lg">Request on Discord</a>
+                <!-- Added target="_blank" to the Request on Discord link -->
+                <a href="https://discord.com/channels/1083014788885524622/1420095536677257357" target="_blank" class="inline-block gradient-btn text-white font-semibold py-3 px-8 rounded-full shadow-lg text-lg">Request on Discord</a>
             </div>
         </section>
         
@@ -348,7 +350,8 @@
             </p>
             <div class="glass-card p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <span class="font-semibold text-white text-xl">Easy Workflow v2.3.0</span>
-                <a href="https://drive.google.com/drive/folders/14y-Mw9ukShB9wn9XIVjfmyLcA2vrowm-?usp=sharing" class="w-full sm:w-auto gradient-btn text-white font-bold py-3 px-8 rounded-full text-center flex items-center justify-center gap-2">
+                <!-- Added target="_blank" to the Easy Workflow download link -->
+                <a href="https://drive.google.com/drive/folders/14y-Mw9ukShB9wn9XIVjfmyLcA2vrowm-?usp=sharing" target="_blank" class="w-full sm:w-auto gradient-btn text-white font-bold py-3 px-8 rounded-full text-center flex items-center justify-center gap-2">
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     Download Now
                 </a>
@@ -413,59 +416,60 @@
         <div class="glass-card p-6 md:p-8">
             <div class="columns-2 md:columns-3 lg:columns-4 gap-6">
                 <ul class="space-y-3 text-sm">
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Aescripts Character Builder v1.2.5</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Aescripts Bend and Weld v2.0.1</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Aescripts Mask Pathfinder v2.2.0</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Auto Lip-Sync v1.11.000</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">AutoSway v1.6 Win</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Blooming Flowers</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Crate's Camera Script</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">CircusFX v1.90</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Crate's Glow D-leaker v1.3.2</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">ContrastUp v2.3</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Datamosh v2.0.2</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Discotext v1.2.6</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Dope v2.5.3</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Easily 2 Dro v2.7.2</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Effects matte v1.3.6</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Face 3D v1.0.3</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">FoxFX Kit</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Flex v1.1.3</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Gaussian Splattering v1.5.2</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Gestic v2.0.20</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Glitchyff 100 VFX MED</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Google Earth Studio Toolkit v2.31</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">HandyCam v1.2.3</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Just camera Shake v1.2.10</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Lazy v2.0.8</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Let's go v1.5</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Lockdown 2.3.1</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Long v1.3</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Matte Tool v2.1</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Mo viewer v1.1 Fix</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Motion Path Pro v1.3</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Mr.Horse Preset 4.1.2 Fix</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Mt.mographion2</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Newton 3 v3.4 Win</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">OCAT V0.5.4</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Overlord v1.22</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Pastiche 2 v2.1.2c Win</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">PixelSorter v3.1.0</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">PLEXUS 3 + OBJ Toolkit v2.2.002</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">PrayMotive v1.1.2</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">PT Multiplane v2.2.04</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Projection 3D v4.02</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Ray Dynamic Color 2</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Retrack 2.1.3</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">RubberHose 2 v2.1.11</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Sky Box 1.0</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Slice it Up v1.2</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Squash & Stretch Pro 1.2.004</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Styler v1.0.3-2</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Text Chain 1.2.0</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Videohive Photographic Brain Scan</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Video Presets Pack Overlays</a></li>
-                    <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">Wave Wrap</a></li>
+                    <!-- Added target="_blank" to all links in the plugins list -->
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Aescripts Character Builder v1.2.5</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Aescripts Bend and Weld v2.0.1</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Aescripts Mask Pathfinder v2.2.0</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Auto Lip-Sync v1.11.000</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">AutoSway v1.6 Win</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Blooming Flowers</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Crate's Camera Script</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">CircusFX v1.90</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Crate's Glow D-leaker v1.3.2</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">ContrastUp v2.3</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Datamosh v2.0.2</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Discotext v1.2.6</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Dope v2.5.3</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Easily 2 Dro v2.7.2</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Effects matte v1.3.6</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Face 3D v1.0.3</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">FoxFX Kit</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Flex v1.1.3</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Gaussian Splattering v1.5.2</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Gestic v2.0.20</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Glitchyff 100 VFX MED</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Google Earth Studio Toolkit v2.31</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">HandyCam v1.2.3</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Just camera Shake v1.2.10</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Lazy v2.0.8</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Let's go v1.5</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Lockdown 2.3.1</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Long v1.3</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Matte Tool v2.1</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Mo viewer v1.1 Fix</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Motion Path Pro v1.3</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Mr.Horse Preset 4.1.2 Fix</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Mt.mographion2</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Newton 3 v3.4 Win</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">OCAT V0.5.4</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Overlord v1.22</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Pastiche 2 v2.1.2c Win</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">PixelSorter v3.1.0</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">PLEXUS 3 + OBJ Toolkit v2.2.002</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">PrayMotive v1.1.2</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">PT Multiplane v2.2.04</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Projection 3D v4.02</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Ray Dynamic Color 2</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Retrack 2.1.3</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">RubberHose 2 v2.1.11</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Sky Box 1.0</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Slice it Up v1.2</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Squash & Stretch Pro 1.2.004</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Styler v1.0.3-2</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Text Chain 1.2.0</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Videohive Photographic Brain Scan</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Video Presets Pack Overlays</a></li>
+                    <li><a href="#" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">Wave Wrap</a></li>
                 </ul>
             </div>
         </div>
@@ -632,7 +636,8 @@ plugins: {
             const grid = document.getElementById('software-detail-grid');
             grid.innerHTML = '';
             data.versions.forEach(version => {
-                grid.insertAdjacentHTML('beforeend', `<div class="glass-card p-5 text-center flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">${data.title} ${version.year}</h5><p class="text-sm text-gray-400 mb-4">${version.desc}</p><a href="${version.url}" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div>`);
+                // Dynamically generated download link for software now includes target="_blank"
+                grid.insertAdjacentHTML('beforeend', `<div class="glass-card p-5 text-center flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">${data.title} ${version.year}</h5><p class="text-sm text-gray-400 mb-4">${version.desc}</p><a href="${version.url}" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div>`);
             });
         });
     };
@@ -651,7 +656,8 @@ plugins: {
             if (data.versions && data.versions.length > 0) {
                 versionsContainer.style.display = 'block';
                 data.versions.forEach(version => {
-                    versionsGrid.insertAdjacentHTML('beforeend', `<div class="bg-gray-900/50 rounded-lg p-4 flex justify-between items-center"><span class="font-semibold text-white">${version.name}</span><a href="${version.url}" class="gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div>`);
+                    // Dynamically generated download link for plugins/scripts/utilities now includes target="_blank"
+                    versionsGrid.insertAdjacentHTML('beforeend', `<div class="bg-gray-900/50 rounded-lg p-4 flex justify-between items-center"><span class="font-semibold text-white">${version.name}</span><a href="${version.url}" target="_blank" class="gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div>`);
                 });
             } else {
                 versionsContainer.style.display = 'none';
