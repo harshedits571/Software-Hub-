@@ -23,22 +23,28 @@
             overflow-x: hidden;
             position: relative;
         }
+        
+        body.is-transitioning {
+            pointer-events: none;
+        }
 
-        /* --- Animated Aurora Background --- */
-        body::before {
-            content: '';
+        /* --- Mouse Follower Glow --- */
+        #mouse-follower {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 15% 25%, rgba(66, 153, 225, 0.2), transparent 40%),
-                        radial-gradient(circle at 85% 75%, rgba(159, 122, 234, 0.2), transparent 40%),
-                        radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.15), transparent 40%);
-            animation: move-aurora 20s infinite alternate ease-in-out;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.15), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease-out, transform 0.05s linear;
         }
-        
+
+        /* --- Parallax Aurora Background --- */
         .aurora-container {
             position: fixed;
             top: 0;
@@ -54,16 +60,17 @@
             border-radius: 50%;
             filter: blur(100px);
             opacity: 0.5;
+            will-change: transform;
         }
 
-        .shape1 { width: 400px; height: 400px; background-color: var(--glow-color-1); top: 10%; left: 10%; animation: float 15s infinite ease-in-out alternate; }
-        .shape2 { width: 300px; height: 300px; background-color: var(--glow-color-2); top: 60%; left: 80%; animation: float 18s infinite ease-in-out alternate-reverse; }
-        .shape3 { width: 500px; height: 500px; background-color: var(--glow-color-3); top: 50%; left: 30%; animation: float 20s infinite ease-in-out alternate; }
-        .shape4 { width: 350px; height: 350px; background-color: var(--glow-color-4); top: 20%; left: 70%; animation: float 22s infinite ease-in-out alternate-reverse; }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
-            100% { transform: translate(50px, 80px) rotate(30deg) scale(1.1); }
+        .shape1 { width: 400px; height: 400px; background-color: var(--glow-color-1); top: 10%; left: 10%; }
+        .shape2 { width: 300px; height: 300px; background-color: var(--glow-color-2); top: 60%; left: 80%; }
+        .shape3 { width: 500px; height: 500px; background-color: var(--glow-color-3); top: 50%; left: 30%; }
+        .shape4 { width: 350px; height: 350px; background-color: var(--glow-color-4); top: 20%; left: 70%; }
+        
+        /* --- Interactive Card Tilting --- */
+        .interactive-card {
+            perspective: 1000px;
         }
 
         /* --- Liquid Glass Card Style --- */
@@ -72,10 +79,11 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.2s ease-out; /* Adjusted for smoother tilting */
             position: relative;
             overflow: hidden;
             border-radius: 1rem; /* 16px */
+            transform-style: preserve-3d; /* For tilting */
         }
 
         .glass-card::before {
@@ -92,7 +100,7 @@
         }
 
         .glass-card:hover {
-            transform: translateY(-8px);
+            /* transform: translateY(-8px); REMOVED to allow tilt effect */
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             border-color: rgba(255, 255, 255, 0.15);
         }
@@ -115,23 +123,75 @@
             to { background-position: 200% center; }
         }
 
-        /* --- Gradient Button --- */
+        /* --- Enhanced Gradient Button --- */
         .gradient-btn {
+            position: relative; /* For pseudo-elements and particles */
+            overflow: hidden; /* To contain shimmer and particles */
             background-image: linear-gradient(to right, #6d28d9, #9333ea, #be185d);
             background-size: 200% auto;
             transition: all 0.4s ease-in-out;
             box-shadow: 0 4px 15px 0 rgba(196, 125, 243, 0.4);
         }
+        
+        .gradient-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, rgba(255,255,255,0) 20%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 80%);
+            transform: skewX(-25deg);
+            transition: left 0.8s ease-in-out;
+        }
 
         .gradient-btn:hover {
             background-position: right center;
             transform: scale(1.05);
-            box-shadow: 0 6px 20px 0 rgba(196, 125, 243, 0.6);
+            box-shadow: 0 8px 30px 0 rgba(196, 125, 243, 0.7);
+        }
+
+        .gradient-btn:hover::before {
+            left: 150%;
+        }
+
+        /* Particle effect for buttons */
+        .particle {
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 50%;
+            animation: fly 0.9s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fly {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(0) translate(var(--x), var(--y)); opacity: 0; }
         }
         
-        /* --- General Styles & Transitions --- */
-        .page-view { transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; }
-        .page-view.hidden { opacity: 0; transform: scale(0.97); pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; }
+        /* --- Page Transition Animations --- */
+        .page-view { 
+            will-change: transform, opacity;
+            animation: slideIn 0.5s ease-out forwards;
+        }
+        
+        .page-view.hidden { 
+            display: none; /* Use display none to prevent interaction */
+        }
+        
+        body.is-leaving .page-view:not(.hidden) {
+            animation: fadeOut 0.4s ease-in forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; pointer-events: none; }
+        }
 
         .animate-on-scroll {
             opacity: 0;
@@ -156,12 +216,14 @@
 </head>
 <body class="antialiased">
 
+<div id="mouse-follower"></div>
+
 <!-- Animated Background Shapes -->
 <div class="aurora-container">
-    <div class="aurora-shape shape1"></div>
-    <div class="aurora-shape shape2"></div>
-    <div class="aurora-shape shape3"></div>
-    <div class="aurora-shape shape4"></div>
+    <div class="aurora-shape shape1" data-speed="0.2"></div>
+    <div class="aurora-shape shape2" data-speed="0.5"></div>
+    <div class="aurora-shape shape3" data-speed="0.35"></div>
+    <div class="aurora-shape shape4" data-speed="0.6"></div>
 </div>
 
 <!-- Header -->
@@ -200,7 +262,7 @@
         </section>
 
         <!-- Easy Workflow Showcase Section -->
-        <section id="easy-workflow-showcase" class="mb-20 animate-on-scroll">
+        <section id="easy-workflow-showcase" class="mb-20 animate-on-scroll interactive-card">
             <div class="glass-card p-8 md:p-12" style="background: rgba(10, 5, 20, 0.7);">
                 <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                     <div class="text-center">
@@ -224,11 +286,11 @@
         <section id="software" class="mb-20 animate-on-scroll">
             <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-indigo-500 pl-4">Adobe Software</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('after-effects')"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">After Effects</h4><p class="text-gray-400">Motion graphics and visual effects</p></div></div>
-                <div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('premiere-pro')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" alt="Premiere Pro Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Premiere Pro</h4><p class="text-gray-400">Professional video editing</p></div></div>
-                <div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('photoshop')"><img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Photoshop Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Photoshop</h4><p class="text-gray-400">Image editing and graphic design</p></div></div>
-                <div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('illustrator')"><img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" alt="Illustrator Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Illustrator</h4><p class="text-gray-400">Vector graphics and illustration</p></div></div>
-                <div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('media-encoder')"><img src="https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg" alt="Media Encoder Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Media Encoder</h4><p class="text-gray-400">Rendering and transcoding</p></div></div>
+                <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('after-effects')"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">After Effects</h4><p class="text-gray-400">Motion graphics and visual effects</p></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('premiere-pro')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" alt="Premiere Pro Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Premiere Pro</h4><p class="text-gray-400">Professional video editing</p></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('photoshop')"><img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Photoshop Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Photoshop</h4><p class="text-gray-400">Image editing and graphic design</p></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('illustrator')"><img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" alt="Illustrator Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Illustrator</h4><p class="text-gray-400">Vector graphics and illustration</p></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('media-encoder')"><img src="https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg" alt="Media Encoder Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Media Encoder</h4><p class="text-gray-400">Rendering and transcoding</p></div></div></div>
             </div>
         </section>
 
@@ -236,23 +298,23 @@
         <section id="plugins" class="mb-20 animate-on-scroll">
             <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-purple-500 pl-4">Plugins</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'sapphire')"><div class="flex items-start space-x-4"><img src="assets/sap.png" alt="Sapphire" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Sapphire Suite</h5><p class="text-sm text-gray-400">Industry-standard VFX plugins.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'bcc')"><div class="flex items-start space-x-4"><img src="assets/cc.png" alt="BCC" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">BCC Suite</h5><p class="text-sm text-gray-400">Comprehensive visual effects.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'magic-bullet')"><div class="flex items-start space-x-4"><img src="assets/mb.png" alt="Magic Bullet" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Magic Bullet Suite</h5><p class="text-sm text-gray-400">Professional color correction tools.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'shooter-suite')"><div class="flex items-start space-x-4"><img src="assets/rg-ss.png" alt="Shooter Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shooter Suite</h5><p class="text-sm text-gray-400">Footage prep and delivery tools.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'vfx-suite')"><div class="flex items-start space-x-4"><img src="assets/vs.png" alt="VFX Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">VFX Suite</h5><p class="text-sm text-gray-400">Keying, tracking, and cleanup.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'element-3d')"><div class="flex items-start space-x-4"><img src="assets/e3d.png" alt="Element 3D" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Element 3D</h5><p class="text-sm text-gray-400">Advanced 3D render engine.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'saber')"><div class="flex items-start space-x-4"><img src="assets/sab.png" alt="Saber" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Saber</h5><p class="text-sm text-gray-400">High-energy beams and effects.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'rsmb')"><div class="flex items-start space-x-4"><img src="assets/rsmb.png" alt="RSMB" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">RSMB</h5><p class="text-sm text-gray-400">ReelSmart Motion Blur.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'fx-console')"><div class="flex items-start space-x-4"><img src="assets/fxc.png" alt="FX Console" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">FX Console</h5><p class="text-sm text-gray-400">Workflow utility for effects.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'trapcode-suite')"><div class="flex items-start space-x-4"><img src="assets/rg-ts.png" alt="Trapcode Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Trapcode Suite</h5><p class="text-sm text-gray-400">3D motion graphics and VFX.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'optical-flares')"><div class="flex items-start space-x-4"><img src="assets/VC-ofpng.png" alt="Optical Flares" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Optical Flares</h5><p class="text-sm text-gray-400">Realistic lens flare generator.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'twixtor-pro')"><div class="flex items-start space-x-4"><img src="assets/twxt.png" alt="Twixtor" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Twixtor Pro</h5><p class="text-sm text-gray-400">Intelligent slow-motion.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'red-giant-universe')"><div class="flex items-start space-x-4"><img src="assets/rgu.png" alt="Red Giant Universe" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Red Giant Universe</h5><p class="text-sm text-gray-400">Effects and transitions library.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'shadow-studio-3')"><div class="flex items-start space-x-4"><img src="assets/ss3.png" alt="Shadow Studio 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shadow Studio 3</h5><p class="text-sm text-gray-400">Realistic shadow generator.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'text-explorer')"><div class="flex items-start space-x-4"><img src="assets/te.png" alt="Text Explorer" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Text Explorer</h5><p class="text-sm text-gray-400">Advanced text animation tool.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'deep-glow')"><div class="flex items-start space-x-4"><img src="assets/dg.jpg" alt="Deep Glow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Deep Glow</h5><p class="text-sm text-gray-400">Physically accurate glows.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'liquid-glass')"><div class="flex items-start space-x-4"><img src="assets/lg.png" alt="Liquid Glass" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Liquid Glass</h5><p class="text-sm text-gray-400">Liquid and glass simulation.</p></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'sapphire')"><div class="flex items-start space-x-4"><img src="assets/sap.png" alt="Sapphire" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Sapphire Suite</h5><p class="text-sm text-gray-400">Industry-standard VFX plugins.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'bcc')"><div class="flex items-start space-x-4"><img src="assets/cc.png" alt="BCC" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">BCC Suite</h5><p class="text-sm text-gray-400">Comprehensive visual effects.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'magic-bullet')"><div class="flex items-start space-x-4"><img src="assets/mb.png" alt="Magic Bullet" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Magic Bullet Suite</h5><p class="text-sm text-gray-400">Professional color correction tools.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'shooter-suite')"><div class="flex items-start space-x-4"><img src="assets/rg-ss.png" alt="Shooter Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shooter Suite</h5><p class="text-sm text-gray-400">Footage prep and delivery tools.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'vfx-suite')"><div class="flex items-start space-x-4"><img src="assets/vs.png" alt="VFX Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">VFX Suite</h5><p class="text-sm text-gray-400">Keying, tracking, and cleanup.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'element-3d')"><div class="flex items-start space-x-4"><img src="assets/e3d.png" alt="Element 3D" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Element 3D</h5><p class="text-sm text-gray-400">Advanced 3D render engine.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'saber')"><div class="flex items-start space-x-4"><img src="assets/sab.png" alt="Saber" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Saber</h5><p class="text-sm text-gray-400">High-energy beams and effects.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'rsmb')"><div class="flex items-start space-x-4"><img src="assets/rsmb.png" alt="RSMB" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">RSMB</h5><p class="text-sm text-gray-400">ReelSmart Motion Blur.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'fx-console')"><div class="flex items-start space-x-4"><img src="assets/fxc.png" alt="FX Console" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">FX Console</h5><p class="text-sm text-gray-400">Workflow utility for effects.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'trapcode-suite')"><div class="flex items-start space-x-4"><img src="assets/rg-ts.png" alt="Trapcode Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Trapcode Suite</h5><p class="text-sm text-gray-400">3D motion graphics and VFX.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'optical-flares')"><div class="flex items-start space-x-4"><img src="assets/VC-ofpng.png" alt="Optical Flares" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Optical Flares</h5><p class="text-sm text-gray-400">Realistic lens flare generator.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'twixtor-pro')"><div class="flex items-start space-x-4"><img src="assets/twxt.png" alt="Twixtor" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Twixtor Pro</h5><p class="text-sm text-gray-400">Intelligent slow-motion.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'red-giant-universe')"><div class="flex items-start space-x-4"><img src="assets/rgu.png" alt="Red Giant Universe" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Red Giant Universe</h5><p class="text-sm text-gray-400">Effects and transitions library.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'shadow-studio-3')"><div class="flex items-start space-x-4"><img src="assets/ss3.png" alt="Shadow Studio 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shadow Studio 3</h5><p class="text-sm text-gray-400">Realistic shadow generator.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'text-explorer')"><div class="flex items-start space-x-4"><img src="assets/te.png" alt="Text Explorer" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Text Explorer</h5><p class="text-sm text-gray-400">Advanced text animation tool.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'deep-glow')"><div class="flex items-start space-x-4"><img src="assets/dg.jpg" alt="Deep Glow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Deep Glow</h5><p class="text-sm text-gray-400">Physically accurate glows.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'liquid-glass')"><div class="flex items-start space-x-4"><img src="assets/lg.png" alt="Liquid Glass" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Liquid Glass</h5><p class="text-sm text-gray-400">Liquid and glass simulation.</p></div></div></div></div>
             </div>
         </section>
 
@@ -260,12 +322,12 @@
         <section id="scripts" class="mb-20 animate-on-scroll">
             <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-teal-500 pl-4">Scripts & Extensions</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'motion-bro')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308703953961091153/1308703954263085066/image.png?ex=68d3a589&is=68d25409&hm=c15e8e927a88d9b90901373e52a1c449832600ae9137fd1a4e1de5250f097596" alt="Motion Bro" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Motion Bro</h5><p class="text-sm text-gray-400">The most popular extension for presets.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'flow')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308702534050910239/1308702534780583986/image.png?ex=68d3a436&is=68d252b6&hm=44119d608d83bda8cbbe518027a8299c3713974578c1108f36c5ff4cfea16284" alt="Flow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Flow</h5><p class="text-sm text-gray-400">Easy animation curve control.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'geolayers')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308704311458529320/1308704311747940352/image.png?ex=68d3a5de&is=68d2545e&hm=79bb0970efb74e9e0ee225551846db4f8ff1114dbe6d15915952d492b4d96072" alt="GEOlayers 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">GEOlayers 3</h5><p class="text-sm text-gray-400">Map animation and data visualization.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'JerryFlow V2')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308707033498779690/1308707033733922826/image.png?ex=68d3a867&is=68d256e7&hm=77d1b205cc5a0be728df1318056a2ec50577063ca2e573d3e76c0abe9e181199" alt="JerryFlow V2" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">JerryFlow V2</h5><p class="text-sm text-gray-400">The ultimate extension for After Effects</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'atomx')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1362715080235552929/1362715080394801192/AtomX-Extension-for-After-Effects-Premiere-Pro-1.jpg?ex=68d45c91&is=68d30b11&hm=6aaf0956a6f13aebc3205975e1cab6d4dfd54217c27850127352dae571546546&" alt="AtomX" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">AtomX</h5><p class="text-sm text-gray-400">Extension for motion graphics packages.</p></div></div></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'keystone')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308705938076733500/1308705938294833252/image.png?ex=68d3a762&is=68d255e2&hm=f9c66fac569012d8644c033478d90d3f5229ff241e978b7aa12520b0f81d1659" alt="Keystone" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Keystone</h5><p class="text-sm text-gray-400">Easy layer alignment & distribution.</p></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'motion-bro')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308703953961091153/1308703954263085066/image.png?ex=68d3a589&is=68d25409&hm=c15e8e927a88d9b90901373e52a1c449832600ae9137fd1a4e1de5250f097596" alt="Motion Bro" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Motion Bro</h5><p class="text-sm text-gray-400">The most popular extension for presets.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'flow')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308702534050910239/1308702534780583986/image.png?ex=68d3a436&is=68d252b6&hm=44119d608d83bda8cbbe518027a8299c3713974578c1108f36c5ff4cfea16284" alt="Flow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Flow</h5><p class="text-sm text-gray-400">Easy animation curve control.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'geolayers')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308704311458529320/1308704311747940352/image.png?ex=68d3a5de&is=68d2545e&hm=79bb0970efb74e9e0ee225551846db4f8ff1114dbe6d15915952d492b4d96072" alt="GEOlayers 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">GEOlayers 3</h5><p class="text-sm text-gray-400">Map animation and data visualization.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'JerryFlow V2')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308707033498779690/1308707033733922826/image.png?ex=68d3a867&is=68d256e7&hm=77d1b205cc5a0be728df1318056a2ec50577063ca2e573d3e76c0abe9e181199" alt="JerryFlow V2" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">JerryFlow V2</h5><p class="text-sm text-gray-400">The ultimate extension for After Effects</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'atomx')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1362715080235552929/1362715080394801192/AtomX-Extension-for-After-Effects-Premiere-Pro-1.jpg?ex=68d45c91&is=68d30b11&hm=6aaf0956a6f13aebc3205975e1cab6d4dfd54217c27850127352dae571546546&" alt="AtomX" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">AtomX</h5><p class="text-sm text-gray-400">Extension for motion graphics packages.</p></div></div></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'keystone')"><div class="flex items-start space-x-4"><img src="https://cdn.discordapp.com/attachments/1308705938076733500/1308705938294833252/image.png?ex=68d3a762&is=68d255e2&hm=f9c66fac569012d8644c033478d90d3f5229ff241e978b7aa12520b0f81d1659" alt="Keystone" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Keystone</h5><p class="text-sm text-gray-400">Easy layer alignment & distribution.</p></div></div></div></div>
             </div>
         </section>
 
@@ -274,10 +336,10 @@
             <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-rose-500 pl-4">Assets</h3>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 <!-- Added target="_blank" to all static download links in Assets section -->
-                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Malice Ultimate Pack</h5><p class="text-sm text-gray-400 mb-4">Light leaks, dust, and film grain.</p><a href="https://drive.google.com/drive/folders/1vZ0D6keKnKOEr8vPcPXoZt9KsuVEKqmR" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
-                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Sound FX Library</h5><p class="text-sm text-gray-400 mb-4">Whooshes, impacts, and risers.</p><a href="https://drive.google.com/drive/folders/1q6BzFxLDKY8tt48SqLng0-lPFODNZKpA" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
-                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">LUTs Collection</h5><p class="text-sm text-gray-400 mb-4">Cinematic color grading presets.</p><a href="#" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
-                <div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Editing Assets</h5><p class="text-sm text-gray-400 mb-4">Bundle of digital resources.</p><a href="https://drive.google.com/drive/folders/1jl0iH8E5w9d-jXYTw3uKhiAkVYdWZ2ia" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div>
+                <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Malice Ultimate Pack</h5><p class="text-sm text-gray-400 mb-4">Light leaks, dust, and film grain.</p><a href="https://drive.google.com/drive/folders/1vZ0D6keKnKOEr8vPcPXoZt9KsuVEKqmR" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Sound FX Library</h5><p class="text-sm text-gray-400 mb-4">Whooshes, impacts, and risers.</p><a href="https://drive.google.com/drive/folders/1q6BzFxLDKY8tt48SqLng0-lPFODNZKpA" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">LUTs Collection</h5><p class="text-sm text-gray-400 mb-4">Cinematic color grading presets.</p><a href="#" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Editing Assets</h5><p class="text-sm text-gray-400 mb-4">Bundle of digital resources.</p><a href="https://drive.google.com/drive/folders/1jl0iH8E5w9d-jXYTw3uKhiAkVYdWZ2ia" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div></div>
             </div>
         </section>
 
@@ -285,16 +347,15 @@
         <section id="utilities" class="mb-20 animate-on-scroll">
             <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-yellow-500 pl-4">Utilities & Other Software</h3>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'topaz-ai')"><h5 class="text-lg font-bold text-white mb-1">Topaz AI Suite</h5><p class="text-sm text-gray-400">AI-powered image & video enhancement.</p></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'Filmora 14')"><h5 class="text-lg font-bold text-white mb-1">Filmora 14</h5><p class="text-sm text-gray-400">AI-powered efficiency and simplicity.</p></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'idm')"><h5 class="text-lg font-bold text-white mb-1">IDM (Cracked)</h5><p class="text-sm text-gray-400">Internet Download Manager.</p></div>
-                <div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'pure-ref')"><h5 class="text-lg font-bold text-white mb-1">Pure Ref</h5><p class="text-sm text-gray-400">Simple reference image viewer.</p></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'topaz-ai')"><h5 class="text-lg font-bold text-white mb-1">Topaz AI Suite</h5><p class="text-sm text-gray-400">AI-powered image & video enhancement.</p></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'Filmora 14')"><h5 class="text-lg font-bold text-white mb-1">Filmora 14</h5><p class="text-sm text-gray-400">AI-powered efficiency and simplicity.</p></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'idm')"><h5 class="text-lg font-bold text-white mb-1">IDM (Cracked)</h5><p class="text-sm text-gray-400">Internet Download Manager.</p></div></div>
+                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'pure-ref')"><h5 class="text-lg font-bold text-white mb-1">Pure Ref</h5><p class="text-sm text-gray-400">Simple reference image viewer.</p></div></div>
             </div>
         </section>
         
         <!-- Other Plugins Section -->
-        <section id="other-plugins" class="mb-20 animate-on-scroll">
-            <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-cyan-500 pl-4">Others</h3>
+        <section id="other-plugins" class="mb-20 animate-on-scroll interactive-card">
             <div class="glass-card rounded-xl p-6 md:p-8 flex flex-col gap-6">
                 <div class="flex flex-col items-center text-center">
                     <h5 class="text-2xl font-bold text-white mb-4">100+ Plugins Pack</h5>
@@ -308,7 +369,7 @@
         </section>
 
         <!-- Request a Resource Section -->
-        <section id="request-resource" class="mb-20 animate-on-scroll">
+        <section id="request-resource" class="mb-20 animate-on-scroll interactive-card">
             <div class="glass-card p-8 text-center">
                 <h3 class="text-3xl font-bold text-white tracking-tight mb-4">Missing a Resource?</h3>
                 <p class="text-gray-400 max-w-2xl mx-auto mb-6">Can't find the plugin, script, or software you're looking for? Join our Discord server and let us know in the dedicated requests channel. We'll do our best to add it to the hub!</p>
@@ -375,6 +436,8 @@
                     <p id="item-detail-description" class="text-gray-300 text-lg mb-6"></p>
                 </div>
             </div>
+            <!-- Container for extra buttons like the AtomX Mega Pack button -->
+            <div id="item-extra-actions" class="mt-6"></div>
             <div id="item-versions-container" class="mt-8 pt-8 border-t border-white/10">
                 <h4 class="text-2xl font-bold text-white tracking-tight mb-4 text-center md:text-left">Available Versions</h4>
                 <div id="item-versions-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -476,6 +539,64 @@
     </main>
 </div>
 
+<!-- AtomX Mega Pack View -->
+<div id="atomx-packs-view" class="page-view hidden">
+    <main class="container mx-auto max-w-7xl px-6 pt-32 pb-12">
+        <button id="atomx-back-button" class="gradient-btn text-white font-semibold py-2 px-5 rounded-full shadow-lg mb-8 inline-flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            <span>Go Back</span>
+        </button>
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tighter text-white">AtomX Mega <span class="gradient-text">Pack</span></h1>
+            <p class="text-gray-400 mt-2">The complete collection of AtomX packs. Click any pack to download.</p>
+        </div>
+        <div id="atomx-packs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- CARDS ARE NOW PRE-BUILT IN THE HTML -->
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">8000+ High-Quality Motion Templates V8</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/trendy-graphics-pack/24321544" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12b8aG_U09HBlvWKe-IwACqRXQDNhO5tz/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">1500+ Transitions for After Effects</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/1500-transitions-for-after-effects/37533954" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12NXy8xvMfFRzhRvvFlsncjIqteMGAXkw/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Countdown Paper</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/countdown-paper/54785049" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12NT4hqPB1R8dTo_Jwm8HRIkvtgvs44Sm/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Hand Drawn Constructor</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/hand-drawn-constructor/50718561" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12QAM9ST4tBR4_yozwuIRue-8yD37PJ5t/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Ransom Letters</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/ransom-letters/49277679" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12cDYNK9fbqbqyxBPC2Z3yLYnYWAXcFiX/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Motion Presets</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/motion-presets/47203094" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12OWMzvMG4g3xdaFvmo1LCVLL77MHFDP1/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Text Presets</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/romantic-pack-v10/33485560" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12RQm7gvbqazMRppQhDoxRhvHujSEGdE0/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Social Pack</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/social-pack/33516017" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12U5jgcMbCUqDPKme6-0VvZg8_C5H8Ing/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">VFX Effects Pack For AE</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/vfx-effects-pack/47865092" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12dISheLrp-J57hJoXtli3Tio7-ciWHYw/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Transitions Toolbox</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/transitions-toolbox/48281694" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12SGprlGehwIbiUzwy5WFQNIvVo9FdxxZ/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Technology Constructor</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/technology-constructor/25146667" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12eMXLAM3k5e_n7bracsQEsWfETf20-Vk/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">300+ Slides For After Effects</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/technology-constructor/25146667" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><span class="block w-full sm:w-auto flex-1 bg-gray-800 text-gray-600 font-semibold py-2 px-4 rounded-full text-sm cursor-not-allowed">N/A</span></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Instagram Stories Big Pack</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/instagram-big-pack/34945189" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12FkWCkeZBHMsSZa9AVxVchI8RoLwI4QQ/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Collage Kit Constructor</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/collage-kit-constructor/35640397" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/114AkNV0z14TbpDWK1QgEUTpv_XUwKshG/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">BASE | Transitions and Motion Graphics</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/base-transitions-and-motion-graphics-for-after-effects/31018620" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12mMwtsK6qDVhz1fTP5SnbVt27RJ1XIcy/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Text Presets | Atom</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/text-effect/46896703" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12COf8W30vY2tOMxIWVgSqJUinLDVXyXe/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Text Effect</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><span class="block w-full sm:w-auto flex-1 bg-gray-800/40 border border-gray-700 text-gray-500 font-semibold py-2 px-4 rounded-full text-sm cursor-not-allowed">No Preview</span><a href="https://drive.google.com/file/d/124rjbVOhSnVPEe2y6tVp2OxUtYNjTGyc/view?usp=sharing" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Stream Overlays Pack</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/stream-overlays-pack/29422618" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12-Lrp76ckZyyXaVgEXHKdACN0Hrw7Mxr/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Shape Elements Library</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/shape-elements-library-atomx/28873541" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/11yUFgwla_utooPWMjZK6GckwYodFqdzQ/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Seamless Loop Kinetic Posters</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/seamless-loop-kinetic-posters/24684532" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12lDQ0iN-Qom_63zNv52CuXhqVZwrMAEc/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Romantic Pack V2.0</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><span class="block w-full sm:w-auto flex-1 bg-gray-800/40 border border-gray-700 text-gray-500 font-semibold py-2 px-4 rounded-full text-sm cursor-not-allowed">No Preview</span><a href="https://drive.google.com/file/d/11wa-lF4rbKL5whfA0LkWWEP8lQVJqUV9/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Photo Animator Effects</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><span class="block w-full sm:w-auto flex-1 bg-gray-800/40 border border-gray-700 text-gray-500 font-semibold py-2 px-4 rounded-full text-sm cursor-not-allowed">No Preview</span><a href="https://drive.google.com/file/d/11uXHRxfhdfamX5sp3e84pYVn1ueqimQH/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Motion Graphics Pack // 550+ Animations</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/motion-graphics-pack/23678923" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/11uGWRAJ9bRDBSgEHSrSiZ4oVbIForOT5/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Mega FX Pack (+1600 FX)</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/mega-fx-pack-1600-fx/50137495" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/11sVFiBaV39UFBltvIvEu0mBfpKD9BaZt/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Medical Constructor</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/medical-constructor/27636317" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/11jjHBBGHyG3hExWU7r4UkZ77suOOkQWx/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Just Typography Pack</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/just-typography-pack/33130966" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/11howZuZZHe6wm8FDF-dy0DhkuN0EJ_3u/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Instagram Stories For Ae</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/instagram-stories-designs-and-transitions-pack/21895564" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/11fv2dgsYrXKB_XFLBMj4_ICaCwRMdOrp/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">400+ Vertical Templates For After Effects</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/stories-pack/33921479" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><span class="block w-full sm:w-auto flex-1 bg-gray-800 text-gray-600 font-semibold py-2 px-4 rounded-full text-sm cursor-not-allowed">N/A</span></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">iBG | 300+ Loop Backgrounds</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/ibg-300-loop-backgrounds/35090369" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/11d4cD4BESPLr86Yc73tNRjiB3UnYoryZ/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">History Pack V1</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/history-pack-v1/54972733" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/11_N5Ch9L1LDgfWZWhtAbUPJ1sjWwm5Nd/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Graphics Pack Rise v1.0</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><span class="block w-full sm:w-auto flex-1 bg-gray-800/40 border border-gray-700 text-gray-500 font-semibold py-2 px-4 rounded-full text-sm cursor-not-allowed">No Preview</span><a href="https://drive.google.com/file/d/11PWXZ02sG4wfpKzplua9jfYVjWE7DxEI/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">500+ Glitch Assets For After Effects</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/glitch-pack/29662551" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/11MnI8LIJVvTNDAdau7mxgeJb5aXAZXhu/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">FRACTAL X | 650+ Glitch Pack</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/fractal-x-650-glitch-pack/36865814" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/11Lg_EG_qBR6y-PpfBKXNNGm303Zoii_H/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Big Pack of Typography</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/big-pack-of-typography-atom/23584216" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/113g3HfaUdunJfoloHNwDKLvXqwhEwoWN/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">900+ Backgrounds For After Effects</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/backgrounds-pack/32623942" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/1106UFvFg2wF4_aHieP-TyhQJCtMni3XH/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">MegaMotion | Animation Motion Presets</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/megamotion-animation-motion-presets/40576931" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/10y1TpDhSi903OPCJfvJufhWkcamNRW1K/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">4500+ Graphics Pack V5</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><span class="block w-full sm:w-auto flex-1 bg-gray-800/40 border border-gray-700 text-gray-500 font-semibold py-2 px-4 rounded-full text-sm cursor-not-allowed">No Preview</span><a href="https://drive.google.com/file/d/10tm3-DZ9MIs3SZj0JdN_RCsY8UyFlqnO/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">1000+ Titles For After Effects</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/typography-graphics-package/28464847" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/10mW0OCL_5UBiv0EQ6mKnpe0FH4UT6Zfy/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">700+ Assets For After Effects</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/after-effects-presets/47210203" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12D2YpPcgzNXthJ75OwfPRbS-g0VA5kfw/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+            <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between text-center"><h5 class="text-base font-bold text-white mb-4 flex-grow flex items-center justify-center">Ultimate Logo Reveal Pack</h5><div class="flex flex-col sm:flex-row gap-2 justify-center mt-auto"><a href="https://videohive.net/item/ultimate-logo-reveal-pack/37809022" target="_blank" class="block w-full sm:w-auto flex-1 bg-gray-700/50 border border-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors">Preview</a><a href="https://drive.google.com/file/d/12D2YpPcgzNXthJ75OwfPRbS-g0VA5kfw/view?usp=drive_link" target="_blank" class="block w-full sm:w-auto flex-1 gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div></div>
+        </div>
+    </main>
+</div>
+
+
 <!-- Back to Top Button -->
 <button id="back-to-top" class="fixed bottom-6 right-6 gradient-btn text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transform translate-y-4">
     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" /></svg>
@@ -553,9 +674,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- DATA STORE (PRESERVED FROM ORIGINAL FILE) ---
+    // --- DATA STORE ---
     const itemData = {
-plugins: {
+        plugins: {
             'sapphire': { title: 'Sapphire Suite', description: 'Sapphire Suite by Boris FX is an essential collection of powerful plugins for editors, artists, and animators. It offers a wide range of high-quality effects, including glows, glints, lens flares, and transitions, known for their stunning image quality and intuitive controls.', image: 'assets/sap.png', versions: [{ name: 'Sapphire 2024.5', url: '#' }, { name: 'Sapphire 2023.1', url: '#' }, { name: 'Sapphire 2022.5', url: '#' }] },
             'bcc': { title: 'BCC Suite', description: 'Boris FX Continuum (BCC) is a comprehensive visual effects and motion graphics package. It includes tools for particles, image restoration, 3D titling, keying, and compositing, making it a go-to tool for post-production professionals.', image: 'assets/cc.png', versions: [{ name: 'Continuum 2022', url: 'https://drive.google.com/file/d/1k287dnhedu9NDOFJy852Why7YxU-2gQO/view?usp=sharing' }] },
             'magic-bullet': { title: 'Magic Bullet Suite', description: 'From Maxon, Magic Bullet is a set of plugins for color correction, finishing, and film looks. It gives you everything you need to make your footage look great, right on your editing timeline.', image: 'assets/mb.png', versions: [{ name: 'Magic Bullet 2024', url: 'https://drive.google.com/file/d/1-9qeNipVsdnZ_oR7jQOmevMsArS6iAw1/view?usp=sharing' }] },
@@ -603,32 +724,57 @@ plugins: {
     const itemDetailView = document.getElementById('item-detail-view');
     const pluginsListView = document.getElementById('plugins-list-view');
     const easyWorkflowView = document.getElementById('easy-workflow-view');
+    const atomxPacksView = document.getElementById('atomx-packs-view');
     const header = document.getElementById('header');
     const backToTopButton = document.getElementById('back-to-top');
     let lastViewedSectionId = 'plugins';
 
-    function hideAllViews() {
-        mainView.classList.add('hidden');
-        softwareDetailView.classList.add('hidden');
-        itemDetailView.classList.add('hidden');
-        pluginsListView.classList.add('hidden');
-        easyWorkflowView.classList.add('hidden');
-        window.scrollTo(0, 0);
-    }
-    
-    window.showEasyWorkflowView = function() {
-        hideAllViews();
-        easyWorkflowView.classList.remove('hidden');
+    function hideAllViews(except) {
+        const views = [mainView, softwareDetailView, itemDetailView, pluginsListView, easyWorkflowView, atomxPacksView];
+        views.forEach(view => {
+            if (view !== except) {
+                view.classList.add('hidden');
+            }
+        });
     }
 
-    function populateAndShowView(viewElement, setupFunction) {
-        hideAllViews();
-        setupFunction();
-        viewElement.classList.remove('hidden');
+    function transitionToView(targetView, setupFn) {
+        if (document.body.classList.contains('is-transitioning')) return;
+
+        document.body.classList.add('is-transitioning', 'is-leaving');
+        
+        // Find the currently visible view to fade it out
+        const currentView = document.querySelector('.page-view:not(.hidden)');
+        
+        setTimeout(() => {
+            if (currentView) {
+                currentView.classList.add('hidden');
+                currentView.style.animation = ''; // Reset animation
+            }
+            
+            if(setupFn) setupFn();
+
+            hideAllViews(targetView);
+            targetView.classList.remove('hidden');
+            targetView.style.animation = 'slideIn 0.5s ease-out forwards'; // Apply intro animation
+            window.scrollTo(0, 0);
+
+            document.body.classList.remove('is-leaving');
+            
+            // Allow new transitions after a delay
+            setTimeout(() => {
+                document.body.classList.remove('is-transitioning');
+            }, 500);
+
+        }, 400); // Matches fadeOut animation duration
+    }
+
+    window.showEasyWorkflowView = function() {
+        transitionToView(easyWorkflowView);
     }
 
     window.showDetailView = function(softwareKey) {
-        populateAndShowView(softwareDetailView, () => {
+        transitionToView(softwareDetailView, () => {
             const data = softwareData[softwareKey];
             if (!data) return;
             document.getElementById('software-detail-title').textContent = data.title;
@@ -636,27 +782,41 @@ plugins: {
             const grid = document.getElementById('software-detail-grid');
             grid.innerHTML = '';
             data.versions.forEach(version => {
-                // Dynamically generated download link for software now includes target="_blank"
-                grid.insertAdjacentHTML('beforeend', `<div class="glass-card p-5 text-center flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">${data.title} ${version.year}</h5><p class="text-sm text-gray-400 mb-4">${version.desc}</p><a href="${version.url}" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div>`);
+                grid.insertAdjacentHTML('beforeend', `<div class="interactive-card"><div class="glass-card p-5 text-center flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">${data.title} ${version.year}</h5><p class="text-sm text-gray-400 mb-4">${version.desc}</p><a href="${version.url}" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div></div>`);
             });
         });
     };
 
     window.showItemDetail = function(type, key) {
-        populateAndShowView(itemDetailView, () => {
+        transitionToView(itemDetailView, () => {
             lastViewedSectionId = type;
             const data = itemData[type][key];
             if (!data) return;
             document.getElementById('item-detail-image').src = data.image;
             document.getElementById('item-detail-title').textContent = data.title;
             document.getElementById('item-detail-description').textContent = data.description;
+            
+            const extraActionsContainer = document.getElementById('item-extra-actions');
+            extraActionsContainer.innerHTML = ''; // Clear previous actions
+
+            if (type === 'scripts' && key === 'atomx') {
+                extraActionsContainer.innerHTML = `
+                    <div class="bg-indigo-900/30 rounded-lg p-6 text-center border border-indigo-500/50">
+                        <h5 class="text-xl font-bold text-white mb-2">Explore the Full Collection</h5>
+                        <p class="text-indigo-200 mb-4">Access a huge library of 40+ AtomX packs and templates.</p>
+                        <button onclick="showAtomXPacksView()" class="gradient-btn text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                            View AtomX Mega Pack
+                        </button>
+                    </div>
+                `;
+            }
+
             const versionsContainer = document.getElementById('item-versions-container');
             const versionsGrid = document.getElementById('item-versions-grid');
             versionsGrid.innerHTML = '';
             if (data.versions && data.versions.length > 0) {
                 versionsContainer.style.display = 'block';
                 data.versions.forEach(version => {
-                    // Dynamically generated download link for plugins/scripts/utilities now includes target="_blank"
                     versionsGrid.insertAdjacentHTML('beforeend', `<div class="bg-gray-900/50 rounded-lg p-4 flex justify-between items-center"><span class="font-semibold text-white">${version.name}</span><a href="${version.url}" target="_blank" class="gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm">Download</a></div>`);
                 });
             } else {
@@ -664,22 +824,126 @@ plugins: {
             }
         });
     };
+    
+    window.showAtomXPacksView = function() {
+        transitionToView(atomxPacksView);
+    }
 
     window.showPluginsList = function() {
-        hideAllViews();
-        pluginsListView.classList.remove('hidden');
+        transitionToView(pluginsListView);
     };
 
     function goBackToMain(sectionId) {
-        hideAllViews();
-        mainView.classList.remove('hidden');
-        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+        transitionToView(mainView, () => {
+            setTimeout(() => {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 100);
+        });
+    }
+
+    // --- ENHANCEMENT: INTERACTIVE CARD TILTING ---
+    document.querySelectorAll('.interactive-card').forEach(cardContainer => {
+        const card = cardContainer.querySelector('.glass-card');
+        if (!card) return;
+        
+        cardContainer.addEventListener('mousemove', (e) => {
+            const { left, top, width, height } = cardContainer.getBoundingClientRect();
+            const x = e.clientX - left - width / 2;
+            const y = e.clientY - top - height / 2;
+
+            const tiltStrength = 10;
+            const rotateY = (x / (width / 2)) * tiltStrength;
+            const rotateX = (-y / (height / 2)) * tiltStrength;
+            
+            requestAnimationFrame(() => {
+                 card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+            });
+        });
+
+        cardContainer.addEventListener('mouseleave', () => {
+            requestAnimationFrame(() => {
+                card.style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+        });
+    });
+
+    // --- ENHANCEMENT: BUTTON PARTICLE EFFECTS ---
+    function createParticle(container, x, y) {
+        const particle = document.createElement('span');
+        particle.classList.add('particle');
+        container.appendChild(particle);
+
+        const size = Math.floor(Math.random() * 6 + 3);
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+
+        particle.style.left = `${x - size / 2}px`;
+        particle.style.top = `${y - size / 2}px`;
+        
+        const randomX = (Math.random() - 0.5) * 100;
+        const randomY = (Math.random() - 0.5) * 100;
+        particle.style.setProperty('--x', `${randomX}px`);
+        particle.style.setProperty('--y', `${randomY}px`);
+
+        particle.addEventListener('animationend', () => {
+            if (particle.parentElement) {
+                particle.parentElement.removeChild(particle);
+            }
+        });
+    }
+
+    document.querySelectorAll('.gradient-btn').forEach(btn => {
+        btn.addEventListener('mouseenter', e => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            for (let i = 0; i < 15; i++) {
+                createParticle(btn, x, y);
+            }
+        });
+    });
+
+    // --- ENHANCEMENT: PARALLAX SCROLLING FOR BACKGROUNDS ---
+    const parallaxElements = document.querySelectorAll('.aurora-shape');
+    window.addEventListener('scroll', () => {
+        const scrollPosition = window.pageYOffset;
+        requestAnimationFrame(() => {
+            parallaxElements.forEach(el => {
+                const speed = parseFloat(el.dataset.speed) || 0.5;
+                el.style.transform = `translateY(${scrollPosition * speed}px)`;
+            });
+        });
+    }, { passive: true });
+
+
+    // --- Mouse Follower ---
+    const mouseFollower = document.getElementById('mouse-follower');
+
+    if (mouseFollower) {
+        window.addEventListener('mousemove', e => {
+            requestAnimationFrame(() => {
+                mouseFollower.style.left = e.clientX + 'px';
+                mouseFollower.style.top = e.clientY + 'px';
+            });
+        });
+
+        document.body.addEventListener('mouseenter', () => {
+            mouseFollower.style.opacity = '1';
+        });
+
+        document.body.addEventListener('mouseleave', () => {
+            mouseFollower.style.opacity = '0';
+        });
     }
 
     document.getElementById('software-back-button').addEventListener('click', () => goBackToMain('software'));
     document.getElementById('item-back-button').addEventListener('click', () => goBackToMain(lastViewedSectionId));
     document.getElementById('list-back-button').addEventListener('click', () => goBackToMain('other-plugins'));
     document.getElementById('workflow-back-button').addEventListener('click', () => goBackToMain('easy-workflow-showcase'));
+    document.getElementById('atomx-back-button').addEventListener('click', () => showItemDetail('scripts', 'atomx'));
     backToTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
     // Scroll effect for back-to-top button
