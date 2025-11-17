@@ -213,8 +213,60 @@
         ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #6d28d9, #be185d); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: linear-gradient(to bottom, #8b5cf6, #db2777); }
     </style>
+    <!-- Custom Style for Donation Popup -->
+    <style>
+        #donation-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        #donation-popup.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .donation-content {
+            animation: pulse-border 1.5s infinite alternate;
+        }
+        @keyframes pulse-border {
+            from { box-shadow: 0 0 10px rgba(147, 51, 234, 0.5); }
+            to { box-shadow: 0 0 20px rgba(147, 51, 234, 1); }
+        }
+    </style>
 </head>
 <body class="antialiased">
+
+<!-- Donation Popup Modal -->
+<div id="donation-popup" class="hidden">
+    <div class="glass-card donation-content p-8 max-w-sm w-11/12 text-center relative">
+        <h3 class="text-3xl font-black gradient-text mb-2">Show Your Support!</h3>
+        <p class="text-gray-300 mb-6">
+            All the software, plugins, and resources here are provided **completely free** for the community. If you found this helpful and appreciate the hard work, consider a small donation to keep the hub running!
+        </p>
+
+        <!-- UPI QR Code Placeholder - REPLACE THIS URL -->
+        <img src="https://placehold.co/200x200/4c1d95/fff?text=YOUR+UPI+QR" 
+             alt="UPI QR Code for Donation" 
+             class="w-48 h-48 mx-auto rounded-xl mb-4 border-4 border-indigo-400 p-2 bg-white object-contain"
+             onerror="this.onerror=null; this.src='https://placehold.co/200x200/4c1d95/fff?text=QR+Code+Error';">
+
+        <p class="text-xl font-bold text-white mb-4">Scan & Donate via UPI</p>
+
+        <!-- Timer/Message Area -->
+        <p id="donation-timer" class="text-sm text-gray-400 transition-opacity duration-300">
+            Automatically redirecting in <span class="font-bold text-indigo-400">5</span> seconds...
+        </p>
+    </div>
+</div>
 
 <div id="mouse-follower"></div>
 
@@ -242,6 +294,13 @@
                 <a href="#assets" class="hover:text-white transition-colors">Assets</a>
                 <a href="#request-resource" class="hover:text-white transition-colors">Request</a>
             </nav>
+            <!-- Donation button added here -->
+            <button onclick="showDonationPopup(true)" class="gradient-btn text-white font-semibold py-2 px-5 rounded-full shadow-lg flex-shrink-0 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.5l8.25 6.75-8.25 6.75-8.25-6.75L12 4.5zM12 4.5v15M12 4.5h.008v.008H12z" />
+                </svg>
+                Donate
+            </button>
             <a href="https://discord.gg/y3qnSA4ZbE" target="_blank" class="gradient-btn text-white font-semibold py-2 px-5 rounded-full shadow-lg flex-shrink-0">
                 Join Discord
             </a>
@@ -261,130 +320,270 @@
             </p>
         </section>
 
-        <!-- Easy Workflow Showcase Section -->
-        <section id="easy-workflow-showcase" class="mb-20 animate-on-scroll interactive-card">
-            <div class="glass-card p-8 md:p-12" style="background: rgba(10, 5, 20, 0.7);">
-                <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-                    <div class="text-center">
-                        <img src="assets/EWF.png" alt="Easy Workflow Script UI" class="rounded-xl shadow-2xl w-full h-auto object-cover border-4 border-white/10">
-                    </div>
-                    <div class="text-center md:text-left">
-                        <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white mb-2">Easy Workflow</h2>
-                        <p class="text-lg font-semibold gradient-text mb-4">A Script by Harsh Edits</p>
-                        <p class="text-gray-300 mb-6">
-                            Boost your productivity with Easy Workflow, the ultimate script designed to automate repetitive tasks and simplify your editing process in After Effects.
-                        </p>
-                        <button onclick="showEasyWorkflowView()" class="w-full sm:w-auto gradient-btn text-white font-bold py-3 px-8 rounded-full text-center flex items-center justify-center gap-2">
-                            View Details
-                        </button>
-                    </div>
-                </div>
+        <!-- OS Tab Navigation -->
+        <section id="os-tabs" class="mb-12 animate-on-scroll">
+            <div class="max-w-xl mx-auto glass-card !bg-gray-900/40 p-1 flex justify-between rounded-full">
+                <button id="tab-windows" onclick="switchOS('windows')" class="flex-1 py-3 px-6 text-lg font-semibold rounded-full transition-all duration-300 text-white bg-indigo-600 shadow-md shadow-indigo-500/50">
+                    <span class="inline-block align-middle">Windows Resources</span>
+                </button>
+                <button id="tab-mac" onclick="switchOS('mac')" class="flex-1 py-3 px-6 text-lg font-semibold rounded-full transition-all duration-300 text-gray-400 hover:text-white">
+                    <span class="inline-block align-middle">Mac Resources</span>
+                </button>
             </div>
         </section>
 
-        <!-- Software Section -->
-        <section id="software" class="mb-20 animate-on-scroll">
-            <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-indigo-500 pl-4">Adobe Software</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('after-effects')"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">After Effects</h4><p class="text-gray-400">Motion graphics and visual effects</p></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('premiere-pro')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" alt="Premiere Pro Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Premiere Pro</h4><p class="text-gray-400">Professional video editing</p></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('photoshop')"><img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Photoshop Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Photoshop</h4><p class="text-gray-400">Image editing and graphic design</p></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('illustrator')"><img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" alt="Illustrator Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Illustrator</h4><p class="text-gray-400">Vector graphics and illustration</p></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('media-encoder')"><img src="https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg" alt="Media Encoder Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Media Encoder</h4><p class="text-gray-400">Rendering and transcoding</p></div></div></div>
+        <div id="windows-content">
+            <!-- Easy Workflow Showcase Section (Windows) -->
+            <section id="easy-workflow-showcase" class="mb-20 animate-on-scroll interactive-card">
+                <div class="glass-card p-8 md:p-12" style="background: rgba(10, 5, 20, 0.7);">
+                    <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                        <div class="text-center">
+                            <img src="assets/EWF.png" alt="Easy Workflow Script UI" class="rounded-xl shadow-2xl w-full h-auto object-cover border-4 border-white/10">
+                        </div>
+                        <div class="text-center md:text-left">
+                            <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white mb-2">Easy Workflow</h2>
+                            <p class="text-lg font-semibold gradient-text mb-4">A Script by Harsh Edits</p>
+                            <p class="text-gray-300 mb-6">
+                                Boost your productivity with Easy Workflow, the ultimate script designed to automate repetitive tasks and simplify your editing process in After Effects.
+                            </p>
+                            <button onclick="showEasyWorkflowView()" class="w-full sm:w-auto gradient-btn text-white font-bold py-3 px-8 rounded-full text-center flex items-center justify-center gap-2">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Software Section (Windows) -->
+            <section id="software" class="mb-20 animate-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-indigo-500 pl-4">Adobe Software</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('after-effects')"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">After Effects</h4><p class="text-gray-400">Motion graphics and visual effects</p></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('premiere-pro')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" alt="Premiere Pro Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Premiere Pro</h4><p class="text-gray-400">Professional video editing</p></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('photoshop')"><img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Photoshop Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Photoshop</h4><p class="text-gray-400">Image editing and graphic design</p></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('illustrator')"><img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" alt="Illustrator Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Illustrator</h4><p class="text-gray-400">Vector graphics and illustration</p></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('media-encoder')"><img src="https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg" alt="Media Encoder Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Media Encoder</h4><p class="text-gray-400">Rendering and transcoding</p></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6 cursor-pointer" onclick="showDetailView('speech to text')"><img src="https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg" alt="speech to text Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Speech To Text</h4><p class="text-gray-400">Rendering and transcoding</p></div></div></div>
+                </div>
+            </section>
+
+            <!-- Plugins Section (Windows) -->
+            <section id="plugins" class="mb-20 animate-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-purple-500 pl-4">Plugins</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'sapphire')"><div class="flex items-start space-x-4"><img src="assets/sap.png" alt="Sapphire" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Sapphire Suite</h5><p class="text-sm text-gray-400">Industry-standard VFX plugins.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'bcc')"><div class="flex items-start space-x-4"><img src="assets/cc.png" alt="BCC" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">BCC Suite</h5><p class="text-sm text-gray-400">Comprehensive visual effects.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'magic-bullet')"><div class="flex items-start space-x-4"><img src="assets/mb.png" alt="Magic Bullet" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Magic Bullet Suite</h5><p class="text-sm text-gray-400">Professional color correction tools.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'shooter-suite')"><div class="flex items-start space-x-4"><img src="assets/rg-ss.png" alt="Shooter Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shooter Suite</h5><p class="text-sm text-gray-400">Footage prep and delivery tools.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'vfx-suite')"><div class="flex items-start space-x-4"><img src="assets/vs.png" alt="VFX Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">VFX Suite</h5><p class="text-sm text-gray-400">Keying, tracking, and cleanup.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'element-3d')"><div class="flex items-start space-x-4"><img src="assets/e3d.png" alt="Element 3D" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Element 3D</h5><p class="text-sm text-gray-400">Advanced 3D render engine.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'saber')"><div class="flex items-start space-x-4"><img src="assets/sab.png" alt="Saber" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Saber</h5><p class="text-sm text-gray-400">High-energy beams and effects.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'rsmb')"><div class="flex items-start space-x-4"><img src="assets/rsmb.png" alt="RSMB" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">RSMB</h5><p class="text-sm text-gray-400">ReelSmart Motion Blur.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'fx-console')"><div class="flex items-start space-x-4"><img src="assets/fxc.png" alt="FX Console" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">FX Console</h5><p class="text-sm text-gray-400">Workflow utility for effects.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'trapcode-suite')"><div class="flex items-start space-x-4"><img src="assets/rg-ts.png" alt="Trapcode Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Trapcode Suite</h5><p class="text-sm text-gray-400">3D motion graphics and VFX.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'optical-flares')"><div class="flex items-start space-x-4"><img src="assets/VC-ofpng.png" alt="Optical Flares" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Optical Flares</h5><p class="text-sm text-gray-400">Realistic lens flare generator.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'twixtor-pro')"><div class="flex items-start space-x-4"><img src="assets/twxt.png" alt="Twixtor" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Twixtor Pro</h5><p class="text-sm text-gray-400">Intelligent slow-motion.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'red-giant-universe')"><div class="flex items-start space-x-4"><img src="assets/rgu.png" alt="Red Giant Universe" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Red Giant Universe</h5><p class="text-sm text-gray-400">Effects and transitions library.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'shadow-studio-3')"><div class="flex items-start space-x-4"><img src="assets/ss3.png" alt="Shadow Studio 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shadow Studio 3</h5><p class="text-sm text-gray-400">Realistic shadow generator.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'text-explorer')"><div class="flex items-start space-x-4"><img src="assets/te.png" alt="Text Explorer" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Text Explorer</h5><p class="text-sm text-gray-400">Advanced text animation tool.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'deep-glow')"><div class="flex items-start space-x-4"><img src="assets/dg.jpg" alt="Deep Glow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Deep Glow</h5><p class="text-sm text-gray-400">Physically accurate glows.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'liquid-glass')"><div class="flex items-start space-x-4"><img src="assets/lg.png" alt="Liquid Glass" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Liquid Glass</h5><p class="text-sm text-gray-400">Liquid and glass simulation.</p></div></div></div></div>
+                </div>
+            </section>
+
+            <!-- Scripts & Extensions Section (Windows) -->
+            <section id="scripts" class="mb-20 animate-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-teal-500 pl-4">Scripts & Extensions</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'motion-bro')"><div class="flex items-start space-x-4"><img src="assets/motion_bro.png" alt="Motion Bro" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Motion Bro</h5><p class="text-sm text-gray-400">The most popular extension for presets.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'flow')"><div class="flex items-start space-x-4"><img src="assets/flow.png" alt="Flow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Flow</h5><p class="text-sm text-gray-400">Easy animation curve control.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'geolayers')"><div class="flex items-start space-x-4"><img src="assets/geolayers3.jpg" alt="GEOlayers 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">GEOlayers 3</h5><p class="text-sm text-gray-400">Map animation and data visualization.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'JerryFlow V2')"><div class="flex items-start space-x-4"><img src="assets/JerryFlow_v2.png" alt="JerryFlow V2" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">JerryFlow V2</h5><p class="text-sm text-gray-400">The ultimate extension for After Effects</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'atomx')"><div class="flex items-start space-x-4"><img src="assets/atom_x.jpg" alt="AtomX" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">AtomX</h5><p class="text-sm text-gray-400">Extension for motion graphics packages.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'keystone')"><div class="flex items-start space-x-4"><img src="assets/keystone.jpg" alt="Keystone" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Keystone</h5><p class="text-sm text-gray-400">Easy layer alignment & distribution.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', '3d-extruder')"><div class="flex items-start space-x-4"><img src="assets/3d-extruder.png" alt="3D Extruder" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">3D Extruder</h5><p class="text-sm text-gray-400">Extrude 2D layers into realistic 3D objects easily.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'gradient8')"><div class="flex items-start space-x-4"><img src="assets/gradient8.png" alt="Gradient8" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Aescripts Gradient8</h5><p class="text-sm text-gray-400">Generates stunning, smooth 8-bit style gradients.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'plexus')"><div class="flex items-start space-x-4"><img src="assets/plexus.png" alt="Plexus" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Aescripts Plexus</h5><p class="text-sm text-gray-400">Create complex 3D geometric structures and effects.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'autofill')"><div class="flex items-start space-x-4"><img src="assets/autofill.png" alt="AutoFill v2" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">AutoFill v2</h5><p class="text-sm text-gray-400">Automatically fill layers with keyframe-less animation.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'godrays')"><div class="flex items-start space-x-4"><img src="assets/godrays.png" alt="Crates-Godrays" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Crates-Godrays</h5><p class="text-sm text-gray-400">Generate realistic volumetric light and beam effects.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'trim-pack')"><div class="flex items-start space-x-4"><img src="assets/trim-pack.png" alt="Trim Pack" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Trim Pack V2.3.1</h5><p class="text-sm text-gray-400">Quickly trim layers and compositions efficiently.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'textevo')"><div class="flex items-start space-x-4"><img src="assets/textevo.png" alt="Text Evo" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Text Evo</h5><p class="text-sm text-gray-400">Advanced evolution-based text animation tool.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'real-glow')"><div class="flex items-start space-x-4"><img src="assets/real-glow.png" alt="Real Glow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Real Glow</h5><p class="text-sm text-gray-400">Physically-based, photorealistic glows.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'overlord-script')"><div class="flex items-start space-x-4"><img src="assets/overlord.png" alt="Overlord" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Overlord</h5><p class="text-sm text-gray-400">Seamlessly transfer shapes between AI & AE.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'newton-4')"><div class="flex items-start space-x-4"><img src="assets/newton-4.png" alt="Newton 4" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Newton 4.0</h5><p class="text-sm text-gray-400">2D physics engine for After Effects layers.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'mobar')"><div class="flex items-start space-x-4"><img src="assets/mobar.png" alt="Mobar" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Mobar</h5><p class="text-sm text-gray-400">Modern customizable toolbar for scripts.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'labels')"><div class="flex items-start space-x-4"><img src="assets/labels.png" alt="Labels" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Labels</h5><p class="text-sm text-gray-400">Workflow tool for instant color-coding layers.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'keyfast')"><div class="flex items-start space-x-4"><img src="assets/keyfast.png" alt="KeyFast" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">KeyFast</h5><p class="text-sm text-gray-400">Rapidly create and manipulate keyframes.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'influx')"><div class="flex items-start space-x-4"><img src="assets/influx.png" alt="Influx" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Influx</h5><p class="text-sm text-gray-400">Import professional video formats easily.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'excalibur')"><div class="flex items-start space-x-4"><img src="assets/excalibur.png" alt="Excalibur" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Excalibur</h5><p class="text-sm text-gray-400">Customizable command launcher for AE.</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'reach')"><div class="flex items-start space-x-4"><img src="assets/reach.png" alt="reach" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">reach</h5><p class="text-sm text-gray-400">Customizable command launcher for AE.</p></div></div></div></div>
+
+                </div>
+            </section>
+
+            <!-- Assets Section (Windows) -->
+            <section id="assets" class="mb-20 animate-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-rose-500 pl-4">Assets</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Added target="_blank" to all static download links in Assets section -->
+                    <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Malice Ultimate Pack</h5><p class="text-sm text-gray-400 mb-4">Light leaks, dust, and film grain.</p><a href="https://drive.google.com/drive/folders/1vZ0D6keKnKOEr8vPcPXoZt9KsuVEKqmR" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Sound FX Library</h5><p class="text-sm text-gray-400 mb-4">Whooshes, impacts, and risers.</p><a href="https://drive.google.com/drive/folders/1q6BzFxLDKY8tt48SqLng0-lPFODNZKpA" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">LUTs Collection</h5><p class="text-sm text-gray-400 mb-4">Cinematic color grading presets.</p><a href="#" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Editing Assets</h5><p class="text-sm text-gray-400 mb-4">Bundle of digital resources.</p><a href="https://drive.google.com/drive/folders/1jl0iH8E5w9d-jXYTw3uKhiAkVYdWZ2ia" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div></div>
+                </div>
+            </section>
+
+            <!-- Utilities Section (Windows) -->
+            <section id="utilities" class="mb-20 animate-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-yellow-500 pl-4">Utilities & Other Software</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'topaz-ai')"><h5 class="text-lg font-bold text-white mb-1">Topaz AI Suite</h5><p class="text-sm text-gray-400">AI-powered image & video enhancement.</p></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'Filmora 14')"><h5 class="text-lg font-bold text-white mb-1">Filmora 14</h5><p class="text-sm text-gray-400">AI-powered efficiency and simplicity.</p></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'idm')"><h5 class="text-lg font-bold text-white mb-1">IDM (Cracked)</h5><p class="text-sm text-gray-400">Internet Download Manager.</p></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'pure-ref')"><h5 class="text-lg font-bold text-white mb-1">Pure Ref</h5><p class="text-sm text-gray-400">Simple reference image viewer.</p></div></div>
+                </div>
+            </section>
             
-            </div>
-        </section>
-
-        <!-- Plugins Section -->
-        <section id="plugins" class="mb-20 animate-on-scroll">
-            <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-purple-500 pl-4">Plugins</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'sapphire')"><div class="flex items-start space-x-4"><img src="assets/sap.png" alt="Sapphire" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Sapphire Suite</h5><p class="text-sm text-gray-400">Industry-standard VFX plugins.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'bcc')"><div class="flex items-start space-x-4"><img src="assets/cc.png" alt="BCC" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">BCC Suite</h5><p class="text-sm text-gray-400">Comprehensive visual effects.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'magic-bullet')"><div class="flex items-start space-x-4"><img src="assets/mb.png" alt="Magic Bullet" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Magic Bullet Suite</h5><p class="text-sm text-gray-400">Professional color correction tools.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'shooter-suite')"><div class="flex items-start space-x-4"><img src="assets/rg-ss.png" alt="Shooter Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shooter Suite</h5><p class="text-sm text-gray-400">Footage prep and delivery tools.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'vfx-suite')"><div class="flex items-start space-x-4"><img src="assets/vs.png" alt="VFX Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">VFX Suite</h5><p class="text-sm text-gray-400">Keying, tracking, and cleanup.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'element-3d')"><div class="flex items-start space-x-4"><img src="assets/e3d.png" alt="Element 3D" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Element 3D</h5><p class="text-sm text-gray-400">Advanced 3D render engine.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'saber')"><div class="flex items-start space-x-4"><img src="assets/sab.png" alt="Saber" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Saber</h5><p class="text-sm text-gray-400">High-energy beams and effects.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'rsmb')"><div class="flex items-start space-x-4"><img src="assets/rsmb.png" alt="RSMB" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">RSMB</h5><p class="text-sm text-gray-400">ReelSmart Motion Blur.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'fx-console')"><div class="flex items-start space-x-4"><img src="assets/fxc.png" alt="FX Console" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">FX Console</h5><p class="text-sm text-gray-400">Workflow utility for effects.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'trapcode-suite')"><div class="flex items-start space-x-4"><img src="assets/rg-ts.png" alt="Trapcode Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Trapcode Suite</h5><p class="text-sm text-gray-400">3D motion graphics and VFX.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'optical-flares')"><div class="flex items-start space-x-4"><img src="assets/VC-ofpng.png" alt="Optical Flares" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Optical Flares</h5><p class="text-sm text-gray-400">Realistic lens flare generator.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'twixtor-pro')"><div class="flex items-start space-x-4"><img src="assets/twxt.png" alt="Twixtor" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Twixtor Pro</h5><p class="text-sm text-gray-400">Intelligent slow-motion.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'red-giant-universe')"><div class="flex items-start space-x-4"><img src="assets/rgu.png" alt="Red Giant Universe" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Red Giant Universe</h5><p class="text-sm text-gray-400">Effects and transitions library.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'shadow-studio-3')"><div class="flex items-start space-x-4"><img src="assets/ss3.png" alt="Shadow Studio 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shadow Studio 3</h5><p class="text-sm text-gray-400">Realistic shadow generator.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'text-explorer')"><div class="flex items-start space-x-4"><img src="assets/te.png" alt="Text Explorer" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Text Explorer</h5><p class="text-sm text-gray-400">Advanced text animation tool.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'deep-glow')"><div class="flex items-start space-x-4"><img src="assets/dg.jpg" alt="Deep Glow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Deep Glow</h5><p class="text-sm text-gray-400">Physically accurate glows.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('plugins', 'liquid-glass')"><div class="flex items-start space-x-4"><img src="assets/lg.png" alt="Liquid Glass" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Liquid Glass</h5><p class="text-sm text-gray-400">Liquid and glass simulation.</p></div></div></div></div>
-            </div>
-        </section>
-
-        <!-- Scripts & Extensions Section -->
-        <section id="scripts" class="mb-20 animate-on-scroll">
-            <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-teal-500 pl-4">Scripts & Extensions</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'motion-bro')"><div class="flex items-start space-x-4"><img src="assets/motion_bro.png" alt="Motion Bro" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Motion Bro</h5><p class="text-sm text-gray-400">The most popular extension for presets.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'flow')"><div class="flex items-start space-x-4"><img src="assets/flow.png" alt="Flow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Flow</h5><p class="text-sm text-gray-400">Easy animation curve control.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'geolayers')"><div class="flex items-start space-x-4"><img src="assets/geolayers3.jpg" alt="GEOlayers 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">GEOlayers 3</h5><p class="text-sm text-gray-400">Map animation and data visualization.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'JerryFlow V2')"><div class="flex items-start space-x-4"><img src="assets/JerryFlow_v2.png" alt="JerryFlow V2" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">JerryFlow V2</h5><p class="text-sm text-gray-400">The ultimate extension for After Effects</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'atomx')"><div class="flex items-start space-x-4"><img src="assets/atom_x.jpg" alt="AtomX" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">AtomX</h5><p class="text-sm text-gray-400">Extension for motion graphics packages.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'keystone')"><div class="flex items-start space-x-4"><img src="assets/keystone.jpg" alt="Keystone" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Keystone</h5><p class="text-sm text-gray-400">Easy layer alignment & distribution.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', '3d-extruder')"><div class="flex items-start space-x-4"><img src="assets/3d-extruder.png" alt="3D Extruder" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">3D Extruder</h5><p class="text-sm text-gray-400">Extrude 2D layers into realistic 3D objects easily.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'gradient8')"><div class="flex items-start space-x-4"><img src="assets/gradient8.png" alt="Gradient8" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Aescripts Gradient8</h5><p class="text-sm text-gray-400">Generates stunning, smooth 8-bit style gradients.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'plexus')"><div class="flex items-start space-x-4"><img src="assets/plexus.png" alt="Plexus" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Aescripts Plexus</h5><p class="text-sm text-gray-400">Create complex 3D geometric structures and effects.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'autofill')"><div class="flex items-start space-x-4"><img src="assets/autofill.png" alt="AutoFill v2" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">AutoFill v2</h5><p class="text-sm text-gray-400">Automatically fill layers with keyframe-less animation.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'godrays')"><div class="flex items-start space-x-4"><img src="assets/godrays.png" alt="Crates-Godrays" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Crates-Godrays</h5><p class="text-sm text-gray-400">Generate realistic volumetric light and beam effects.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'trim-pack')"><div class="flex items-start space-x-4"><img src="assets/trim-pack.png" alt="Trim Pack" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Trim Pack V2.3.1</h5><p class="text-sm text-gray-400">Quickly trim layers and compositions efficiently.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'textevo')"><div class="flex items-start space-x-4"><img src="assets/textevo.png" alt="Text Evo" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Text Evo</h5><p class="text-sm text-gray-400">Advanced evolution-based text animation tool.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'real-glow')"><div class="flex items-start space-x-4"><img src="assets/real-glow.png" alt="Real Glow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Real Glow</h5><p class="text-sm text-gray-400">Physically-based, photorealistic glows.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'overlord-script')"><div class="flex items-start space-x-4"><img src="assets/overlord.png" alt="Overlord" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Overlord</h5><p class="text-sm text-gray-400">Seamlessly transfer shapes between AI & AE.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'newton-4')"><div class="flex items-start space-x-4"><img src="assets/newton-4.png" alt="Newton 4" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Newton 4.0</h5><p class="text-sm text-gray-400">2D physics engine for After Effects layers.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'mobar')"><div class="flex items-start space-x-4"><img src="assets/mobar.png" alt="Mobar" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Mobar</h5><p class="text-sm text-gray-400">Modern customizable toolbar for scripts.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'labels')"><div class="flex items-start space-x-4"><img src="assets/labels.png" alt="Labels" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Labels</h5><p class="text-sm text-gray-400">Workflow tool for instant color-coding layers.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'keyfast')"><div class="flex items-start space-x-4"><img src="assets/keyfast.png" alt="KeyFast" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">KeyFast</h5><p class="text-sm text-gray-400">Rapidly create and manipulate keyframes.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'influx')"><div class="flex items-start space-x-4"><img src="assets/influx.png" alt="Influx" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Influx</h5><p class="text-sm text-gray-400">Import professional video formats easily.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'excalibur')"><div class="flex items-start space-x-4"><img src="assets/excalibur.png" alt="Excalibur" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Excalibur</h5><p class="text-sm text-gray-400">Customizable command launcher for AE.</p></div></div></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('scripts', 'reach')"><div class="flex items-start space-x-4"><img src="assets/reach.png" alt="reach" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">reach</h5><p class="text-sm text-gray-400">Customizable command launcher for AE.</p></div></div></div></div>
-
-            </div>
-        </section>
-
-        <!-- Assets Section -->
-        <section id="assets" class="mb-20 animate-on-scroll">
-            <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-rose-500 pl-4">Assets</h3>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Added target="_blank" to all static download links in Assets section -->
-                <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Malice Ultimate Pack</h5><p class="text-sm text-gray-400 mb-4">Light leaks, dust, and film grain.</p><a href="https://drive.google.com/drive/folders/1vZ0D6keKnKOEr8vPcPXoZt9KsuVEKqmR" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Sound FX Library</h5><p class="text-sm text-gray-400 mb-4">Whooshes, impacts, and risers.</p><a href="https://drive.google.com/drive/folders/1q6BzFxLDKY8tt48SqLng0-lPFODNZKpA" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">LUTs Collection</h5><p class="text-sm text-gray-400 mb-4">Cinematic color grading presets.</p><a href="#" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Editing Assets</h5><p class="text-sm text-gray-400 mb-4">Bundle of digital resources.</p><a href="https://drive.google.com/drive/folders/1jl0iH8E5w9d-jXYTw3uKhiAkVYdWZ2ia" target="_blank" class="block w-full gradient-btn text-white font-semibold py-2 px-4 rounded-full text-sm text-center">Download</a></div></div>
-            </div>
-        </section>
-
-        <!-- Utilities Section -->
-        <section id="utilities" class="mb-20 animate-on-scroll">
-            <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-yellow-500 pl-4">Utilities & Other Software</h3>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'topaz-ai')"><h5 class="text-lg font-bold text-white mb-1">Topaz AI Suite</h5><p class="text-sm text-gray-400">AI-powered image & video enhancement.</p></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'Filmora 14')"><h5 class="text-lg font-bold text-white mb-1">Filmora 14</h5><p class="text-sm text-gray-400">AI-powered efficiency and simplicity.</p></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'idm')"><h5 class="text-lg font-bold text-white mb-1">IDM (Cracked)</h5><p class="text-sm text-gray-400">Internet Download Manager.</p></div></div>
-                <div class="interactive-card"><div class="glass-card p-5 cursor-pointer" onclick="showItemDetail('utilities', 'pure-ref')"><h5 class="text-lg font-bold text-white mb-1">Pure Ref</h5><p class="text-sm text-gray-400">Simple reference image viewer.</p></div></div>
-            </div>
-        </section>
-        
-        <!-- Other Plugins Section -->
-        <section id="other-plugins" class="mb-20 animate-on-scroll interactive-card">
-            <div class="glass-card rounded-xl p-6 md:p-8 flex flex-col gap-6">
-                <div class="flex flex-col items-center text-center">
-                    <h5 class="text-2xl font-bold text-white mb-4">100+ Plugins Pack</h5>
-                    <p class="text-gray-400 mb-6 max-w-lg">
-                        Is pack mein After Effects, Premiere Pro, Photoshop, aur Illustrator ke liye 100 se bhi zyada plugins shamil hain.
-                        Aap is button par click karke unki poori list dekh sakte hain.
-                    </p>
-                    <a href="#" onclick="showPluginsList(); return false;" class="block gradient-btn text-white font-semibold py-3 px-8 rounded-full text-lg text-center">Plugins List</a>
+            <!-- Other Plugins Section (Windows) -->
+            <section id="other-plugins" class="mb-20 animate-on-scroll interactive-card">
+                <div class="glass-card rounded-xl p-6 md:p-8 flex flex-col gap-6">
+                    <div class="flex flex-col items-center text-center">
+                        <h5 class="text-2xl font-bold text-white mb-4">100+ Plugins Pack</h5>
+                        <p class="text-gray-400 mb-6 max-w-lg">
+                            Is pack mein After Effects, Premiere Pro, Photoshop, aur Illustrator ke liye 100 se bhi zyada plugins shamil hain.
+                            Aap is button par click karke unki poori list dekh sakte hain.
+                        </p>
+                        <a href="#" onclick="showPluginsList(); return false;" class="block gradient-btn text-white font-semibold py-3 px-8 rounded-full text-lg text-center">Plugins List</a>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
+
+        <div id="mac-content" class="hidden">
+             <!-- Easy Workflow Showcase Section (Mac) -->
+            <section class="mb-20 animate-on-scroll interactive-card">
+                <div class="glass-card p-8 md:p-12" style="background: rgba(10, 5, 20, 0.7);">
+                    <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                        <div class="text-center">
+                            <img src="assets/EWF.png" alt="Easy Workflow Script UI" class="rounded-xl shadow-2xl w-full h-auto object-cover border-4 border-white/10 opacity-50">
+                        </div>
+                        <div class="text-center md:text-left">
+                            <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white mb-2">Easy Workflow for Mac</h2>
+                            <p class="text-lg font-semibold gradient-text mb-4">Coming Soon!</p>
+                            <p class="text-gray-300 mb-6">
+                                We are actively working to curate and test Mac-compatible versions of our most popular resources, including Easy Workflow. Check back soon!
+                            </p>
+                            <button disabled class="w-full sm:w-auto bg-gray-700 text-gray-400 font-bold py-3 px-8 rounded-full text-center flex items-center justify-center gap-2 cursor-not-allowed">
+                                Download Coming Soon
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Software Section (Mac - Links Disabled) -->
+            <section class="mb-20 animate-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-indigo-500 pl-4">Adobe Software (Mac)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 opacity-60 pointer-events-none">
+                    <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">After Effects</h4><p class="text-gray-400">Mac versions are being prepared.</p></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6"><img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" alt="Premiere Pro Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Premiere Pro</h4><p class="text-gray-400">Mac versions are being prepared.</p></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6"><img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Photoshop Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Photoshop</h4><p class="text-gray-400">Mac versions are being prepared.</p></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6"><img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" alt="Illustrator Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Illustrator</h4><p class="text-gray-400">Mac versions are being prepared.</p></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6"><img src="https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg" alt="Media Encoder Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Media Encoder</h4><p class="text-gray-400">Mac versions are being prepared.</p></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-6 flex items-center space-x-6"><img src="https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg" alt="speech to text Logo" class="w-16 h-16"><div><h4 class="text-2xl font-bold text-white">Speech To Text</h4><p class="text-gray-400">Mac versions are being prepared.</p></div></div></div>
+                </div>
+            </section>
+
+            <!-- Plugins Section (Mac - Links Disabled) -->
+            <section class="mb-20 animate-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-purple-500 pl-4">Plugins (Mac)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-60 pointer-events-none">
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/sap.png" alt="Sapphire" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Sapphire Suite</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/cc.png" alt="BCC" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">BCC Suite</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/mb.png" alt="Magic Bullet" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Magic Bullet Suite</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/rg-ss.png" alt="Shooter Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shooter Suite</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/vs.png" alt="VFX Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">VFX Suite</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/e3d.png" alt="Element 3D" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Element 3D</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/sab.png" alt="Saber" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Saber</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/rsmb.png" alt="RSMB" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">RSMB</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/fxc.png" alt="FX Console" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">FX Console</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/rg-ts.png" alt="Trapcode Suite" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Trapcode Suite</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/VC-ofpng.png" alt="Optical Flares" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Optical Flares</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/twxt.png" alt="Twixtor" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Twixtor Pro</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/rgu.png" alt="Red Giant Universe" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Red Giant Universe</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/ss3.png" alt="Shadow Studio 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Shadow Studio 3</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/te.png" alt="Text Explorer" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Text Explorer</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/dg.jpg" alt="Deep Glow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Deep Glow</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/lg.png" alt="Liquid Glass" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Liquid Glass</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                </div>
+            </section>
+
+            <!-- Scripts & Extensions Section (Mac - Links Disabled) -->
+            <section class="mb-20 animate-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-teal-500 pl-4">Scripts & Extensions (Mac)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-60 pointer-events-none">
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/motion_bro.png" alt="Motion Bro" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Motion Bro</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/flow.png" alt="Flow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Flow</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/geolayers3.jpg" alt="GEOlayers 3" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">GEOlayers 3</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/JerryFlow_v2.png" alt="JerryFlow V2" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">JerryFlow V2</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/atom_x.jpg" alt="AtomX" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">AtomX</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/keystone.jpg" alt="Keystone" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Keystone</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/3d-extruder.png" alt="3D Extruder" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">3D Extruder</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/gradient8.png" alt="Gradient8" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Aescripts Gradient8</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/plexus.png" alt="Plexus" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Aescripts Plexus</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/autofill.png" alt="AutoFill v2" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">AutoFill v2</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/godrays.png" alt="Crates-Godrays" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Crates-Godrays</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/trim-pack.png" alt="Trim Pack" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Trim Pack V2.3.1</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/textevo.png" alt="Text Evo" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Text Evo</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/real-glow.png" alt="Real Glow" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Real Glow</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/overlord.png" alt="Overlord" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Overlord</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/newton-4.png" alt="Newton 4" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Newton 4.0</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/mobar.png" alt="Mobar" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Mobar</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/labels.png" alt="Labels" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Labels</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/keyfast.png" alt="KeyFast" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">KeyFast</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/influx.png" alt="Influx" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Influx</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/excalibur.png" alt="Excalibur" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">Excalibur</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><div class="flex items-start space-x-4"><img src="assets/reach.png" alt="reach" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 mt-1"><div class="flex-1"><h5 class="text-lg font-bold text-white mb-1">reach</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div></div></div>
+
+                </div>
+            </section>
+
+            <!-- Assets Section (Mac - Links Disabled) -->
+            <section class="mb-20 animate-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-rose-500 pl-4">Assets (Mac)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 opacity-60 pointer-events-none">
+                    <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Malice Ultimate Pack</h5><p class="text-sm text-gray-400 mb-4">Mac Assets Coming Soon</p><span class="block w-full bg-gray-700 text-gray-400 font-semibold py-2 px-4 rounded-full text-sm text-center">Coming Soon</span></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Sound FX Library</h5><p class="text-sm text-gray-400 mb-4">Mac Assets Coming Soon</p><span class="block w-full bg-gray-700 text-gray-400 font-semibold py-2 px-4 rounded-full text-sm text-center">Coming Soon</span></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">LUTs Collection</h5><p class="text-sm text-gray-400 mb-4">Mac Assets Coming Soon</p><span class="block w-full bg-gray-700 text-gray-400 font-semibold py-2 px-4 rounded-full text-sm text-center">Coming Soon</span></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5 flex flex-col justify-between"><h5 class="text-lg font-bold text-white mb-1">Editing Assets</h5><p class="text-sm text-gray-400 mb-4">Mac Assets Coming Soon</p><span class="block w-full bg-gray-700 text-gray-400 font-semibold py-2 px-4 rounded-full text-sm text-center">Coming Soon</span></div></div>
+                </div>
+            </section>
+
+            <!-- Utilities Section (Mac - Links Disabled) -->
+            <section class="mb-20 animate-on-scroll">
+                <h3 class="text-3xl font-bold mb-8 text-white tracking-tight border-l-4 border-yellow-500 pl-4">Utilities & Other Software (Mac)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 opacity-60 pointer-events-none">
+                    <div class="interactive-card"><div class="glass-card p-5"><h5 class="text-lg font-bold text-white mb-1">Topaz AI Suite</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><h5 class="text-lg font-bold text-white mb-1">Filmora 14</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><h5 class="text-lg font-bold text-white mb-1">IDM (Cracked)</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div>
+                    <div class="interactive-card"><div class="glass-card p-5"><h5 class="text-lg font-bold text-white mb-1">Pure Ref</h5><p class="text-sm text-gray-400">Coming Soon!</p></div></div>
+                </div>
+            </section>
+            
+            <!-- Other Plugins Section (Mac - Links Disabled) -->
+            <section class="mb-20 animate-on-scroll interactive-card">
+                <div class="glass-card rounded-xl p-6 md:p-8 flex flex-col gap-6 opacity-60 pointer-events-none">
+                    <div class="flex flex-col items-center text-center">
+                        <h5 class="text-2xl font-bold text-white mb-4">100+ Plugins Pack (Mac)</h5>
+                        <p class="text-gray-400 mb-6 max-w-lg">
+                            Mac compatible plugins are being compiled for easy access.
+                        </p>
+                        <button disabled class="block bg-gray-700 text-gray-400 font-semibold py-3 px-8 rounded-full text-lg text-center cursor-not-allowed">Plugins List Coming Soon</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
 
         <!-- Request a Resource Section -->
         <section id="request-resource" class="mb-20 animate-on-scroll interactive-card">
@@ -405,7 +604,7 @@
 
     <footer class="border-t border-gray-800/50 animate-on-scroll">
         <div class="container mx-auto px-6 py-6 text-center text-gray-500">
-            <p>&copy; <span id="current-year"></span> Harsh Edits. All rights rese      rved. A resource hub for the community.</p>
+            <p>&copy; <span id="current-year"></span> Harsh Edits. All rights reserved. A resource hub for the community.</p>
         </div>
     </footer>
 </div>
@@ -430,7 +629,7 @@
             <div class="glass-card p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <span class="font-semibold text-white text-xl">Easy Workflow v2.3.0</span>
                 <!-- Added target="_blank" to the Easy Workflow download link -->
-                <a href="https://drive.google.com/drive/folders/14y-Mw9ukShB9wn9XIVjfmyLcA2vrowm-?usp=sharing" target="_blank" class="w-full sm:w-auto gradient-btn text-white font-bold py-3 px-8 rounded-full text-center flex items-center justify-center gap-2">
+                <a href="https://drive.google.com/file/d/14y-Mw9ukShB9wn9XIVjfmyLcA2vrowm-?usp=sharing" target="_blank" class="w-full sm:w-auto gradient-btn text-white font-bold py-3 px-8 rounded-full text-center flex items-center justify-center gap-2">
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     Download Now
                 </a>
@@ -621,7 +820,87 @@
 </button>
 
 <script>
+    // Global variable to track if the donation popup has been shown once
+    let donationShownOnce = localStorage.getItem('donationShownOnce') === 'true';
+
+    // --- Tab Switching Logic ---
+    function switchOS(os) {
+        const windowsContent = document.getElementById('windows-content');
+        const macContent = document.getElementById('mac-content');
+        const tabWindows = document.getElementById('tab-windows');
+        const tabMac = document.getElementById('tab-mac');
+
+        if (os === 'windows') {
+            windowsContent.classList.remove('hidden');
+            macContent.classList.add('hidden');
+            tabWindows.classList.add('bg-indigo-600', 'shadow-md', 'shadow-indigo-500/50');
+            tabWindows.classList.remove('text-gray-400', 'hover:text-white', 'bg-transparent');
+            tabMac.classList.remove('bg-indigo-600', 'shadow-md', 'shadow-indigo-500/50');
+            tabMac.classList.add('text-gray-400', 'hover:text-white', 'bg-transparent');
+        } else if (os === 'mac') {
+            windowsContent.classList.add('hidden');
+            macContent.classList.remove('hidden');
+            tabMac.classList.add('bg-indigo-600', 'shadow-md', 'shadow-indigo-500/50');
+            tabMac.classList.remove('text-gray-400', 'hover:text-white', 'bg-transparent');
+            tabWindows.classList.remove('bg-indigo-600', 'shadow-md', 'shadow-indigo-500/50');
+            tabWindows.classList.add('text-gray-400', 'hover:text-white', 'bg-transparent');
+        }
+    }
+
+    // --- Donation Popup Logic ---
+    function showDonationPopup(isManualClick) {
+        const popup = document.getElementById('donation-popup');
+        const timerElement = document.getElementById('donation-timer');
+        
+        // Always show if manually clicked, or if it hasn't been shown automatically yet
+        if (isManualClick || !donationShownOnce) {
+            popup.classList.remove('hidden');
+            // Use opacity for transition
+            setTimeout(() => popup.classList.add('visible'), 10); 
+            
+            // If it's the first automatic run, set the timer and auto-close
+            if (!isManualClick && !donationShownOnce) {
+                let seconds = 5;
+                timerElement.innerHTML = `Automatically redirecting in <span class="font-bold text-indigo-400">${seconds}</span> seconds...`;
+
+                const interval = setInterval(() => {
+                    seconds--;
+                    if (seconds > 0) {
+                        timerElement.innerHTML = `Automatically redirecting in <span class="font-bold text-indigo-400">${seconds}</span> seconds...`;
+                    } else {
+                        clearInterval(interval);
+                        popup.classList.remove('visible');
+                        // Use display: none to completely remove from DOM interaction after transition
+                        setTimeout(() => popup.classList.add('hidden'), 500); 
+                        
+                        // Mark as shown once
+                        localStorage.setItem('donationShownOnce', 'true');
+                        donationShownOnce = true;
+                    }
+                }, 1000);
+            } else if (isManualClick) {
+                // If manual click, just show the message and an explicit close button
+                timerElement.innerHTML = `<button onclick="hideDonationPopup()" class="gradient-btn mt-4 text-white font-bold py-2 px-6 rounded-full text-sm">Close Donation</button>`;
+            }
+        }
+    }
+
+    function hideDonationPopup() {
+        const popup = document.getElementById('donation-popup');
+        popup.classList.remove('visible');
+        setTimeout(() => popup.classList.add('hidden'), 500); // Wait for fade-out transition
+    }
+
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Show the popup automatically on first load if not shown before
+    if (!donationShownOnce) {
+        // We delay slightly to ensure the page is fully loaded and looking good before the popup appears
+        setTimeout(() => {
+            showDonationPopup(false);
+        }, 1000); 
+    }
+
     // Set current year in footer
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
@@ -651,48 +930,66 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- SEARCH FUNCTIONALITY ---
     const searchInput = document.getElementById('search-input');
     const noResultsMessage = document.getElementById('no-results-message');
-    document.querySelectorAll('#main-view section').forEach(section => {
-        const title = section.querySelector('h3');
-        section.setAttribute('data-searchable-section', title ? title.innerText.toLowerCase() : '');
-        const cards = section.querySelectorAll('.glass-card, li');
-        cards.forEach(card => {
-            card.setAttribute('data-searchable-item', card.innerText.toLowerCase());
+    
+    // Get all searchable items from both Windows and Mac sections
+    function collectSearchableItems() {
+        const items = [];
+        document.querySelectorAll('#windows-content section, #mac-content section').forEach(section => {
+            const sectionTitle = section.querySelector('h3') ? section.querySelector('h3').innerText : '';
+            const cards = section.querySelectorAll('.glass-card, li');
+            cards.forEach(card => {
+                // Use a standard attribute for search text
+                card.setAttribute('data-searchable-item', (sectionTitle + ' ' + card.innerText).toLowerCase());
+            });
         });
-    });
+    }
+    collectSearchableItems(); // Initialize searchable items
 
     searchInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
         let resultsFound = false;
-        document.querySelectorAll('#main-view section').forEach(section => {
+        
+        // Only search the currently active OS content
+        const activeContentId = document.getElementById('windows-content').classList.contains('hidden') ? 'mac-content' : 'windows-content';
+        const activeContent = document.getElementById(activeContentId);
+
+        activeContent.querySelectorAll('section').forEach(section => {
             let sectionHasVisibleItems = false;
             const items = section.querySelectorAll('[data-searchable-item]');
+            
+            // Check if the section itself has a direct hit (e.g. searching for "plugins")
+            const sectionHeaderMatch = section.querySelector('h3') ? section.querySelector('h3').innerText.toLowerCase().includes(searchTerm) : false;
+
             items.forEach(item => {
                 const itemText = item.getAttribute('data-searchable-item');
                 if (itemText.includes(searchTerm)) {
-                    item.style.display = ''; // Adjust display as needed
+                    item.style.display = ''; // Show item
                     sectionHasVisibleItems = true;
                     resultsFound = true;
                 } else {
-                    item.style.display = 'none';
+                    item.style.display = 'none'; // Hide item
                 }
             });
-            // Handle section visibility based on whether it has visible items
-            if (section.id.includes('showcase') || section.querySelector('h2')) { // Keep hero/showcase visible
+            
+            // Handle section visibility: show if the section title matches or if it contains visible items
+            if (section.id.includes('showcase') || sectionHeaderMatch || sectionHasVisibleItems) { 
                  section.style.display = 'block';
-            } else if (sectionHasVisibleItems) {
-                section.style.display = 'block';
             } else {
                 section.style.display = 'none';
             }
         });
+
         noResultsMessage.style.display = resultsFound || searchTerm.length === 0 ? 'none' : 'block';
+        
+        // Reset view when search is cleared
         if (searchTerm.length === 0) {
-            document.querySelectorAll('#main-view section').forEach(s => s.style.display = 'block');
+            document.querySelectorAll('#windows-content section, #mac-content section').forEach(s => s.style.display = 'block');
             document.querySelectorAll('[data-searchable-item]').forEach(i => i.style.display = '');
         }
     });
 
-    // --- DATA STORE ---
+
+    // --- DATA STORE (UNCHANGED) ---
     const itemData = {
         plugins: {
             'sapphire': { title: 'Sapphire Suite', description: 'Sapphire Suite by Boris FX is an essential collection of powerful plugins for editors, artists, and animators. It offers a wide range of high-quality effects, including glows, glints, lens flares, and transitions, known for their stunning image quality and intuitive controls.', image: 'assets/sap.png', versions: [{ name: 'Sapphire 2020', url: 'https://drive.google.com/file/d/1RLklRoZil8X_aL8taek4O4sxrzkfdChE/view?usp=sharing' }, { name: 'Sapphire 2023.1', url: '#' }, { name: 'Sapphire 2022.5', url: '#' }] },
@@ -735,11 +1032,11 @@ document.addEventListener('DOMContentLoaded', () => {
             'keyfast': { title: 'KeyFast', description: 'Rapidly create and manipulate keyframes and animations with precision using an intuitive interface.', image: 'assets/keyfast.png', versions: [{ name: 'v1.2', url: 'https://drive.google.com/file/d/1svtStGlq_raciRifS8gur04V7K0pInZ3/view?usp=sharing' }] },
             'influx': { title: 'Influx', description: 'The fastest and most flexible way to import a massive range of professional video formats into After Effects and Premiere Pro.', image: 'assets/influx.png', versions: [{ name: 'v.1.0.2 (WIN+MAC)', url: 'https://drive.google.com/file/d/1dnc235ltpC4Cz5RV2Ia57J-kMl1FNQYo/view?usp=sharing' }] },
             'excalibur': { title: 'Excalibur', description: 'A customizable command launcher and workflow accelerator for After Effects, designed for speed and efficiency.', image: 'assets/excalibur.png', versions: [{ name: 'v1.1.5', url: 'https://drive.google.com/file/d/1snXhovvsgXf4grNuWqv5qC0Mb5YnBLA2/view?usp=sharing' }] },
-            'reach': { title: 'reach', description: 'Reach is an all-encompassing, adaptable, and ever-evolving toolset.', image: 'assets/reach.png', versions: [{ name: 'v2.1.16', url: 'https://drive.google.com/file/d/1snXhovvsgXf4grNuWqv5qC0Mb5YnBLA2/view?usp=sharing' }] },
+            'reach': { title: 'reach', description: 'Reach is an all-encompassing, adaptable, and ever-evolving toolset.', image: 'assets/reach.png', versions: [{ name: 'v2.1.16', url: 'https://drive.google.com/file/d/1ff1A3OggZnIlpQsZ9U4kGHhCiHcgwi3N/view?usp=sharing' }] },
 
         },
         utilities: {
-            'topaz-ai': { title: 'Topaz AI Suite', description: 'Topaz AI Suite AI-powered image aur video enhancement tools ka ek collection hai. Ismein Gigapixel AI, Video Enhance AI, aur Sharpen AI jaise tools shamil hain, jo images aur videos ki quality ko improve karte hain, noise reduce karte hain aur clarity badhate hain.', image: 'https://cdn.prod.website-files.com/6005fac27a49a9cd477afb63/634d1e4a5cb8ac88fd07a065_1024.svg', versions: [{ name: 'Version 2.6.0', url: 'https://drive.google.com/file/d/1C-NrR-6ipfKIM06Moyy17EocvuJon6hQ/view?usp=sharing' }] },
+            'topaz-ai': { title: 'Topaz AI Suite', description: 'Topaz AI Suite AI-powered image aur video enhancement tools ka ek collection hai. Ismein Gigapixel AI, Video Enhance AI, aur Sharpen AI jaise tools shamil hain, jo images aur videos ki quality ko improve karte hain, noise reduce karte hain aur clarity badhate hain.', image: 'https://cdn.prod.website-files.com/6005fac27a49a9cd477afb63/634d1e4a5cb8ac88fd07a065_1024.svg', versions: [{ name: 'Version 3.1.10', url: 'https://drive.google.com/file/d/1Z76gm8NslnAZTew1_Sohw2AOv6qSGQ8B/view?usp=sharing' }] },
             'Filmora 14': { title: 'Filmora 14', description: 'More AI, Videos in Less Clicks Bring AI-powered efficiency and simplicity to your everyday editing.', image: 'https://neveragain.allstatics.com/2019/assets/icon/logo/filmora-square.svg', versions: [{ name: 'v14.0.11.9772', url: 'https://drive.google.com/file/d/1--ITgkydgZQNKz0S0zoEJItEVxrIgsuv/view?usp=drivesdk' }] },
             'idm': { title: 'IDM (Cracked)', description: 'Internet Download Manager (IDM) ek download accelerator hai jo files ko tezi se download karta hai. Iska cracked version aapko bina kisi license ke premium features use karne deta hai, jisse aap bade files ko fast aur reliably download kar sakte hain.', image: 'https://cdn6.aptoide.com/imgs/9/c/6/9c688656c4d6227589d5fe3b68e038d2_icon.png?w=128', versions: [{ name: 'Version 20.4 ', url: '#' }] },
             'pure-ref': { title: 'Pure Ref', description: 'Pure Ref ek simple aur useful tool hai jo reference images ko manage karne ke liye design kiya gaya hai. Yeh aapko apni inspiration images ko ek hi jagah par arrange karne aur view karne deta hai, jisse aapka creative process smooth hota hai.', image: 'https://placehold.co/400x400/eab308/fefce8?text=Ref', versions: [{ name: 'Enter Version Name', url: '#' }] }
@@ -750,7 +1047,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'premiere-pro': { title: 'Premiere Pro', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg', versions: [{ year: '2020', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1xOUNF2XW4YvhmB6qUsW-Yt-_N_kESc5i/view?usp=sharing' }, { year: '2021', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1F_mHHuBdUMcHyWxB03hECKKhCG2sQYYL/view?usp=sharing' }, { year: '2022', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1O3acpw62IVR5oFeMKezpMwjw7rhYv2i-/view?usp=sharing' }, { year: '2023', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1slPjxo2WmqvJNWMiAi-s70sQABO3AHMN/view?usp=sharing' }, { year: '2024', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1dYcPG8pQHgweVzqbsHWFUeDM51XOhoj-/view?usp=sharing' }, { year: '2025', desc: 'Latest Version', url: 'https://drive.google.com/file/d/1s2IqZevh2S6oJrVbG3IlZxdUSdfLqT5M/view?usp=sharing' }] },
         'photoshop': { title: 'Photoshop', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg', versions: [{ year: '2020', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1kT8JgYqpvnj30snAiKGjIoXcFgh6nwva/view?usp=sharing' }, { year: '2021', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1kkMbEimMxdIEKVnSR3V_WQLUhyQLA066/view?usp=drive_link' }, { year: '2022', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1kprHBrLUpotVzn1G1spFc0hpoIxFVorM/view?usp=drive_link' }, { year: '2023', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1kuKfs6dEMMKbTDIq93kIZdYDkB1zFtlh/view?usp=drive_link' }, { year: '2024', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1SEoO-lnrGPP-K7goG75gsZlHiK1wBmf9/view?usp=sharing' }, { year: '2025', desc: 'Latest Release', url: 'https://drive.google.com/file/d/1klaoh8IR0YvGJlaxqsbattIaG85Ep0Pw/view?usp=drive_link' }] },
         'illustrator': { title: 'Illustrator', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg', versions: [{ year: '2020', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1lBrgwAWTQaaCQodJR7rtCpbEumI0wwQb/view?usp=drive_link' }, { year: '2021', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1lAtoWxBQm7SdiZULyAD2YzeoAs00kY8-/view?usp=drive_link' }, { year: '2022', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1kx9dU7yV1IpdWlTypA2FZbPjNwKuP7Od/view?usp=drive_link' }, { year: '2023', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1l8qS2J0lGnZ0bd5HnW4n3iTrpHfuW3sk/view?usp=drive_link' }, { year: '2024', desc: 'Stable Release', url: '#' }, { year: '2025', desc: 'Latest Release', url: 'https://drive.google.com/file/d/1ZNajSGAaCaKtcQwESEEKcvA6xTjaXuWm/view?usp=drive_link' }] },
-        'media-encoder': { title: 'Media Encoder', logo: 'https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg', versions: [{ year: '2020', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1o53VIZQsswD0de3FusXHlVJ8qwPM7dVZ/view?usp=sharing' }, { year: '2021', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1Fv3-fK_3vJje6feWKq2dUjZbzE4ofxEV/view?usp=sharing' }, { year: '2022', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1rAbr8DRL5W3wFzyRnVohVwByOIw4agxm/view?usp=sharing' }, { year: '2023', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1Az9LBu1pBPaJ5xZoS39wsMfRaNnAz2pZ/view?usp=sharing' }, { year: '2024', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1zHoJ6smv4H_OE2O2P39s1wj7LhIX3OTZ/view?usp=sharing' }, { year: '2025', desc: 'Latest Release', url: 'https://drive.google.com/file/d/1plG-0BWg4zZNYJkyDd2tHakYIXO1vzVx/view?usp=sharing' }] }
+        'media-encoder': { title: 'Media Encoder', logo: 'https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg', versions: [{ year: '2020', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1o53VIZQsswD0de3FusXHlVJ8qwPM7dVZ/view?usp=sharing' }, { year: '2021', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1Fv3-fK_3vJje6feWKq2dUjZbzE4ofxEV/view?usp=sharing' }, { year: '2022', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1rAbr8DRL5W3wFzyRnVohVwByOIw4agxm/view?usp=sharing' }, { year: '2023', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1Az9LBu1pBPaJ5xZoS39wsMfRaNnAz2pZ/view?usp=sharing' }, { year: '2024', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1zHoJ6smv4H_OE2O2P39s1wj7LhIX3OTZ/view?usp=sharing' }, { year: '2025', desc: 'Latest Release', url: 'https://drive.google.com/file/d/1plG-0BWg4zZNYJkyDd2tHakYIXO1vzVx/view?usp=sharing' }] },
+        'speech to text': { title: 'Speech To Text', logo: 'https://www.adobe.com/content/dam/acom/one-console/icons_rebrand/me_appicon.svg', versions: [{ year: '2024', desc: 'Stable Version', url: 'https://drive.google.com/file/d/1o53VIZQsswD0de3FusXHlVJ8qwPM7dVZ/view?usp=sharinghttps://drive.google.com/file/d/1RBe1oJbwAR6Oeni6SNh926bUuqtn1s6y/view?usp=sharing' }, { year: '2025', desc: 'Stable Release', url: 'https://drive.google.com/file/d/1ijIFkwYxgYpHT8SIzunBYGztURrrf-tO/view?usp=sharing' }, ] },
     };
 
     // --- DOM ELEMENTS & VIEW MANAGEMENT ---
@@ -989,6 +1287,11 @@ document.addEventListener('DOMContentLoaded', () => {
             backToTopButton.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
         }
     }, { passive: true });
+});
+
+// Set default view to Windows
+document.addEventListener('DOMContentLoaded', () => {
+    switchOS('windows');
 });
 </script>
 </body>
