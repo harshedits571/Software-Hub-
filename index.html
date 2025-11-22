@@ -723,7 +723,7 @@ function switchOS(os) {
             
             // If it's the first automatic run, set the timer and auto-close
             if (!isManualClick && !donationShownOnce) {
-                let seconds = 1;
+                let seconds = 5;
                 timerElement.innerHTML = `Automatically redirecting in <span class="font-bold text-indigo-400">${seconds}</span> seconds...`;
 
                 const interval = setInterval(() => {
